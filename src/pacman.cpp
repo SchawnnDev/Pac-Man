@@ -6,8 +6,11 @@ SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
 SDL_Surface* plancheSprites = nullptr;
 
+// Sprite du background
 SDL_Rect src_bg = { 200,3, 168,216 }; // x,y, w,h (0,0) en haut a gauche
-SDL_Rect bg = { 4,4, 672,864 }; // ici scale x4
+
+// Background rectangle
+SDL_Rect bg = { 0,0, 672,864 }; // ici scale x4
 
 SDL_Rect ghost_r = { 3,123, 16,16 }; 
 SDL_Rect ghost_l = { 37,123, 16,16 }; 
@@ -19,7 +22,7 @@ int count;
 
 void init()
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 700, 900, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
 	plancheSprites = SDL_LoadBMP("./pacman_sprites.bmp");
@@ -99,10 +102,10 @@ int main(int argc, char** argv)
         const Uint8* keys = SDL_GetKeyboardState(&nbk);
         if (keys[SDL_SCANCODE_ESCAPE])
             quit = true;
-        if (keys[SDL_SCANCODE_LEFT])
-            puts("LEFT");
-        if (keys[SDL_SCANCODE_RIGHT])
-            puts("RIGHT");
+        if (keys[SDL_SCANCODE_LEFT]) { puts("LEFT"); ghost.x = std::max(ghost.x - 1, 0); }
+        if (keys[SDL_SCANCODE_RIGHT]) { puts("RIGHT"); ghost.x++; }
+
+        printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
 
         // AFFICHAGE
 		draw();
