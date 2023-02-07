@@ -1,6 +1,8 @@
 #include <SDL.h>
 
 #include <iostream>
+#include "../include/sprite-animation.h"
+#include "../include/sprite-handler.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -19,14 +21,17 @@ SDL_Rect ghost_u = { 71,123, 16,16 };
 SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
 
 int count;
+SpriteHandler spriteHandler;
 
 void init()
 {
 	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
 
-	plancheSprites = SDL_LoadBMP("./pacman_sprites.bmp");
+	plancheSprites = SDL_LoadBMP("./assets/pacman_sprites.bmp");
     count = 0;
+
+    spriteHandler.importSprites("./assets/pacman.sprites");
 }
 
 
@@ -105,7 +110,7 @@ int main(int argc, char** argv)
         if (keys[SDL_SCANCODE_LEFT]) { puts("LEFT"); ghost.x = std::max(ghost.x - 1, 0); }
         if (keys[SDL_SCANCODE_RIGHT]) { puts("RIGHT"); ghost.x++; }
 
-        printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
+       // printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
 
         // AFFICHAGE
 		draw();
