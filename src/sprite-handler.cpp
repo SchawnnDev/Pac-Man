@@ -18,12 +18,13 @@ void SpriteHandler::importSprites(const std::string &path) {
 
     for (pugi::xpath_node node: tools_with_timeout) {
         std::cout << "Loading sprite " << node.node().attribute("name").value() << "...\n";
+        std::cout << "Parent: " << node.parent().value() << "\n";
         auto spr = std::make_shared<Sprite>(node.node().attribute("name").value());
         spr->rect().x = node.node().attribute("x").as_int();
         spr->rect().y = node.node().attribute("y").as_int();
         spr->rect().w = node.node().attribute("w").as_int();
         spr->rect().h = node.node().attribute("h").as_int();
-        m_sprites.push_back(spr);
+        SpriteHandler::m_sprites.push_back(spr);
     }
 
     std::cout << "Succesfully loaded " << tools_with_timeout.size() << " sprites!\n";
@@ -31,7 +32,7 @@ void SpriteHandler::importSprites(const std::string &path) {
 }
 
 std::shared_ptr<Sprite> SpriteHandler::getSprite(const std::string &name) {
-    for (auto sprite: m_sprites) {
+    for (auto sprite: SpriteHandler::m_sprites) {
         if (sprite->name() == name)
             return sprite;
     }
@@ -39,9 +40,9 @@ std::shared_ptr<Sprite> SpriteHandler::getSprite(const std::string &name) {
 }
 
 SpriteHandler::~SpriteHandler() {
-    std::destroy(m_sprites.begin(), m_sprites.end());
+    //std::destroy(m_sprites.begin(), m_sprites.end());
 }
 
 SpriteHandler::SpriteHandler() {
-    m_sprites = {};
+    //m_sprites = {};
 }

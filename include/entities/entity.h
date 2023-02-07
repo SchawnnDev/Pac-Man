@@ -12,7 +12,7 @@ enum class EntityType {
 
 class Entity : public SpriteAnimation {
 public:
-    Entity(int x, int y);
+    Entity(std::initializer_list<std::string> args, int x, int y);
 
     virtual ~Entity();
 

@@ -12,7 +12,7 @@ add_executable(${PROJECT_NAME} ""
         include/sprite-handler.h
 
         src/sprite.cpp
-        src/sprite-handler.cpp)
+        src/sprite-handler.cpp src/sprite-animation.cpp src/entities/banana.cpp src/entities/entity.cpp src/animations/banana-dying-animation.cpp include/animations/banana-dying-animation.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

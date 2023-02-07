@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
+#include "../include/animations/banana-dying-animation.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -21,7 +22,8 @@ SDL_Rect ghost_u = { 71,123, 16,16 };
 SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
 
 int count;
-SpriteHandler spriteHandler;
+
+BananaDyingAnimation* bananaDyingAnimation;
 
 void init()
 {
@@ -31,7 +33,8 @@ void init()
 	plancheSprites = SDL_LoadBMP("./assets/pacman_sprites.bmp");
     count = 0;
 
-    spriteHandler.importSprites("./assets/pacman.sprites");
+    SpriteHandler::importSprites("./assets/pacman.sprites");
+    bananaDyingAnimation = new BananaDyingAnimation();
 }
 
 
@@ -73,6 +76,18 @@ void draw()
     SDL_SetColorKey(plancheSprites, true, 0);
     // copie du sprite zoomé
 	SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
+
+
+    if(bananaDyingAnimation->activated())
+    {
+        auto sprite = bananaDyingAnimation->display();
+        if(sprite != nullptr)
+        {
+            SDL_Rect test = { 672/2,864/2, sprite->rect().w * 4,sprite->rect().h * 4 };
+            SDL_BlitScaled(plancheSprites, &sprite->rect(), win_surf, &test);
+        }
+    }
+
 }
 
 
@@ -109,6 +124,7 @@ int main(int argc, char** argv)
             quit = true;
         if (keys[SDL_SCANCODE_LEFT]) { puts("LEFT"); ghost.x = std::max(ghost.x - 1, 0); }
         if (keys[SDL_SCANCODE_RIGHT]) { puts("RIGHT"); ghost.x++; }
+        if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
 
        // printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
 

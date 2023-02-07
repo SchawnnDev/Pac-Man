@@ -4,6 +4,9 @@
 
 class Banana : public Entity
 {
+public:
+    Banana();
+    ~Banana() override;
 
-
+    void Tick() override;
 };

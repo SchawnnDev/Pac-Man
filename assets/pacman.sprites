@@ -4,7 +4,9 @@
   <definitions>
     <dir name="/">
       <dir name="Ghosts">
-        <dir name="Red"/>
+        <dir name="Red">
+          <spr name="red_test" x="332" y="238" w="12" h="12"/>
+        </dir>
         <dir name="Pink"/>
         <dir name="Cyan"/>
         <dir name="Orange"/>
@@ -12,6 +14,29 @@
       <dir name="Boards"/>
       <dir name="Fruits"/>
       <dir name="Scores"/>
+      <dir name="Banana">
+        <dir name="Dying">
+          <spr name="banana_dying_1" x="4" y="111" w="16" h="8"/>
+          <spr name="banana_dying_2" x="23" y="113" w="16" h="6"/>
+          <spr name="banana_dying_3" x="42" y="114" w="16" h="5"/>
+          <spr name="banana_dying_4" x="61" y="114" w="16" h="5"/>
+          <spr name="banana_dying_5" x="80" y="113" w="16" h="6"/>
+          <spr name="banana_dying_6" x="99" y="112" w="14" h="7"/>
+          <spr name="banana_dying_7" x="116" y="112" w="10" h="7"/>
+          <spr name="banana_dying_8" x="129" y="112" w="6" h="7"/>
+          <spr name="banana_dying_9" x="138" y="112" w="2" h="7"/>
+          <spr name="banana_dying_10" x="143" y="109" w="11" h="10"/>
+        </dir>
+        <spr name="full_banana" x="4" y="90" w="14" h="14"/>
+        <spr name="banana_right_little_open" x="21" y="90" w="13" h="14"/>
+        <spr name="banana_right_big_open" x="36" y="90" w="9" h="14"/>
+        <spr name="banana_left_little_open" x="48" y="90" w="13" h="14"/>
+        <spr name="banana_left_big_open" x="64" y="90" w="9" h="14"/>
+        <spr name="banana_top_little_open" x="76" y="91" w="14" h="13"/>
+        <spr name="banana_top_big_open" x="93" y="95" w="14" h="9"/>
+        <spr name="banana_bottom_little_open" x="110" y="91" w="14" h="13"/>
+        <spr name="banana_bottom_big_open" x="127" y="95" w="14" h="9"/>
+      </dir>
       <spr name="test1" x="338" y="238" w="12" h="12"/>
       <spr name="test2" x="371" y="239" w="11" h="11"/>
     </dir>
