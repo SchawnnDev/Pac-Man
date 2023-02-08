@@ -1,17 +1,17 @@
-#include "../../include/animations/banana-dying-animation.h"
+#include "../../../include/animations/banana/banana-right-animation.h"
 
-BananaDyingAnimation::BananaDyingAnimation()
+BananaRightAnimation::BananaRightAnimation()
         : SpriteAnimation({"banana_dying_1", "banana_dying_2", "banana_dying_3",
                            "banana_dying_4", "banana_dying_5", "banana_dying_6",
                            "banana_dying_7", "banana_dying_8", "banana_dying_9", "banana_dying_10"}) {
     m_ticks = -1;
 }
 
-BananaDyingAnimation::~BananaDyingAnimation() {
+BananaRightAnimation::~BananaRightAnimation() {
 
 }
 
-std::shared_ptr<Sprite> BananaDyingAnimation::display() {
+std::shared_ptr<Sprite> BananaRightAnimation::display() {
     if(!activated()) return nullptr;
     m_ticks++;
 
@@ -32,7 +32,7 @@ std::shared_ptr<Sprite> BananaDyingAnimation::display() {
     return sprites()[idx];
 }
 
-void BananaDyingAnimation::start() {
+void BananaRightAnimation::start() {
     if(activated()) return;
     SpriteAnimation::start();
     m_ticks = -1;

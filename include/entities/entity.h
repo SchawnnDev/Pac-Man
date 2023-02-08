@@ -10,9 +10,10 @@ enum class EntityType {
     Fruit
 };
 
-class Entity : public SpriteAnimation {
+class Entity {
+    std::shared_ptr<SpriteAnimation> m_currentAnimation;
 public:
-    Entity(std::initializer_list<std::string> args, int x, int y);
+    Entity(int x, int y);
 
     virtual ~Entity();
 
@@ -20,5 +21,8 @@ public:
 
     // wow modern (uses cpp move semantics)
     virtual EntityType entityType() const = 0;
+
+    const std::shared_ptr<SpriteAnimation> &currentAnimation() const { return m_currentAnimation; };
+    std::shared_ptr<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
 };

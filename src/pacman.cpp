@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
-#include "../include/animations/banana-dying-animation.h"
+#include "../include/animations/banana/banana-dying-animation.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -24,26 +24,28 @@ SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
 int count;
 
 BananaDyingAnimation* bananaDyingAnimation;
+SDL_Renderer *m_window_renderer;
+SDL_Texture* plancheTexture;
 
 void init()
 {
 	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
+    m_window_renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
-	plancheSprites = SDL_LoadBMP("./assets/pacman_sprites.bmp");
+    plancheSprites = SDL_LoadBMP("./assets/pacman_sprites.bmp");
     count = 0;
+    plancheTexture = SDL_CreateTextureFromSurface(m_window_renderer,plancheSprites);
 
     SpriteHandler::importSprites("./assets/pacman.sprites");
     bananaDyingAnimation = new BananaDyingAnimation();
 }
-
-
+// case_width 672 / 21
+SDL_Rect case_rect = { 0,0, 672 / 21, 864/27 };
 // fonction qui met à jour la surface de la fenetre "win_surf"
-void draw()
-{
-    SDL_SetColorKey(plancheSprites, false, 0);
-    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
 
+void animateGhost()
+{
     // petit truc pour faire tourner le fantome
     SDL_Rect* ghost_in = nullptr;
     switch (count/128)
@@ -71,12 +73,12 @@ void draw()
     SDL_Rect ghost_in2 = *ghost_in;
     if ((count/4)%2)
         ghost_in2.x += 17;
-        
-    // couleur transparente
-    SDL_SetColorKey(plancheSprites, true, 0);
-    // copie du sprite zoomé
-	SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
 
+    // couleur transparente
+    //SDL_SetColorKey(plancheSprites, true, 0);
+    // copie du sprite zoomé
+    //SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
+    SDL_RenderCopy(m_window_renderer,plancheTexture,&ghost_in2,&ghost); // Copie du sprite grâce au SDL_Renderer
 
     if(bananaDyingAnimation->activated())
     {
@@ -84,10 +86,41 @@ void draw()
         if(sprite != nullptr)
         {
             SDL_Rect test = { 672/2,864/2, sprite->rect().w * 4,sprite->rect().h * 4 };
-            SDL_BlitScaled(plancheSprites, &sprite->rect(), win_surf, &test);
+            //SDL_BlitScaled(plancheSprites, &sprite->rect(), win_surf, &test);
+            SDL_RenderCopy(m_window_renderer,plancheTexture, &sprite->rect(),&test); // Copie du sprite grâce au SDL_Renderer
+
+        }
+    }
+}
+
+void draw()
+{
+    SDL_RenderClear(m_window_renderer);
+
+
+    //SDL_SetColorKey(plancheSprites, false, 0);
+
+//    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
+    SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
+
+
+    animateGhost();
+        
+
+    SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
+
+    for (int i = 0; i < 27; ++i) {
+        for (int j = 0; j < 21; ++j) {
+            SDL_Rect sdlRect = { j* (672 / 21),i * (864/27), 672 / 21, 864/27 };
+            SDL_RenderDrawRect(m_window_renderer, &sdlRect);
         }
     }
 
+
+
+    SDL_SetRenderDrawColor(m_window_renderer, 0, 0, 0, 255);
+
+    SDL_RenderPresent(m_window_renderer);
 }
 
 
@@ -134,6 +167,9 @@ int main(int argc, char** argv)
         // LIMITE A 60 FPS
 		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
 	}
+
+    SDL_DestroyTexture(plancheTexture);
+    SDL_DestroyRenderer(m_window_renderer);
     SDL_Quit(); // ON SORT
     return 0;
 }

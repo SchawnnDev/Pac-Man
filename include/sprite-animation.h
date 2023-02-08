@@ -23,10 +23,10 @@ public:
      */
     virtual std::shared_ptr<Sprite> display() = 0;
 
-    std::vector<std::shared_ptr<Sprite>> const &sprites() const { return m_sprites; };
+    [[nodiscard]] std::vector<std::shared_ptr<Sprite>> const &sprites() const { return m_sprites; };
     std::vector<std::shared_ptr<Sprite>> &sprites() { return m_sprites; };
 
-    bool const& activated() const { return m_activated; };
+    [[nodiscard]] bool const& activated() const { return m_activated; };
     bool &activated() { return m_activated; };
 
    // int const &changeTicks() const { return m_changeTicks; };
