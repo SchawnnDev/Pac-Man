@@ -4,6 +4,8 @@
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
 #include "../include/animations/banana/banana-dying-animation.h"
+#include "../include/constants.h"
+#include "../include/board/board.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -26,6 +28,7 @@ int count;
 BananaDyingAnimation* bananaDyingAnimation;
 SDL_Renderer *m_window_renderer;
 SDL_Texture* plancheTexture;
+Board* board;
 
 void init()
 {
@@ -39,6 +42,8 @@ void init()
 
     SpriteHandler::importSprites("./assets/pacman.sprites");
     bananaDyingAnimation = new BananaDyingAnimation();
+
+    board = new Board("./assets/board.xml");
 }
 // case_width 672 / 21
 SDL_Rect case_rect = { 0,0, 672 / 21, 864/27 };
@@ -103,27 +108,27 @@ void draw()
 //    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
     SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
 
+    board->draw(m_window_renderer);
 
     animateGhost();
-        
+
 
     SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
 
+/*
     for (int i = 0; i < 27; ++i) {
         for (int j = 0; j < 21; ++j) {
             SDL_Rect sdlRect = { j* (672 / 21),i * (864/27), 672 / 21, 864/27 };
             SDL_RenderDrawRect(m_window_renderer, &sdlRect);
         }
     }
-
+*/
 
 
     SDL_SetRenderDrawColor(m_window_renderer, 0, 0, 0, 255);
 
     SDL_RenderPresent(m_window_renderer);
 }
-
-
 
 int main(int argc, char** argv)
 {

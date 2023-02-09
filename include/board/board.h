@@ -2,6 +2,7 @@
 
 #include <array>
 #include <memory>
+#include <SDL.h>
 #include "board-case.h"
 #include "../constants.h"
 
@@ -23,5 +24,7 @@ public:
     }
 
     void save(const std::string& p_filePath);
+
+    void draw(SDL_Renderer *m_window_renderer);
 
 };

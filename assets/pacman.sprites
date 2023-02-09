@@ -11,7 +11,10 @@
         <dir name="Cyan"/>
         <dir name="Orange"/>
       </dir>
-      <dir name="Boards"/>
+      <dir name="Boards">
+        <spr name="point" x="4" y="81" w="2" h="2"/>
+        <spr name="bonus" x="9" y="79" w="7" h="7"/>
+      </dir>
       <dir name="Fruits"/>
       <dir name="Scores"/>
       <dir name="Banana">

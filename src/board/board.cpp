@@ -57,5 +57,41 @@ void Board::save(const std::string &p_filePath) {
     std::cout << "Successfully saved board to " << p_filePath.c_str() << ".\n";
 }
 
+void Board::draw(SDL_Renderer *m_window_renderer)
+{
+
+    for (int y = 0; y < BOARD_SIZE_Y; ++y) {
+        for (int x = 0; x < BOARD_SIZE_X; ++x) {
+            // SDL_Rect sdlRect = { j* (672 / 21),i * (864/27), 672 / 21, 864/27 };
+            // SDL_RenderDrawRect(m_window_renderer, &sdlRect);
+            auto caseType = getCase(x, y)->type();
+
+            switch (caseType) {
+                case BoardCaseType::PointPath:
+//                    SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
+                    break;
+                case BoardCaseType::BasicPath:
+                    break;
+                case BoardCaseType::Bonus:
+                    break;
+                case BoardCaseType::Wall:
+                    break;
+                case BoardCaseType::GhostHome:
+                    break;
+                case BoardCaseType::GhostHomeDoorLeft:
+                    break;
+                case BoardCaseType::GhostHomeDoorRight:
+                    break;
+                case BoardCaseType::GhostHomeDoor:
+                    break;
+                case BoardCaseType::Nothing:
+                    break;
+            }
+
+
+        }
+    }
+
+}
 
 
