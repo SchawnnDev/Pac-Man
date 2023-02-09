@@ -51,13 +51,43 @@ void draw() {
     for (int i = 0; i < 27; ++i) {
         for (int j = 0; j < 21; ++j) {
             if (i == actualY && j == actualX) {
-                SDL_SetRenderDrawColor(m_window_renderer, 255, 0, 0, 255);
+                SDL_SetRenderDrawColor(m_window_renderer, 127, 0, 255, 255);
                 SDL_Rect sdlRect = {j * (672 / BOARD_SIZE_X), i * (864 / BOARD_SIZE_Y), 672 / BOARD_SIZE_X,
                                     864 / BOARD_SIZE_Y};
-                SDL_RenderDrawRect(m_window_renderer, &sdlRect);
-                SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
+                SDL_RenderFillRect(m_window_renderer, &sdlRect);
                 continue;
             }
+
+            switch (board->getCase(j, i)->type()) {
+                case BoardCaseType::Nothing:
+                    SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
+                    break;
+                case BoardCaseType::PointPath:
+                    SDL_SetRenderDrawColor(m_window_renderer, 0, 0, 255, 255);
+                    break;
+                case BoardCaseType::BasicPath:
+                    SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
+                    break;
+                case BoardCaseType::Bonus:
+                    SDL_SetRenderDrawColor(m_window_renderer, 200, 100, 2, 255);
+                    break;
+                case BoardCaseType::Wall:
+                    SDL_SetRenderDrawColor(m_window_renderer, 255, 0, 0, 255);
+                    break;
+                case BoardCaseType::GhostHome:
+                    SDL_SetRenderDrawColor(m_window_renderer, 23, 255, 23, 255);
+                    break;
+                case BoardCaseType::GhostHomeDoorLeft:
+                    SDL_SetRenderDrawColor(m_window_renderer, 64, 255, 64, 255);
+                    break;
+                case BoardCaseType::GhostHomeDoorRight:
+                    SDL_SetRenderDrawColor(m_window_renderer, 23, 255, 64, 255);
+                    break;
+                case BoardCaseType::GhostHomeDoor:
+                    SDL_SetRenderDrawColor(m_window_renderer, 0, 200, 0, 255);
+                    break;
+            }
+
             SDL_Rect sdlRect = {j * (672 / BOARD_SIZE_X), i * (864 / BOARD_SIZE_Y), 672 / BOARD_SIZE_X,
                                 864 / BOARD_SIZE_Y};
             SDL_RenderDrawRect(m_window_renderer, &sdlRect);
@@ -103,12 +133,12 @@ int main(int argc, char **argv) {
         if (keys[SDL_SCANCODE_DOWN]) { actualY = std::min(actualY + 1, BOARD_SIZE_Y - 1); }
         const auto &boardCase = board->getCase(actualX, actualY);
         if (keys[SDL_SCANCODE_A] && boardCase != nullptr) {
-            std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::BasicPath\n";
-            boardCase->type() = BoardCaseType::BasicPath;
-        }
-        if (keys[SDL_SCANCODE_Z] && boardCase != nullptr) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::PointPath\n";
             boardCase->type() = BoardCaseType::PointPath;
+        }
+        if (keys[SDL_SCANCODE_Z] && boardCase != nullptr) {
+            std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::BasicPath\n";
+            boardCase->type() = BoardCaseType::BasicPath;
         }
         if (keys[SDL_SCANCODE_E] && boardCase != nullptr) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::Bonus\n";
