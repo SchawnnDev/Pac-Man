@@ -64,7 +64,7 @@
 	<case x="19" y="2" type="0" />
 	<case x="20" y="2" type="3" />
 	<case x="0" y="3" type="3" />
-	<case x="1" y="3" type="0" />
+	<case x="1" y="3" type="2" />
 	<case x="2" y="3" type="3" />
 	<case x="3" y="3" type="8" />
 	<case x="4" y="3" type="3" />
@@ -82,7 +82,7 @@
 	<case x="16" y="3" type="3" />
 	<case x="17" y="3" type="8" />
 	<case x="18" y="3" type="3" />
-	<case x="19" y="3" type="0" />
+	<case x="19" y="3" type="2" />
 	<case x="20" y="3" type="3" />
 	<case x="0" y="4" type="3" />
 	<case x="1" y="4" type="0" />
@@ -279,7 +279,7 @@
 	<case x="3" y="13" type="1" />
 	<case x="4" y="13" type="1" />
 	<case x="5" y="13" type="0" />
-	<case x="6" y="13" type="0" />
+	<case x="6" y="13" type="1" />
 	<case x="7" y="13" type="1" />
 	<case x="8" y="13" type="3" />
 	<case x="9" y="13" type="4" />
@@ -421,7 +421,7 @@
 	<case x="19" y="19" type="0" />
 	<case x="20" y="19" type="3" />
 	<case x="0" y="20" type="3" />
-	<case x="1" y="20" type="0" />
+	<case x="1" y="20" type="2" />
 	<case x="2" y="20" type="0" />
 	<case x="3" y="20" type="0" />
 	<case x="4" y="20" type="3" />
@@ -439,7 +439,7 @@
 	<case x="16" y="20" type="3" />
 	<case x="17" y="20" type="0" />
 	<case x="18" y="20" type="0" />
-	<case x="19" y="20" type="0" />
+	<case x="19" y="20" type="2" />
 	<case x="20" y="20" type="3" />
 	<case x="0" y="21" type="3" />
 	<case x="1" y="21" type="3" />

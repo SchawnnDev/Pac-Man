@@ -32,7 +32,7 @@ Board* board;
 
 void init()
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 672, 864, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
     m_window_renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
@@ -45,9 +45,6 @@ void init()
 
     board = new Board("./assets/board.xml");
 }
-// case_width 672 / 21
-SDL_Rect case_rect = { 0,0, 672 / 21, 864/27 };
-// fonction qui met à jour la surface de la fenetre "win_surf"
 
 void animateGhost()
 {
@@ -106,9 +103,9 @@ void draw()
     //SDL_SetColorKey(plancheSprites, false, 0);
 
 //    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
-    SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
+   // SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
 
-    board->draw(m_window_renderer);
+    board->draw(m_window_renderer, plancheTexture);
 
     animateGhost();
 

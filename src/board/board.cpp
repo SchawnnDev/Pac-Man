@@ -2,6 +2,8 @@
 #include "../../include/board/board.h"
 #include "../../include/constants.h"
 #include "pugixml.hpp"
+#include "../../include/sprite-handler.h"
+#include "../../include/position.h"
 
 Board::Board() {
 
@@ -10,6 +12,10 @@ Board::Board() {
             m_grid[i][j] = std::make_shared<BoardCase>(j,i, BoardCaseType::PointPath);
         }
     }
+
+    m_pointSprite = SpriteHandler::getSprite("point");
+    m_bonusSprite = SpriteHandler::getSprite("bonus");
+    m_emptyBoardSprite = SpriteHandler::getSprite("board_empty");
 
 }
 
@@ -57,22 +63,46 @@ void Board::save(const std::string &p_filePath) {
     std::cout << "Successfully saved board to " << p_filePath.c_str() << ".\n";
 }
 
-void Board::draw(SDL_Renderer *m_window_renderer)
-{
+bool first = true;
 
+void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
+{
+    SDL_Rect bg = { 0,0, BOARD_SIZE_WIDTH,BOARD_SIZE_HEIGHT };
+    SDL_RenderCopy(p_window_renderer,p_texture,&m_emptyBoardSprite->rect(),&bg); // Copie du sprite grâce au SDL_Renderer
+    // 10 14
     for (int y = 0; y < BOARD_SIZE_Y; ++y) {
         for (int x = 0; x < BOARD_SIZE_X; ++x) {
-            // SDL_Rect sdlRect = { j* (672 / 21),i * (864/27), 672 / 21, 864/27 };
-            // SDL_RenderDrawRect(m_window_renderer, &sdlRect);
             auto caseType = getCase(x, y)->type();
+            auto centered = getCenteredPosition(x, y);
+
+/*
+            SDL_SetRenderDrawColor(p_window_renderer, 127, 255, 255, 255);
+            SDL_Rect rect = {x * BOARD_CASE_SIZE_WIDTH, y * BOARD_CASE_SIZE_HEIGHT, BOARD_CASE_SIZE_WIDTH,
+                                BOARD_CASE_SIZE_HEIGHT};
+            SDL_RenderDrawRect(p_window_renderer, &rect);
+*/
 
             switch (caseType) {
                 case BoardCaseType::PointPath:
-//                    SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
+
+                    if(first) std::cout << "(" << x << "," << y << ") -> " << "(" << centered.x << "," << centered.y << ")\n";
+
+                    centered.x -= m_pointSprite->rect().w * 2;
+                    centered.y -= m_pointSprite->rect().h * 2;
+                    centered.w = m_pointSprite->rect().w * 4;
+                    centered.h = m_pointSprite->rect().h * 4;
+                    SDL_SetRenderDrawColor(p_window_renderer, 127, 0, 255, 255);
+                    SDL_RenderFillRect(p_window_renderer, &centered);
+                    // SDL_RenderCopy(p_window_renderer,p_texture,&m_pointSprite->rect(),&centered); // Copie du sprite grâce au SDL_Renderer
                     break;
                 case BoardCaseType::BasicPath:
                     break;
                 case BoardCaseType::Bonus:
+                    centered.x -= m_bonusSprite->rect().w * 2;
+                    centered.y -= m_bonusSprite->rect().h * 2;
+                    centered.w = m_bonusSprite->rect().w * 4;
+                    centered.h = m_bonusSprite->rect().h * 4;
+                    SDL_RenderCopy(p_window_renderer,p_texture,&m_bonusSprite->rect(),&centered);
                     break;
                 case BoardCaseType::Wall:
                     break;
@@ -92,6 +122,7 @@ void Board::draw(SDL_Renderer *m_window_renderer)
         }
     }
 
+    if(first) first = false;
 }
 
 
