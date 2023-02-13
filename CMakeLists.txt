@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME} ""
         include/animations/banana/banana-down-animation.h
         include/animations/banana/banana-left-animation.h
         include/animations/banana/banana-right-animation.h
-        include/constants.h
+        include/utils/constants.h
         include/board/board.h
         include/board/board-case.h
 
@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME} ""
         src/animations/banana/banana-right-animation.cpp
         src/board/board.cpp
         src/board/board-case.cpp
-        include/position.h)
+        include/utils/position.h src/animations/bonus-animation.cpp include/animations/bonus-animation.h include/entities/ghosts/ghost.h include/entities/ghosts/blinky.h src/entities/ghosts/ghost.cpp src/entities/ghosts/blinky.cpp src/utils/position.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

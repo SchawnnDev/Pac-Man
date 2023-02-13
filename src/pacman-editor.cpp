@@ -4,7 +4,7 @@
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
 #include "../include/animations/banana/banana-dying-animation.h"
-#include "../include/constants.h"
+#include "../include/utils/constants.h"
 #include "../include/board/board.h"
 
 SDL_Window *pWindow = nullptr;

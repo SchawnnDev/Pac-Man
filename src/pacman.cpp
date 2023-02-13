@@ -4,8 +4,9 @@
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
 #include "../include/animations/banana/banana-dying-animation.h"
-#include "../include/constants.h"
+#include "../include/utils/constants.h"
 #include "../include/board/board.h"
+#include "../include/utils/position.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -21,7 +22,7 @@ SDL_Rect ghost_r = { 3,123, 16,16 };
 SDL_Rect ghost_l = { 37,123, 16,16 }; 
 SDL_Rect ghost_d = { 105,123, 16,16 }; 
 SDL_Rect ghost_u = { 71,123, 16,16 }; 
-SDL_Rect ghost = { 34,34, 32,32 };     // ici scale x2
+SDL_Rect ghost = { getCenteredPosition(1,1).x - 32 / 2,getCenteredPosition(1,1).y - 32 / 2, 32,32 };     // ici scale x2
 
 int count;
 
@@ -32,7 +33,7 @@ Board* board;
 
 void init()
 {
-	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
 	win_surf = SDL_GetWindowSurface(pWindow);
     m_window_renderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
 
@@ -77,7 +78,7 @@ void animateGhost()
         ghost_in2.x += 17;
 
     // couleur transparente
-    //SDL_SetColorKey(plancheSprites, true, 0);
+    SDL_SetColorKey(plancheSprites, true,  SDL_MapRGB(plancheSprites->format, 0, 0, 0));
     // copie du sprite zoomé
     //SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
     SDL_RenderCopy(m_window_renderer,plancheTexture,&ghost_in2,&ghost); // Copie du sprite grâce au SDL_Renderer
@@ -90,7 +91,6 @@ void animateGhost()
             SDL_Rect test = { 672/2,864/2, sprite->rect().w * 4,sprite->rect().h * 4 };
             //SDL_BlitScaled(plancheSprites, &sprite->rect(), win_surf, &test);
             SDL_RenderCopy(m_window_renderer,plancheTexture, &sprite->rect(),&test); // Copie du sprite grâce au SDL_Renderer
-
         }
     }
 }
@@ -167,7 +167,7 @@ int main(int argc, char** argv)
 		draw();
 		SDL_UpdateWindowSurface(pWindow); 
         // LIMITE A 60 FPS
-		SDL_Delay(16); // utiliser SDL_GetTicks64() pour plus de precisions
+		SDL_Delay(1000 / FRAMERATE); // utiliser SDL_GetTicks64() pour plus de precisions
 	}
 
     SDL_DestroyTexture(plancheTexture);

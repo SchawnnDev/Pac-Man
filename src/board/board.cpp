@@ -1,20 +1,19 @@
 #include <iostream>
 #include "../../include/board/board.h"
-#include "../../include/constants.h"
 #include "pugixml.hpp"
 #include "../../include/sprite-handler.h"
-#include "../../include/position.h"
+#include "../../include/utils/position.h"
 
 Board::Board() {
 
     for (int i = 0; i < BOARD_SIZE_Y; ++i) {
         for (int j = 0; j < BOARD_SIZE_X; ++j) {
-            m_grid[i][j] = std::make_shared<BoardCase>(j,i, BoardCaseType::PointPath);
+            m_grid[i][j] = std::make_shared<BoardCase>(j,i, BoardCaseType::PointPath, nullptr);
         }
     }
 
     m_pointSprite = SpriteHandler::getSprite("point");
-    m_bonusSprite = SpriteHandler::getSprite("bonus");
+    m_bonusAnimation = {};
     m_emptyBoardSprite = SpriteHandler::getSprite("board_empty");
 
 }
@@ -40,6 +39,16 @@ Board::Board(const std::string& p_filePath) : Board() {
         auto y = node.node().attribute("y").as_int();
         auto boardCase = getCase(x, y);
         boardCase->type() = BoardCaseType(node.node().attribute("type").as_int());
+
+        switch (boardCase->type()) {
+            case BoardCaseType::Bonus:
+                boardCase->animation() = std::make_shared<BonusAnimation>();
+                break;
+            default:
+                break;
+        }
+
+
     }
 
     std::cout << "Successfully loaded " << tools_with_timeout.size() << " case(s)!\n";
@@ -72,15 +81,9 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
     // 10 14
     for (int y = 0; y < BOARD_SIZE_Y; ++y) {
         for (int x = 0; x < BOARD_SIZE_X; ++x) {
-            auto caseType = getCase(x, y)->type();
+            auto _case = getCase(x, y);
+            auto caseType = _case->type();
             auto centered = getCenteredPosition(x, y);
-
-/*
-            SDL_SetRenderDrawColor(p_window_renderer, 127, 255, 255, 255);
-            SDL_Rect rect = {x * BOARD_CASE_SIZE_WIDTH, y * BOARD_CASE_SIZE_HEIGHT, BOARD_CASE_SIZE_WIDTH,
-                                BOARD_CASE_SIZE_HEIGHT};
-            SDL_RenderDrawRect(p_window_renderer, &rect);
-*/
 
             switch (caseType) {
                 case BoardCaseType::PointPath:
@@ -91,19 +94,22 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
                     centered.y -= m_pointSprite->rect().h * 2;
                     centered.w = m_pointSprite->rect().w * 4;
                     centered.h = m_pointSprite->rect().h * 4;
-                    SDL_SetRenderDrawColor(p_window_renderer, 127, 0, 255, 255);
-                    SDL_RenderFillRect(p_window_renderer, &centered);
-                    // SDL_RenderCopy(p_window_renderer,p_texture,&m_pointSprite->rect(),&centered); // Copie du sprite grâce au SDL_Renderer
+                 //   SDL_SetRenderDrawColor(p_window_renderer, 127, 0, 255, 255);
+                   // SDL_RenderFillRect(p_window_renderer, &centered);
+                    SDL_RenderCopy(p_window_renderer,p_texture,&m_pointSprite->rect(),&centered); // Copie du sprite grâce au SDL_Renderer
                     break;
                 case BoardCaseType::BasicPath:
                     break;
-                case BoardCaseType::Bonus:
-                    centered.x -= m_bonusSprite->rect().w * 2;
-                    centered.y -= m_bonusSprite->rect().h * 2;
-                    centered.w = m_bonusSprite->rect().w * 4;
-                    centered.h = m_bonusSprite->rect().h * 4;
-                    SDL_RenderCopy(p_window_renderer,p_texture,&m_bonusSprite->rect(),&centered);
+                case BoardCaseType::Bonus: {
+                    auto sprite = _case->animation()->display();
+                    if(sprite == nullptr) break;
+                    centered.x -= sprite->rect().w * 2;
+                    centered.y -= sprite->rect().h * 2;
+                    centered.w = sprite->rect().w * 4;
+                    centered.h = sprite->rect().h * 4;
+                    SDL_RenderCopy(p_window_renderer, p_texture, &sprite->rect(), &centered);
                     break;
+                }
                 case BoardCaseType::Wall:
                     break;
                 case BoardCaseType::GhostHome:
@@ -117,7 +123,6 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
                 case BoardCaseType::Nothing:
                     break;
             }
-
 
         }
     }

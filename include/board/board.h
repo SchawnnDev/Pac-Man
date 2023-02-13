@@ -4,13 +4,15 @@
 #include <memory>
 #include <SDL.h>
 #include "board-case.h"
-#include "../constants.h"
+#include "../utils/constants.h"
 #include "../sprite.h"
+#include "../animations/bonus-animation.h"
 
 class Board {
     std::array<std::array<std::shared_ptr<BoardCase>, BOARD_SIZE_X>, BOARD_SIZE_Y> m_grid;
     std::string m_filePath;
-    std::shared_ptr<Sprite> m_pointSprite, m_bonusSprite, m_emptyBoardSprite;
+    std::shared_ptr<Sprite> m_pointSprite, m_emptyBoardSprite;
+    BonusAnimation m_bonusAnimation;
 public:
     Board();
     Board(const std::string& p_filePath);

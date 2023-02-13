@@ -1,6 +1,6 @@
 #include "../../include/entities/banana.h"
 
-Banana::Banana() : Entity(0, 0) {
+Banana::Banana() : Entity(0, 0, Direction::UP) {
     auto bananaDyingAnimation = std::make_shared<BananaDyingAnimation>();
     auto bananaUpAnimation = std::make_shared<BananaDyingAnimation>();
     auto bananaDownAnimation = std::make_shared<BananaDyingAnimation>();
