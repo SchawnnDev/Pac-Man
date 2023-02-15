@@ -5,6 +5,6 @@
 class Blinky : public Ghost {
 public:
     Blinky() = default;
-    ~Blinky();
+    ~Blinky() override;
     void Tick() override;
 };

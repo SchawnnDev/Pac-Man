@@ -1,5 +1,14 @@
 #include "../../../include/entities/ghosts/blinky.h"
 
 void Blinky::Tick() {
-    Ghost::Tick();
+
+    if(ghostMode() == GhostMode::Scatter)
+    {
+
+    }
+
+}
+
+Blinky::~Blinky() {
+
 }

@@ -3,6 +3,7 @@
 #include <array>
 #include <memory>
 #include <SDL.h>
+#include <optional>
 #include "board-case.h"
 #include "../utils/constants.h"
 #include "../sprite.h"
@@ -30,5 +31,9 @@ public:
     void save(const std::string& p_filePath);
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture);
+
+    [[nodiscard]] static inline bool isCase(int p_x, int p_y) {
+        return p_x % BOARD_CASE_SIZE_WIDTH == 0 && p_y % BOARD_CASE_SIZE_HEIGHT == 0;
+    }
 
 };
