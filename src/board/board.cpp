@@ -101,7 +101,7 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
                 case BoardCaseType::BasicPath:
                     break;
                 case BoardCaseType::Bonus: {
-                    auto sprite = _case.value()->animation()->display();
+                    auto sprite = _case->animation()->display();
                     if(sprite == nullptr) break;
                     centered.x -= sprite->rect().w * 2;
                     centered.y -= sprite->rect().h * 2;
@@ -129,9 +129,3 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
 
     if(first) first = false;
 }
-
-std::optional<std::shared_ptr<BoardCase>> Board::getCase(int p_x, int p_y) {
-    return std::optional<std::shared_ptr<BoardCase>>();
-}
-
-

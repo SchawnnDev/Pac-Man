@@ -10,5 +10,5 @@ public:
     Banana();
     ~Banana() override;
 
-    void Tick() override;
+    void tick() override;
 };

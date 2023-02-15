@@ -22,9 +22,9 @@ public:
 
     Entity(int p_x, int p_y, int p_speed, Direction p_direction) : m_position({p_x, p_y}), m_direction(p_direction), m_speed(p_speed) {}
 
-    virtual ~Entity();
+    virtual ~Entity() = default;
 
-    virtual void Tick() = 0;
+    virtual void tick() = 0;
 
     // wow, modern (uses cpp move semantics)
     [[nodiscard]] virtual EntityType entityType() const = 0;

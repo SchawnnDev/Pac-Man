@@ -42,7 +42,6 @@ void init()
     plancheTexture = SDL_CreateTextureFromSurface(m_window_renderer,plancheSprites);
 
     SpriteHandler::importSprites("./assets/pacman.sprites");
-    bananaDyingAnimation = new BananaDyingAnimation();
 
     board = new Board("./assets/board.xml");
 }
@@ -99,28 +98,11 @@ void draw()
 {
     SDL_RenderClear(m_window_renderer);
 
-
-    //SDL_SetColorKey(plancheSprites, false, 0);
-
-//    SDL_BlitScaled(plancheSprites, &src_bg, win_surf, &bg);
-   // SDL_RenderCopy(m_window_renderer,plancheTexture,&src_bg,&bg); // Copie du sprite grâce au SDL_Renderer
-
     board->draw(m_window_renderer, plancheTexture);
 
     animateGhost();
 
-
     SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
-
-/*
-    for (int i = 0; i < 27; ++i) {
-        for (int j = 0; j < 21; ++j) {
-            SDL_Rect sdlRect = { j* (672 / 21),i * (864/27), 672 / 21, 864/27 };
-            SDL_RenderDrawRect(m_window_renderer, &sdlRect);
-        }
-    }
-*/
-
 
     SDL_SetRenderDrawColor(m_window_renderer, 0, 0, 0, 255);
 
@@ -140,26 +122,9 @@ int main(int argc, char** argv)
 	bool quit = false;
 	while (!quit)
 	{
-		SDL_Event event;
-		while (!quit && SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-			case SDL_QUIT:
-				quit = true;
-				break;
-			default: break;
-			}
-		}
 
-        // Gestion du clavier        
-        int nbk;
-        const Uint8* keys = SDL_GetKeyboardState(&nbk);
-        if (keys[SDL_SCANCODE_ESCAPE])
-            quit = true;
-        if (keys[SDL_SCANCODE_LEFT]) { puts("LEFT"); ghost.x = std::max(ghost.x - 1, 0); }
-        if (keys[SDL_SCANCODE_RIGHT]) { puts("RIGHT"); ghost.x++; }
-        if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
+
+
 
        // printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
 
