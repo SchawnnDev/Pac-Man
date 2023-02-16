@@ -3,6 +3,7 @@
 #include "../entity.h"
 
 enum class GhostMode {
+    House, // At start of pacman, ghosts are in house
     Scatter,
     Chase,
     Frightened,

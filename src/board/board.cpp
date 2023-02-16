@@ -83,7 +83,7 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture)
         for (int x = 0; x < BOARD_SIZE_X; ++x) {
             auto _case = getCase(x, y);
             auto caseType = _case->type();
-            auto centered = getCenteredPosition(x, y);
+            auto centered = getRectCenteredPosition(x, y);
 
             switch (caseType) {
                 case BoardCaseType::PointPath:

@@ -7,6 +7,7 @@
 #include "../include/utils/constants.h"
 #include "../include/board/board.h"
 #include "../include/utils/position.h"
+#include "../include/game.h"
 
 SDL_Window* pWindow = nullptr;
 SDL_Surface* win_surf = nullptr;
@@ -22,7 +23,7 @@ SDL_Rect ghost_r = { 3,123, 16,16 };
 SDL_Rect ghost_l = { 37,123, 16,16 }; 
 SDL_Rect ghost_d = { 105,123, 16,16 }; 
 SDL_Rect ghost_u = { 71,123, 16,16 }; 
-SDL_Rect ghost = { getCenteredPosition(1,1).x - 32 / 2,getCenteredPosition(1,1).y - 32 / 2, 32,32 };     // ici scale x2
+SDL_Rect ghost = { getRectCenteredPosition(1,1).x - 32 / 2,getRectCenteredPosition(1,1).y - 32 / 2, 32,32 };     // ici scale x2
 
 int count;
 
@@ -111,32 +112,7 @@ void draw()
 
 int main(int argc, char** argv)
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 )
-    {
-		std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
-		return 1;
-    }
-
-	init();
-    // BOUCLE PRINCIPALE
-	bool quit = false;
-	while (!quit)
-	{
-
-
-
-
-       // printf("(x: %d , y: %d)\n", ghost.x, ghost.y);
-
-        // AFFICHAGE
-		draw();
-		SDL_UpdateWindowSurface(pWindow); 
-        // LIMITE A 60 FPS
-		SDL_Delay(1000 / FRAMERATE); // utiliser SDL_GetTicks64() pour plus de precisions
-	}
-
-    SDL_DestroyTexture(plancheTexture);
-    SDL_DestroyRenderer(m_window_renderer);
-    SDL_Quit(); // ON SORT
+    Game game{};
+    game.start();
     return 0;
 }

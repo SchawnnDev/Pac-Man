@@ -6,7 +6,7 @@ find_package(SDL2 REQUIRED)
 
 add_executable(${PROJECT_NAME} ""
         include/entities/entity.h
-        include/entities/banana.h
+        include/entities/pacman.h
         include/sprite.h
         include/sprite-animation.h
         include/sprite-handler.h
@@ -22,7 +22,7 @@ add_executable(${PROJECT_NAME} ""
         src/sprite.cpp
         src/sprite-handler.cpp
         src/sprite-animation.cpp
-        src/entities/banana.cpp
+        src/entities/pacman.cpp
         src/entities/entity.cpp
         src/animations/banana/banana-dying-animation.cpp
         src/animations/banana/banana-up-animation.cpp
@@ -38,7 +38,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
         )
-target_sources(${PROJECT_NAME} PRIVATE src/pacman.cpp)
+target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 

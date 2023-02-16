@@ -3,6 +3,8 @@
 #include <optional>
 #include "board/board.h"
 #include "entities/entity.h"
+#include "entities/pacman.h"
+#include "entities/ghosts/blinky.h"
 
 enum class GameState {
     WaitingStart,
@@ -13,11 +15,17 @@ enum class GameState {
 
 class Game {
     Board m_board;
-    std::vector<std::shared_ptr<Entity>> m_entities;
     GameState m_state;
+
+    // Entities
+    Pacman m_pacMan;
+    Blinky m_blinky;
+
+    // SDL
     SDL_Window* m_window;
     SDL_Renderer* m_windowRenderer;
     SDL_Surface* m_spriteSurface;
+    SDL_Texture* m_spriteTexture;
 public:
     Game();
     ~Game();
@@ -33,6 +41,7 @@ public:
     [[nodiscard]] const GameState &gameState() const { return m_state; };
     GameState &gameState() { return m_state; };
 
-    std::vector<std::shared_ptr<Entity>> getEntitiesByType(EntityType p_entityType);
+    void handleLogic();
 
+    void handleDrawing();
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL_rect.h>
+#include <SDL.h>
 #include "../sprite.h"
 #include "../sprite-animation.h"
 #include "../utils/position.h"
@@ -41,5 +42,8 @@ public:
 
     Position &position() { return m_position; };
 
+    void move(Direction newDirection);
+
+    void draw(SDL_Renderer *p_window_renderer, SDL_Texture* p_texture);
 
 };

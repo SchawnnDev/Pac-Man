@@ -1,6 +1,6 @@
-#include "../../include/entities/banana.h"
+#include "../../include/entities/pacman.h"
 
-Banana::Banana() : Entity(0, 0, 1, Direction::UP) {
+Pacman::Pacman() : Entity(0, 0, 1, Direction::UP) {
     auto bananaDyingAnimation = std::make_shared<BananaDyingAnimation>();
     auto bananaUpAnimation = std::make_shared<BananaDyingAnimation>();
     auto bananaDownAnimation = std::make_shared<BananaDyingAnimation>();
@@ -16,8 +16,8 @@ Banana::Banana() : Entity(0, 0, 1, Direction::UP) {
     currentAnimation() = m_animations[0];
 }
 
-void Banana::tick() {
+void Pacman::tick() {
 
 }
 
-Banana::~Banana() = default;
+Pacman::~Pacman() = default;
