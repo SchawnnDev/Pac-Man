@@ -18,6 +18,11 @@ add_executable(${PROJECT_NAME} ""
         include/utils/constants.h
         include/board/board.h
         include/board/board-case.h
+        include/utils/position.h
+        include/animations/bonus-animation.h
+        include/entities/ghosts/ghost.h
+        include/entities/ghosts/blinky.h
+        include/game.h
 
         src/sprite.cpp
         src/sprite-handler.cpp
@@ -31,14 +36,18 @@ add_executable(${PROJECT_NAME} ""
         src/animations/pacman/pacman-right-animation.cpp
         src/board/board.cpp
         src/board/board-case.cpp
-        include/utils/position.h src/animations/bonus-animation.cpp include/animations/bonus-animation.h include/entities/ghosts/ghost.h include/entities/ghosts/blinky.h src/entities/ghosts/ghost.cpp src/entities/ghosts/blinky.cpp src/utils/position.cpp include/game.h src/game.cpp)
+        src/animations/bonus-animation.cpp
+        src/entities/ghosts/ghost.cpp
+        src/entities/ghosts/blinky.cpp
+        src/utils/position.cpp
+        src/game.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
         )
-target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
+target_sources(${PROJECT_NAME} PRIVATE src/pacman-editor.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 

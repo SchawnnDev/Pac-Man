@@ -2,6 +2,11 @@
 
 #include "entity.h"
 
+enum class PacmanState {
+    LIVING,
+    DYING
+};
+
 class Pacman : public Entity
 {
     std::shared_ptr<SpriteAnimation> m_pacmanUpAnimation;

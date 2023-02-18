@@ -53,4 +53,7 @@ public:
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
 
+    [[nodiscard]] bool canMoveTo(Direction p_direction) const;
+
+
 };

@@ -28,7 +28,7 @@ void Pacman::tick() {
     }
 
     // Move pacman to next
-    if (board()->canEntityMoveTo(this, direction())) {
+    if (canMoveTo(direction())) {
         position() = position().getPositionAt(direction());
         currentAnimation()->freeze() = false;
     } else {

@@ -8,7 +8,6 @@
 #include "../utils/constants.h"
 #include "../sprite.h"
 #include "../utils/position.h"
-#include "../entities/entity.h"
 
 class Board {
     std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> m_grid;
@@ -76,8 +75,5 @@ public:
         auto pos = getCenteredPosition(foundCase.x(), foundCase.y());
         return pos.x() == p_pixelX && pos.y() == p_pixelY;
     }
-
-    [[nodiscard]] bool canEntityMoveTo(const Entity &p_entity, Direction p_direction) const;
-
 
 };

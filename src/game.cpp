@@ -27,7 +27,7 @@ void Game::end()
 }
 
 
-Game::Game()
+Game::Game() : m_pacMan(m_board)
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0 )
@@ -51,8 +51,6 @@ Game::Game()
 
     m_board = std::make_shared<Board>("./assets/board.xml");
     m_state = GameState::WaitingStart;
-
-    m_pacMan = {};
 }
 
 Game::~Game()

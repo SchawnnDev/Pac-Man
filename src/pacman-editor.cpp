@@ -3,7 +3,6 @@
 #include <iostream>
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
-#include "../include/animations/banana/banana-dying-animation.h"
 #include "../include/utils/constants.h"
 #include "../include/board/board.h"
 
@@ -58,7 +57,7 @@ void draw() {
                 continue;
             }
 
-            switch (board->getCase(j, i)->type()) {
+            switch (board->getCase(j, i).type()) {
                 case BoardCaseType::Nothing:
                     SDL_SetRenderDrawColor(m_window_renderer, 255, 255, 255, 255);
                     break;
@@ -131,45 +130,45 @@ int main(int argc, char **argv) {
         if (keys[SDL_SCANCODE_RIGHT]) { actualX = std::min(actualX + 1, BOARD_SIZE_X - 1); }
         if (keys[SDL_SCANCODE_UP]) { actualY = std::max(actualY - 1, 0); }
         if (keys[SDL_SCANCODE_DOWN]) { actualY = std::min(actualY + 1, BOARD_SIZE_Y - 1); }
-        const auto &boardCase = board->getCase(actualX, actualY);
-        if (keys[SDL_SCANCODE_A] && boardCase != nullptr) {
+        auto boardCase = board->getCase(actualX, actualY);
+        if (keys[SDL_SCANCODE_A]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::PointPath\n";
-            boardCase->type() = BoardCaseType::PointPath;
+            boardCase.type() = BoardCaseType::PointPath;
         }
-        if (keys[SDL_SCANCODE_Z] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_Z]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::BasicPath\n";
-            boardCase->type() = BoardCaseType::BasicPath;
+            boardCase.type() = BoardCaseType::BasicPath;
         }
-        if (keys[SDL_SCANCODE_E] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_E]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::Bonus\n";
-            boardCase->type() = BoardCaseType::Bonus;
+            boardCase.type() = BoardCaseType::Bonus;
         }
-        if (keys[SDL_SCANCODE_R] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_R]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::Wall\n";
-            boardCase->type() = BoardCaseType::Wall;
+            boardCase.type() = BoardCaseType::Wall;
         }
-        if (keys[SDL_SCANCODE_T] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_T]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::GhostHome\n";
-            boardCase->type() = BoardCaseType::GhostHome;
+            boardCase.type() = BoardCaseType::GhostHome;
         }
-        if (keys[SDL_SCANCODE_Y] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_Y]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::GhostHomeDoorLeft\n";
-            boardCase->type() = BoardCaseType::GhostHomeDoorLeft;
+            boardCase.type() = BoardCaseType::GhostHomeDoorLeft;
         }
-        if (keys[SDL_SCANCODE_U] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_U]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::GhostHomeDoorRight\n";
-            boardCase->type() = BoardCaseType::GhostHomeDoorRight;
+            boardCase.type() = BoardCaseType::GhostHomeDoorRight;
         }
-        if (keys[SDL_SCANCODE_I] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_I]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::GhostHomeDoor\n";
-            boardCase->type() = BoardCaseType::GhostHomeDoor;
+            boardCase.type() = BoardCaseType::GhostHomeDoor;
         }
-        if (keys[SDL_SCANCODE_O] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_O]) {
             std::cout << "Set (" << actualX << ", " << actualY << ") to BoardCaseType::Nothing\n";
-            boardCase->type() = BoardCaseType::Nothing;
+            boardCase.type() = BoardCaseType::Nothing;
         }
 
-        if (keys[SDL_SCANCODE_S] && boardCase != nullptr) {
+        if (keys[SDL_SCANCODE_S]) {
             std::cout << "Saving board...\n";
             board->save("./assets/board.xml");
         }

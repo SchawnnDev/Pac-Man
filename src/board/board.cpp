@@ -44,7 +44,7 @@ Board::Board(const std::string &p_filePath) : Board()
         switch (boardCase.type())
         {
             case BoardCaseType::Bonus:
-                boardCase.animation() = std::make_shared<BonusAnimation>();
+                boardCase.animation() = m_bonusAnimation;
                 break;
             default:
                 break;
@@ -145,13 +145,4 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
     }
 
     if (first) first = false;
-}
-
-bool
-Board::canEntityMoveTo(const Entity& p_entity, Direction p_direction) const
-{
-    auto caseFound = findCase(p_entity.position());
-    if (caseFound.x() == -1 || caseFound.y() == -1) return false;
-    auto nextCasePos = caseFound.getPositionAt(p_direction);
-    return BoardCase::isPracticable(getCase(nextCasePos.x(), nextCasePos.y()));
 }
