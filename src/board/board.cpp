@@ -11,7 +11,7 @@ Board::Board()
             m_grid[i][j] = {j, i, BoardCaseType::PointPath, nullptr};
 
     m_pointSprite = SpriteHandler::getSprite("point");
-    m_bonusAnimation = {};
+    m_bonusAnimation = SpriteHandler::getSpriteAnimation("bonus");
     m_emptyBoardSprite = SpriteHandler::getSprite("board_empty");
 
 }

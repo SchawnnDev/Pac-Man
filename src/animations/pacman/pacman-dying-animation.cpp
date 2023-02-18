@@ -15,6 +15,8 @@ std::shared_ptr<Sprite> PacmanDyingAnimation::display() {
     if(!activated()) return nullptr;
     m_ticks++;
 
+    // TODO: implement freeze
+
     // first tick
     if(m_ticks <= 0)
     {

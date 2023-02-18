@@ -16,7 +16,7 @@ enum class GameState
 
 class Game
 {
-    Board m_board;
+    std::shared_ptr<Board> m_board;
     GameState m_state;
 
     // Entities

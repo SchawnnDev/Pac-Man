@@ -1,13 +1,16 @@
 #pragma once
 
 #include "entity.h"
-#include "../animations/banana/banana-dying-animation.h"
 
 class Pacman : public Entity
 {
-    std::vector<std::shared_ptr<SpriteAnimation>> m_animations;
+    std::shared_ptr<SpriteAnimation> m_pacmanUpAnimation;
+    std::shared_ptr<SpriteAnimation> m_pacmanDownAnimation;
+    std::shared_ptr<SpriteAnimation> m_pacmanLeftAnimation;
+    std::shared_ptr<SpriteAnimation> m_pacmanRightAnimation;
+    std::shared_ptr<SpriteAnimation> m_pacmanDyingAnimation;
 public:
-    Pacman();
+    explicit Pacman(const std::shared_ptr<Board>& p_board);
 
     ~Pacman() override;
 

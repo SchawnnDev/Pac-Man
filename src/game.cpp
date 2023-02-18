@@ -47,9 +47,12 @@ Game::Game()
                                                    m_spriteSurface.get());
 
     SpriteHandler::importSprites("./assets/pacman.sprites");
+    SpriteHandler::initAnimations();
 
-    m_board = {"./assets/board.xml"};
+    m_board = std::make_shared<Board>("./assets/board.xml");
     m_state = GameState::WaitingStart;
+
+    m_pacMan = {};
 }
 
 Game::~Game()
@@ -80,24 +83,16 @@ void Game::handleKeys()
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
     if (keys[SDL_SCANCODE_LEFT]) {
-        if(m_board.canEntityMoveTo(m_pacMan, Direction::LEFT)) {
-            m_pacMan.move(Direction::LEFT);
-        }
+        m_pacMan.move(Direction::LEFT);
     }
     if (keys[SDL_SCANCODE_RIGHT]) {
-        if(m_board.canEntityMoveTo(m_pacMan, Direction::RIGHT)) {
-            m_pacMan.move(Direction::RIGHT);
-        }
+        m_pacMan.move(Direction::RIGHT);
     }
     if (keys[SDL_SCANCODE_UP]) {
-        if(m_board.canEntityMoveTo(m_pacMan, Direction::UP)) {
-            m_pacMan.move(Direction::UP);
-        }
+        m_pacMan.move(Direction::UP);
     }
     if (keys[SDL_SCANCODE_DOWN]) {
-        if(m_board.canEntityMoveTo(m_pacMan, Direction::DOWN)) {
-            m_pacMan.move(Direction::DOWN);
-        }
+        m_pacMan.move(Direction::DOWN);
     }
     // if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
 }
@@ -111,7 +106,7 @@ void Game::handleDrawing()
 {
     SDL_RenderClear(m_windowRenderer.get());
 
-    m_board.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_board->draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw entities
     m_pacMan.draw(m_windowRenderer.get(), m_spriteTexture);

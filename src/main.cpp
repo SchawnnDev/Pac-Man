@@ -3,7 +3,6 @@
 #include <iostream>
 #include "../include/sprite-animation.h"
 #include "../include/sprite-handler.h"
-#include "../include/animations/banana/banana-dying-animation.h"
 #include "../include/utils/constants.h"
 #include "../include/board/board.h"
 #include "../include/utils/position.h"
@@ -27,7 +26,6 @@ SDL_Rect ghost = { getRectCenteredPosition(1,1).x - 32 / 2,getRectCenteredPositi
 
 int count;
 
-BananaDyingAnimation* bananaDyingAnimation;
 SDL_Renderer *m_window_renderer;
 SDL_Texture* plancheTexture;
 Board* board;
@@ -82,17 +80,6 @@ void animateGhost()
     // copie du sprite zoomé
     //SDL_BlitScaled(plancheSprites, &ghost_in2, win_surf, &ghost);
     SDL_RenderCopy(m_window_renderer,plancheTexture,&ghost_in2,&ghost); // Copie du sprite grâce au SDL_Renderer
-
-    if(bananaDyingAnimation->activated())
-    {
-        auto sprite = bananaDyingAnimation->display();
-        if(sprite != nullptr)
-        {
-            SDL_Rect test = { 672/2,864/2, sprite->rect().w * 4,sprite->rect().h * 4 };
-            //SDL_BlitScaled(plancheSprites, &sprite->rect(), win_surf, &test);
-            SDL_RenderCopy(m_window_renderer,plancheTexture, &sprite->rect(),&test); // Copie du sprite grâce au SDL_Renderer
-        }
-    }
 }
 
 void draw()

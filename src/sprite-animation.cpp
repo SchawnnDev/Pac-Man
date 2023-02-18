@@ -4,6 +4,7 @@
 SpriteAnimation::SpriteAnimation(const std::vector<std::shared_ptr<Sprite>> &sprites) {
     m_sprites = sprites;
     m_activated = false;
+    m_freeze = false;
 }
 
 SpriteAnimation::SpriteAnimation(std::initializer_list<std::string> args) {
@@ -11,6 +12,7 @@ SpriteAnimation::SpriteAnimation(std::initializer_list<std::string> args) {
         m_sprites.push_back(SpriteHandler::getSprite(sp));
     }
     m_activated = false;
+    m_freeze = false;
 }
 
 SpriteAnimation::~SpriteAnimation() {

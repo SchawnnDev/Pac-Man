@@ -7,6 +7,7 @@
 class SpriteAnimation {
     std::vector<std::shared_ptr<Sprite>> m_sprites;
     bool m_activated;
+    bool m_freeze;
     //int m_changeTicks;
 public:
     explicit SpriteAnimation(const std::vector<std::shared_ptr<Sprite>> &sprites);
@@ -28,6 +29,9 @@ public:
 
     [[nodiscard]] bool const& activated() const { return m_activated; };
     bool &activated() { return m_activated; };
+
+    [[nodiscard]] bool const& freeze() const { return m_freeze; };
+    bool &freeze() { return m_freeze; };
 
    // int const &changeTicks() const { return m_changeTicks; };
 

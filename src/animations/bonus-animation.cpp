@@ -10,14 +10,14 @@ BonusAnimation::BonusAnimation() : SpriteAnimation({"bonus"}) {
 }
 
 std::shared_ptr<Sprite> BonusAnimation::display() {
+    if (!freeze()) {
+        if (m_ticks > 10) {
+            m_ticks = 0;
+            m_display = !m_display;
+        }
 
-    if (m_ticks > 10) {
-        m_ticks = 0;
-        m_display = !m_display;
+        m_ticks++;
     }
-
-    m_ticks++;
-
     return m_display ? sprites()[0] : nullptr;
 }
 
