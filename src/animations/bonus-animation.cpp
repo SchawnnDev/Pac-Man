@@ -1,6 +1,3 @@
-//
-// Created by Paul on 11/02/2023.
-//
 #include "../../include/animations/bonus-animation.h"
 
 BonusAnimation::~BonusAnimation() {

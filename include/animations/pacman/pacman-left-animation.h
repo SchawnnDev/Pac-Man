@@ -2,11 +2,11 @@
 
 #include "../../sprite-animation.h"
 
-class BananaDyingAnimation : public SpriteAnimation {
+class PacmanLeftAnimation : public SpriteAnimation {
     int m_ticks;
 public:
-    BananaDyingAnimation();
-    ~BananaDyingAnimation();
+    PacmanLeftAnimation();
+    ~PacmanLeftAnimation();
 
     std::shared_ptr<Sprite> display() override;
     void start() override;

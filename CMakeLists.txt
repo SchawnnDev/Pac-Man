@@ -10,11 +10,11 @@ add_executable(${PROJECT_NAME} ""
         include/sprite.h
         include/sprite-animation.h
         include/sprite-handler.h
-        include/animations/banana/banana-dying-animation.h
-        include/animations/banana/banana-up-animation.h
-        include/animations/banana/banana-down-animation.h
-        include/animations/banana/banana-left-animation.h
-        include/animations/banana/banana-right-animation.h
+        include/animations/pacman/pacman-dying-animation.h
+        include/animations/pacman/pacman-up-animation.h
+        include/animations/pacman/pacman-down-animation.h
+        include/animations/pacman/pacman-left-animation.h
+        include/animations/pacman/pacman-right-animation.h
         include/utils/constants.h
         include/board/board.h
         include/board/board-case.h
@@ -24,11 +24,11 @@ add_executable(${PROJECT_NAME} ""
         src/sprite-animation.cpp
         src/entities/pacman.cpp
         src/entities/entity.cpp
-        src/animations/banana/banana-dying-animation.cpp
-        src/animations/banana/banana-up-animation.cpp
-        src/animations/banana/banana-down-animation.cpp
-        src/animations/banana/banana-left-animation.cpp
-        src/animations/banana/banana-right-animation.cpp
+        src/animations/pacman/pacman-dying-animation.cpp
+        src/animations/pacman/pacman-up-animation.cpp
+        src/animations/pacman/pacman-down-animation.cpp
+        src/animations/pacman/pacman-left-animation.cpp
+        src/animations/pacman/pacman-right-animation.cpp
         src/board/board.cpp
         src/board/board-case.cpp
         include/utils/position.h src/animations/bonus-animation.cpp include/animations/bonus-animation.h include/entities/ghosts/ghost.h include/entities/ghosts/blinky.h src/entities/ghosts/ghost.cpp src/entities/ghosts/blinky.cpp src/utils/position.cpp include/game.h src/game.cpp)

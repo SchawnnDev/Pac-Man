@@ -36,15 +36,15 @@ Game::Game()
         return;
     }
 
-    m_window = SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED,
+    m_window.reset(SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_WIDTH,
-                                WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN);
-    m_windowRenderer = SDL_CreateRenderer(m_window, -1,
-                                          SDL_RENDERER_ACCELERATED);
+                                WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN));
+    m_windowRenderer.reset(SDL_CreateRenderer(m_window.get(), -1,
+                                          SDL_RENDERER_ACCELERATED));
 
-    m_spriteSurface = SDL_LoadBMP("./assets/pacman_sprites.bmp");
-    m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer,
-                                                   m_spriteSurface);
+    m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
+    m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
+                                                   m_spriteSurface.get());
 
     SpriteHandler::importSprites("./assets/pacman.sprites");
 
@@ -54,9 +54,6 @@ Game::Game()
 
 Game::~Game()
 {
-    SDL_FreeSurface(m_spriteSurface);
-    SDL_DestroyWindow(m_window);
-    SDL_DestroyRenderer(m_windowRenderer);
     SDL_Quit();
 }
 
@@ -82,8 +79,26 @@ void Game::handleKeys()
     const Uint8 *keys = SDL_GetKeyboardState(&nbk);
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
-    // if (keys[SDL_SCANCODE_LEFT]) { puts("LEFT"); ghost.x = std::max(ghost.x - 1, 0); }
-    // if (keys[SDL_SCANCODE_RIGHT]) { puts("RIGHT"); ghost.x++; }
+    if (keys[SDL_SCANCODE_LEFT]) {
+        if(m_board.canEntityMoveTo(m_pacMan, Direction::LEFT)) {
+            m_pacMan.move(Direction::LEFT);
+        }
+    }
+    if (keys[SDL_SCANCODE_RIGHT]) {
+        if(m_board.canEntityMoveTo(m_pacMan, Direction::RIGHT)) {
+            m_pacMan.move(Direction::RIGHT);
+        }
+    }
+    if (keys[SDL_SCANCODE_UP]) {
+        if(m_board.canEntityMoveTo(m_pacMan, Direction::UP)) {
+            m_pacMan.move(Direction::UP);
+        }
+    }
+    if (keys[SDL_SCANCODE_DOWN]) {
+        if(m_board.canEntityMoveTo(m_pacMan, Direction::DOWN)) {
+            m_pacMan.move(Direction::DOWN);
+        }
+    }
     // if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
 }
 
@@ -94,14 +109,14 @@ void Game::handleLogic()
 
 void Game::handleDrawing()
 {
-    SDL_RenderClear(m_windowRenderer);
+    SDL_RenderClear(m_windowRenderer.get());
 
-    m_board.draw(m_windowRenderer, m_spriteTexture);
+    m_board.draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw entities
-    m_pacMan.draw(m_windowRenderer, m_spriteTexture);
-    m_blinky.draw(m_windowRenderer, m_spriteTexture);
+    m_pacMan.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_blinky.draw(m_windowRenderer.get(), m_spriteTexture);
 
-    SDL_RenderPresent(m_windowRenderer);
-    SDL_UpdateWindowSurface(m_window);
+    SDL_RenderPresent(m_windowRenderer.get());
+    SDL_UpdateWindowSurface(m_window.get());
 }

@@ -43,4 +43,11 @@ public:
     [[nodiscard]] const std::shared_ptr<SpriteAnimation> &animation() const { return m_animation; };
 
     std::shared_ptr<SpriteAnimation> &animation() { return m_animation; };
+
+    static inline bool isPracticable(BoardCase p_boardCase)
+    {
+        return p_boardCase.type() == BoardCaseType::PointPath
+               || p_boardCase.type() == BoardCaseType::BasicPath
+               || p_boardCase.type() == BoardCaseType::Bonus;
+    }
 };

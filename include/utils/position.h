@@ -49,6 +49,21 @@ public:
         return !(rhs == *this);
     }
 
+    inline Position getPositionAt(Direction p_direction) const
+    {
+        switch (p_direction)
+        {
+            case Direction::UP:
+                return {m_x, m_y + 1};
+            case Direction::DOWN:
+                return {m_x, m_y - 1};
+            case Direction::LEFT:
+                return {m_x - 1, m_y};
+            case Direction::RIGHT:
+                return {m_x + 1, m_y};
+        }
+    }
+
 };
 
 

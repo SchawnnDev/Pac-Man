@@ -9,10 +9,11 @@
 #include "../sprite.h"
 #include "../animations/bonus-animation.h"
 #include "../utils/position.h"
+#include "../entities/entity.h"
 
 class Board
 {
-    std::array<std::array<std::shared_ptr<BoardCase>, BOARD_SIZE_X>, BOARD_SIZE_Y> m_grid;
+    std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> m_grid;
     std::string m_filePath;
     std::shared_ptr<Sprite> m_pointSprite, m_emptyBoardSprite;
     BonusAnimation m_bonusAnimation;
@@ -23,16 +24,14 @@ public:
 
     ~Board();
 
-    [[nodiscard]] const std::array<std::array<std::shared_ptr<BoardCase>, BOARD_SIZE_X>, BOARD_SIZE_Y> &
+    [[nodiscard]] const std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> &
     grid() const
     { return m_grid; };
 
-    std::array<std::array<std::shared_ptr<BoardCase>, BOARD_SIZE_X>, BOARD_SIZE_Y> &
-    grid()
+    std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> &grid()
     { return m_grid; };
 
-    [[nodiscard]] inline const std::shared_ptr<BoardCase> &
-    getCase(int x, int y) const
+    [[nodiscard]] inline const BoardCase &getCase(int x, int y) const
     {
         return m_grid[y][x];
     }
@@ -41,6 +40,11 @@ public:
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
 
+    /**
+     *
+     * @param p_pixelPosition
+     * @return
+     */
     static inline bool isCase(Position p_pixelPosition)
     {
         return isCase(p_pixelPosition.x(), p_pixelPosition.y());
@@ -83,6 +87,9 @@ public:
         auto pos = getCenteredPosition(foundCase.x(), foundCase.y());
         return pos.x() == p_pixelX && pos.y() == p_pixelY;
     }
+
+    bool
+    canEntityMoveTo(const Entity& p_entity, Direction p_direction) const;
 
 
 };
