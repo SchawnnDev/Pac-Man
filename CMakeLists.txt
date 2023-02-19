@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.8)
 
 project(PacMan LANGUAGES CXX)
 
+# add dependencies
+include(cmake/CPM.cmake)
+
 find_package(SDL2 REQUIRED)
+
+# XML Reader Library
+CPMAddPackage("gh:zeux/pugixml#v1.13")
 
 add_executable(${PROJECT_NAME} ""
         include/entities/entity.h
@@ -48,14 +54,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_EXTENSIONS NO
         )
 target_sources(${PROJECT_NAME} PRIVATE src/pacman-editor.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
-
-# add dependencies
-include(cmake/CPM.cmake)
-
-# XML Reader Library
-CPMAddPackage("gh:zeux/pugixml#v1.13")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} pugixml::pugixml)
 

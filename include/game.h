@@ -16,7 +16,7 @@ enum class GameState
 
 class Game
 {
-    std::shared_ptr<Board> m_board;
+    Board m_board;
     GameState m_state;
 
     // Entities
@@ -37,6 +37,9 @@ public:
     Game();
 
     ~Game();
+
+/*    Game(Game const&) = delete;
+    Game& operator=(Game const&) = delete;*/
 
     void start();
 

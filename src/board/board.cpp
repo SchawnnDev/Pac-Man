@@ -1,7 +1,9 @@
 #include <iostream>
-#include "../../include/board/board.h"
+
 #include "pugixml.hpp"
-#include "../../include/sprite-handler.h"
+
+#include "board/board.h"
+#include "sprite-handler.h"
 
 Board::Board()
 {
@@ -10,9 +12,9 @@ Board::Board()
         for (int j = 0; j < BOARD_SIZE_X; ++j)
             m_grid[i][j] = {j, i, BoardCaseType::PointPath, nullptr};
 
-    m_pointSprite = SpriteHandler::getSprite("point");
+    m_pointSprite = SpriteHandler::getSprite("point").value();
     m_bonusAnimation = SpriteHandler::getSpriteAnimation("bonus");
-    m_emptyBoardSprite = SpriteHandler::getSprite("board_empty");
+    m_emptyBoardSprite = SpriteHandler::getSprite("board_empty").value();
 
 }
 
@@ -84,7 +86,7 @@ bool first = true;
 void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
 {
     SDL_Rect bg = {0, 0, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT};
-    SDL_RenderCopy(p_window_renderer, p_texture, &m_emptyBoardSprite->rect(),
+    SDL_RenderCopy(p_window_renderer, p_texture, &m_emptyBoardSprite.rect(),
                    &bg); // Copie du sprite grâce au SDL_Renderer
     // 10 14
     for (int y = 0; y < BOARD_SIZE_Y; ++y)
@@ -103,22 +105,22 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
                         std::cout << "(" << x << "," << y << ") -> " << "("
                                   << centered.x << "," << centered.y << ")\n";
 
-                    centered.x -= m_pointSprite->rect().w * 2;
-                    centered.y -= m_pointSprite->rect().h * 2;
-                    centered.w = m_pointSprite->rect().w * 4;
-                    centered.h = m_pointSprite->rect().h * 4;
+                    centered.x -= m_pointSprite.rect().w * 2;
+                    centered.y -= m_pointSprite.rect().h * 2;
+                    centered.w = m_pointSprite.rect().w * 4;
+                    centered.h = m_pointSprite.rect().h * 4;
                     //   SDL_SetRenderDrawColor(p_window_renderer, 127, 0, 255, 255);
                     // SDL_RenderFillRect(p_window_renderer, &centered);
                     SDL_RenderCopy(p_window_renderer, p_texture,
-                                   &m_pointSprite->rect(),
+                                   &m_pointSprite.rect(),
                                    &centered); // Copie du sprite grâce au SDL_Renderer
                     break;
                 case BoardCaseType::BasicPath:
                     break;
                 case BoardCaseType::Bonus:
                 {
-                    auto sprite = _case.animation()->display();
-                    if (sprite == nullptr) break;
+                    auto sprite = _case.animation().display();
+                    if (!sprite.has_value()) break;
                     centered.x -= sprite->rect().w * 2;
                     centered.y -= sprite->rect().h * 2;
                     centered.w = sprite->rect().w * 4;

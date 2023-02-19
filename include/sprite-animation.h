@@ -3,15 +3,14 @@
 #include "sprite.h"
 #include <vector>
 #include <memory>
+#include <optional>
 
 class SpriteAnimation {
-    std::vector<std::shared_ptr<Sprite>> m_sprites;
+    std::vector<Sprite> m_sprites;
     bool m_activated;
     bool m_freeze;
     //int m_changeTicks;
 public:
-    explicit SpriteAnimation(const std::vector<std::shared_ptr<Sprite>> &sprites);
-
     SpriteAnimation(std::initializer_list<std::string> args);
 
     ~SpriteAnimation();
@@ -22,10 +21,10 @@ public:
     /**
      * @return Sprite to display
      */
-    virtual std::shared_ptr<Sprite> display() = 0;
+    virtual std::optional<Sprite> display() = 0;
 
-    [[nodiscard]] std::vector<std::shared_ptr<Sprite>> const &sprites() const { return m_sprites; };
-    std::vector<std::shared_ptr<Sprite>> &sprites() { return m_sprites; };
+    [[nodiscard]] std::vector<Sprite> const &sprites() const { return m_sprites; };
+    std::vector<Sprite> &sprites() { return m_sprites; };
 
     [[nodiscard]] bool const& activated() const { return m_activated; };
     bool &activated() { return m_activated; };

@@ -1,15 +1,14 @@
 #include <iostream>
 #include <memory>
-//#include <format>
-#include "../include/sprite-handler.h"
+#include "sprite-handler.h"
 #include "pugixml.hpp"
-#include "../include/entities/pacman.h"
-#include "../include/animations/pacman/pacman-down-animation.h"
-#include "../include/animations/pacman/pacman-dying-animation.h"
-#include "../include/animations/pacman/pacman-up-animation.h"
-#include "../include/animations/pacman/pacman-left-animation.h"
-#include "../include/animations/pacman/pacman-right-animation.h"
-#include "../include/animations/bonus-animation.h"
+#include "entities/pacman.h"
+#include "animations/pacman/pacman-down-animation.h"
+#include "animations/pacman/pacman-dying-animation.h"
+#include "animations/pacman/pacman-up-animation.h"
+#include "animations/pacman/pacman-left-animation.h"
+#include "animations/pacman/pacman-right-animation.h"
+#include "animations/bonus-animation.h"
 
 void SpriteHandler::importSprites(const std::string &path)
 {
@@ -29,12 +28,11 @@ void SpriteHandler::importSprites(const std::string &path)
     {
         std::cout << "Loading sprite " << node.node().attribute("name").value()
                   << "...\n";
-        auto spr = std::make_shared<Sprite>(
-                node.node().attribute("name").value());
-        spr->rect().x = node.node().attribute("x").as_int();
-        spr->rect().y = node.node().attribute("y").as_int();
-        spr->rect().w = node.node().attribute("w").as_int();
-        spr->rect().h = node.node().attribute("h").as_int();
+        Sprite spr{node.node().attribute("name").value()};
+        spr.rect().x = node.node().attribute("x").as_int();
+        spr.rect().y = node.node().attribute("y").as_int();
+        spr.rect().w = node.node().attribute("w").as_int();
+        spr.rect().h = node.node().attribute("h").as_int();
         SpriteHandler::m_sprites.push_back(spr);
     }
 
@@ -43,14 +41,14 @@ void SpriteHandler::importSprites(const std::string &path)
 
 }
 
-std::shared_ptr<Sprite> SpriteHandler::getSprite(const std::string &name)
+std::optional<Sprite> SpriteHandler::getSprite(const std::string &name)
 {
     for (auto sprite: SpriteHandler::m_sprites)
     {
-        if (sprite->name() == name)
+        if (sprite.name() == name)
             return sprite;
     }
-    return nullptr;
+    return std::nullopt;
 }
 
 void SpriteHandler::initAnimations()

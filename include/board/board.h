@@ -4,16 +4,18 @@
 #include <memory>
 #include <SDL.h>
 #include <optional>
+
 #include "board-case.h"
-#include "../utils/constants.h"
-#include "../sprite.h"
-#include "../utils/position.h"
+#include "utils/constants.h"
+#include "sprite.h"
+#include "utils/position.h"
+#include "animations/bonus-animation.h"
 
 class Board {
-    std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> m_grid;
+    std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
     std::string m_filePath;
-    std::shared_ptr<Sprite> m_pointSprite, m_emptyBoardSprite;
-    std::shared_ptr<SpriteAnimation> m_bonusAnimation;
+    Sprite m_pointSprite, m_emptyBoardSprite;
+    BonusAnimation m_bonusAnimation;
 public:
     Board();
 
@@ -21,13 +23,13 @@ public:
 
     ~Board();
 
-    [[nodiscard]] const std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> &
+    [[nodiscard]] const std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &
     grid() const { return m_grid; };
 
-    std::array<std::array<BoardCase, BOARD_SIZE_X>, BOARD_SIZE_Y> &grid() { return m_grid; };
+    std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() { return m_grid; };
 
     [[nodiscard]] inline const BoardCase &getCase(int x, int y) const {
-        return m_grid[y][x];
+        return m_grid[BOARD_SIZE_X * x + y];
     }
 
     void save(const std::string &p_filePath);

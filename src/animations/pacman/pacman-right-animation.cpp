@@ -11,8 +11,8 @@ PacmanRightAnimation::~PacmanRightAnimation() {
 
 }
 
-std::shared_ptr<Sprite> PacmanRightAnimation::display() {
-    if(!activated()) return nullptr;
+std::optional<Sprite> PacmanRightAnimation::display() {
+    if(!activated()) return std::nullopt;
     m_ticks++;
 
     // first tick
@@ -26,7 +26,7 @@ std::shared_ptr<Sprite> PacmanRightAnimation::display() {
     if(idx > 9)
     {
         activated() = false;
-        return nullptr;
+        return std::nullopt;
     }
 
     return sprites()[idx];

@@ -1,6 +1,5 @@
-#include "../../include/board/board-case.h"
+#include "board/board-case.h"
 
 BoardCase::~BoardCase() {
-
 }
 

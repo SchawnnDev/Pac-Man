@@ -7,15 +7,20 @@ enum class PacmanState {
     DYING
 };
 
+struct PacmanAnimations final
+{
+    SpriteAnimation pacmanUpAnimation;
+    SpriteAnimation pacmanDownAnimation;
+    SpriteAnimation pacmanLeftAnimation;
+    SpriteAnimation pacmanRightAnimation;
+    SpriteAnimation pacmanDyingAnimation;
+};
+
 class Pacman : public Entity
 {
-    std::shared_ptr<SpriteAnimation> m_pacmanUpAnimation;
-    std::shared_ptr<SpriteAnimation> m_pacmanDownAnimation;
-    std::shared_ptr<SpriteAnimation> m_pacmanLeftAnimation;
-    std::shared_ptr<SpriteAnimation> m_pacmanRightAnimation;
-    std::shared_ptr<SpriteAnimation> m_pacmanDyingAnimation;
+    PacmanAnimations m_animations;
 public:
-    explicit Pacman(const std::shared_ptr<Board>& p_board);
+    explicit Pacman(Board p_board, PacmanAnimations a);
 
     ~Pacman() override;
 

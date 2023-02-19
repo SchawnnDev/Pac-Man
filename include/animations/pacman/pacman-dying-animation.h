@@ -8,6 +8,6 @@ public:
     PacmanDyingAnimation();
     ~PacmanDyingAnimation();
 
-    std::shared_ptr<Sprite> display() override;
+    std::optional<Sprite> display() override;
     void start() override;
 };

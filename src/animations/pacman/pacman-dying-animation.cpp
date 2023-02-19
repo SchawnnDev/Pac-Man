@@ -11,8 +11,8 @@ PacmanDyingAnimation::~PacmanDyingAnimation() {
 
 }
 
-std::shared_ptr<Sprite> PacmanDyingAnimation::display() {
-    if(!activated()) return nullptr;
+std::optional<Sprite> PacmanDyingAnimation::display() {
+    if(!activated()) return std::nullopt;
     m_ticks++;
 
     // TODO: implement freeze
@@ -28,7 +28,7 @@ std::shared_ptr<Sprite> PacmanDyingAnimation::display() {
     if(idx > 9)
     {
         activated() = false;
-        return nullptr;
+        return std::nullopt;
     }
 
     return sprites()[idx];

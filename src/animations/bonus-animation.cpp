@@ -9,7 +9,7 @@ BonusAnimation::BonusAnimation() : SpriteAnimation({"bonus"}) {
     m_display = true;
 }
 
-std::shared_ptr<Sprite> BonusAnimation::display() {
+std::optional<Sprite> BonusAnimation::display() {
     if (!freeze()) {
         if (m_ticks > 10) {
             m_ticks = 0;
@@ -18,7 +18,7 @@ std::shared_ptr<Sprite> BonusAnimation::display() {
 
         m_ticks++;
     }
-    return m_display ? sprites()[0] : nullptr;
+    return m_display ? std::make_optional<Sprite>(sprites()[0]) : std::nullopt;
 }
 
 void BonusAnimation::start() {

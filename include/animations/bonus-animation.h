@@ -9,6 +9,7 @@ public:
     BonusAnimation();
     ~BonusAnimation();
 
-    std::shared_ptr<Sprite> display() override;
     void start() override;
+
+    std::optional<Sprite> display() override;
 };
