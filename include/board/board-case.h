@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../sprite-animation.h"
+#include "sprite-animation.h"
 
 enum class BoardCaseType {
     PointPath,
@@ -18,14 +18,14 @@ class BoardCase {
     int m_x;
     int m_y;
     BoardCaseType m_type;
-    SpriteAnimation m_animation;
+    std::optional<SpriteAnimationPtr> m_animation;
 public:
     BoardCase() : m_x(0), m_y(0), m_type(BoardCaseType::PointPath) {}
 
     ~BoardCase();
 
     BoardCase(const int &p_x, const int &p_y, const BoardCaseType &p_type,
-              const SpriteAnimation &p_animation) : m_x(p_x), m_y(p_y), m_type(p_type),
+              const std::optional<SpriteAnimationPtr> &p_animation) : m_x(p_x), m_y(p_y), m_type(p_type),
                                                                      m_animation(p_animation) {}
 
     [[nodiscard]] const int &x() const { return m_x; };
@@ -40,9 +40,9 @@ public:
 
     BoardCaseType &type() { return m_type; };
 
-    [[nodiscard]] const SpriteAnimation &animation() const { return m_animation; };
+    [[nodiscard]] const std::optional<SpriteAnimationPtr> &animation() const { return m_animation; };
 
-    SpriteAnimation &animation() { return m_animation; };
+    std::optional<SpriteAnimationPtr> &animation() { return m_animation; };
 
     static inline bool isPracticable(BoardCase p_boardCase)
     {

@@ -1,4 +1,4 @@
-#include "../../../include/entities/ghosts/blinky.h"
+#include "entities/ghosts/blinky.h"
 
 void Blinky::tick() {
 

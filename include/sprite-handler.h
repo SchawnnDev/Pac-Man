@@ -7,20 +7,25 @@
 #include <optional>
 #include "sprite.h"
 #include "sprite-animation.h"
+#include "sprite-animation-structs.h"
 
 class SpriteHandler {
-    inline static std::vector<Sprite> m_sprites = {};
-    inline static std::map<std::string, SpriteAnimation> m_spriteAnimations = {};
+    std::vector<Sprite> m_sprites{};
+    std::map<std::string, SpriteAnimationPtr> m_spriteAnimations{};
+    PacmanAnimations m_pacmanAnimations;
 public:
-    SpriteHandler();
+
+    SpriteHandler() = default;
+
+    explicit SpriteHandler(const std::string &path);
 
     ~SpriteHandler();
 
-    static std::optional<Sprite> getSprite(const std::string &name);
+    std::optional<Sprite> getSprite(const std::string &name);
 
-    static void importSprites(const std::string &path);
+    void importSprites(const std::string &path);
 
-    static void initAnimations();
+    void initAnimations();
 
-    static SpriteAnimation getSpriteAnimation(const std::string &name);
+    std::optional<SpriteAnimationPtr> getSpriteAnimation(const std::string &name);
 };

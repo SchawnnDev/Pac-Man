@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../sprite-animation.h"
+#include "sprite-animation.h"
 
 class BonusAnimation : public SpriteAnimation {
     int m_ticks;

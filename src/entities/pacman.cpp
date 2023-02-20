@@ -1,12 +1,8 @@
 #include "../../include/entities/pacman.h"
 #include "../../include/sprite-handler.h"
 
-Pacman::Pacman(const std::shared_ptr<Board>& p_board) : Entity(0, 0, 1, Direction::LEFT, p_board) {
-    m_pacmanDownAnimation = SpriteHandler::getSpriteAnimation("pacman-down");
-    m_pacmanUpAnimation = SpriteHandler::getSpriteAnimation("pacman-up");
-    m_pacmanLeftAnimation = SpriteHandler::getSpriteAnimation("pacman-left");
-    m_pacmanRightAnimation = SpriteHandler::getSpriteAnimation("pacman-right");
-    m_pacmanDyingAnimation = SpriteHandler::getSpriteAnimation("pacman-dying");
+Pacman::Pacman(const Board& p_board) : Entity(0, 0, 1, Direction::LEFT, p_board) {
+
     currentAnimation() = m_pacmanLeftAnimation;
 }
 
@@ -14,16 +10,16 @@ void Pacman::tick() {
 
     switch (direction()) {
         case Direction::UP:
-            currentAnimation() = m_pacmanUpAnimation;
+            currentAnimation() = m_animations.pacmanUpAnimation;
             break;
         case Direction::DOWN:
-            currentAnimation() = m_pacmanDownAnimation;
+            currentAnimation() = m_animations.pacmanDownAnimation;
             break;
         case Direction::LEFT:
-            currentAnimation() = m_pacmanLeftAnimation;
+            currentAnimation() = m_animations.pacmanLeftAnimation;
             break;
         case Direction::RIGHT:
-            currentAnimation() = m_pacmanRightAnimation;
+            currentAnimation() = m_animations.pacmanRightAnimation;
             break;
     }
 

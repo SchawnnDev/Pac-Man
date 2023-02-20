@@ -15,7 +15,7 @@ class Board {
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
     std::string m_filePath;
     Sprite m_pointSprite, m_emptyBoardSprite;
-    BonusAnimation m_bonusAnimation;
+    SpriteAnimationPtr m_bonusAnimation;
 public:
     Board();
 

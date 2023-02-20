@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../entity.h"
+#include "utils/position.h"
+#include "entities/entity.h"
 
 enum class GhostMode {
     House, // At start of pacman, ghosts are in house

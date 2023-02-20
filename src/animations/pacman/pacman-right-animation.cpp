@@ -1,4 +1,4 @@
-#include "../../../include/animations/pacman/pacman-right-animation.h"
+#include "animations/pacman/pacman-right-animation.h"
 
 PacmanRightAnimation::PacmanRightAnimation()
         : SpriteAnimation({"pacman_dying_1", "pacman_dying_2", "pacman_dying_3",

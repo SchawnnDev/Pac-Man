@@ -2,7 +2,6 @@
 #include <memory>
 #include "sprite-handler.h"
 #include "pugixml.hpp"
-#include "entities/pacman.h"
 #include "animations/pacman/pacman-down-animation.h"
 #include "animations/pacman/pacman-dying-animation.h"
 #include "animations/pacman/pacman-up-animation.h"
@@ -61,19 +60,16 @@ void SpriteHandler::initAnimations()
     m_spriteAnimations["bonus"] = std::make_shared<BonusAnimation>();
 }
 
-SpriteHandler::~SpriteHandler()
-{
-    //std::destroy(m_sprites.begin(), m_sprites.end());
-}
-
-SpriteHandler::SpriteHandler()
-{
-    //m_sprites = {};
-}
-
-std::shared_ptr<SpriteAnimation>
+std::optional<SpriteAnimationPtr>
 SpriteHandler::getSpriteAnimation(const std::string &name)
 {
-    return !m_spriteAnimations.contains(name) ? nullptr
-                                              : m_spriteAnimations[name];
+    return !m_spriteAnimations.contains(name) ? std::nullopt
+                                              : std::make_optional(
+                    m_spriteAnimations[name]);
+}
+
+SpriteHandler::SpriteHandler(const std::string &path)
+{
+    importSprites(path);
+    initAnimations();
 }

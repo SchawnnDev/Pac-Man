@@ -2,10 +2,10 @@
 
 #include <SDL_rect.h>
 #include <SDL.h>
-#include "../sprite.h"
-#include "../sprite-animation.h"
-#include "../utils/position.h"
-#include "../board/board.h"
+#include "sprite.h"
+#include "sprite-animation.h"
+#include "utils/position.h"
+#include "board/board.h"
 
 enum class EntityType {
     Banana,
@@ -15,7 +15,7 @@ enum class EntityType {
 
 class Entity {
     Board m_board;
-    SpriteAnimation m_currentAnimation;
+    std::optional<SpriteAnimationPtr> m_currentAnimation;
     Direction m_direction;
     Position m_position;
     int m_speed; // speed in pixel per tick
@@ -33,9 +33,9 @@ public:
     // wow, modern (uses cpp move semantics)
     [[nodiscard]] virtual EntityType entityType() const = 0;
 
-    [[nodiscard]] const SpriteAnimation &currentAnimation() const { return m_currentAnimation; };
+    [[nodiscard]] const std::optional<SpriteAnimationPtr> &currentAnimation() const { return m_currentAnimation; };
 
-    SpriteAnimation &currentAnimation() { return m_currentAnimation; };
+    std::optional<SpriteAnimationPtr> &currentAnimation() { return m_currentAnimation; };
 
     [[nodiscard]] const Board &board() const { return m_board; };
 

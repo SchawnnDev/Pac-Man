@@ -1,4 +1,4 @@
-#include "../../include/animations/bonus-animation.h"
+#include "animations/bonus-animation.h"
 
 BonusAnimation::~BonusAnimation() {
 

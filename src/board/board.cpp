@@ -8,9 +8,9 @@
 Board::Board()
 {
 
-    for (int i = 0; i < BOARD_SIZE_Y; ++i)
-        for (int j = 0; j < BOARD_SIZE_X; ++j)
-            m_grid[i][j] = {j, i, BoardCaseType::PointPath, nullptr};
+    for (int x = 0; x < BOARD_SIZE_X; ++x)
+        for (int y = 0; y < BOARD_SIZE_Y; ++y)
+            m_grid[BOARD_SIZE_X * x + y] = {x, y, BoardCaseType::PointPath, nullptr};
 
     m_pointSprite = SpriteHandler::getSprite("point").value();
     m_bonusAnimation = SpriteHandler::getSpriteAnimation("bonus");
@@ -65,15 +65,15 @@ void Board::save(const std::string &p_filePath)
     pugi::xml_document doc;
     auto boardNode = doc.append_child("board");
 
-    for (int i = 0; i < m_grid.size(); ++i)
+    for (int i = 0; i < BOARD_SIZE_X; ++i)
     {
-        for (int j = 0; j < m_grid[i].size(); ++j)
+        for (int j = 0; j < BOARD_SIZE_Y; ++j)
         {
             auto node = boardNode.append_child("case");
             node.append_attribute("x").set_value(j);
             node.append_attribute("y").set_value(i);
             node.append_attribute("type").set_value(
-                    static_cast<int>(m_grid[i][j].type()));
+                    static_cast<int>(getCase(i,j).type()));
         }
     }
 
@@ -119,7 +119,8 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
                     break;
                 case BoardCaseType::Bonus:
                 {
-                    auto sprite = _case.animation().display();
+                    if(!_case.animation().has_value()) break;
+                    auto sprite = _case.animation().value()->display();
                     if (!sprite.has_value()) break;
                     centered.x -= sprite->rect().w * 2;
                     centered.y -= sprite->rect().h * 2;

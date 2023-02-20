@@ -11,7 +11,7 @@ class SpriteAnimation {
     bool m_freeze;
     //int m_changeTicks;
 public:
-    SpriteAnimation(std::initializer_list<std::string> args);
+    SpriteAnimation(std::initializer_list<Sprite> args);
 
     ~SpriteAnimation();
 
@@ -36,3 +36,5 @@ public:
 
    // int &changeTicks() { return m_changeTicks; };
 };
+
+using SpriteAnimationPtr = std::shared_ptr<SpriteAnimation>;

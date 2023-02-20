@@ -1,6 +1,5 @@
 #include <iostream>
-#include "../include/game.h"
-#include "../include/sprite-handler.h"
+#include "game.h"
 
 void Game::start()
 {
@@ -27,7 +26,10 @@ void Game::end()
 }
 
 
-Game::Game() : m_pacMan(m_board)
+Game::Game()
+: m_board("./assets/board.xml"),
+    m_spriteHandler("./assets/pacman.sprites"),
+    m_pacMan(m_board, {})
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0 )
@@ -46,11 +48,10 @@ Game::Game() : m_pacMan(m_board)
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
 
-    SpriteHandler::importSprites("./assets/pacman.sprites");
-    SpriteHandler::initAnimations();
 
-    m_board = std::make_shared<Board>("./assets/board.xml");
+    board() = {};
     m_state = GameState::WaitingStart;
+
 }
 
 Game::~Game()

@@ -1,26 +1,24 @@
 #pragma once
 
-#include "entity.h"
+#include <utility>
 
-enum class PacmanState {
+#include "entity.h"
+#include "sprite-animation-structs.h"
+
+enum class PacmanState
+{
     LIVING,
     DYING
-};
-
-struct PacmanAnimations final
-{
-    SpriteAnimation pacmanUpAnimation;
-    SpriteAnimation pacmanDownAnimation;
-    SpriteAnimation pacmanLeftAnimation;
-    SpriteAnimation pacmanRightAnimation;
-    SpriteAnimation pacmanDyingAnimation;
 };
 
 class Pacman : public Entity
 {
     PacmanAnimations m_animations;
 public:
-    explicit Pacman(Board p_board, PacmanAnimations a);
+
+    Pacman(const Board &p_board, PacmanAnimations p_pacmanAnimations) : Entity(
+            0, 0, 1, Direction::LEFT, p_board),
+            m_animations(std::move(p_pacmanAnimations)) {}
 
     ~Pacman() override;
 

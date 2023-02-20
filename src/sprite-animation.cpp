@@ -1,9 +1,9 @@
-#include "../include/sprite-animation.h"
-#include "../include/sprite-handler.h"
+#include "sprite-animation.h"
+#include "sprite-handler.h"
 
-SpriteAnimation::SpriteAnimation(std::initializer_list<std::string> args) {
+SpriteAnimation::SpriteAnimation(std::initializer_list<Sprite> args) {
     for (const auto &sp: args) {
-        m_sprites.push_back(SpriteHandler::getSprite(sp));
+        m_sprites.push_back(sp);
     }
     m_activated = false;
     m_freeze = false;
