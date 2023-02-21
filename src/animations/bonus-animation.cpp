@@ -1,17 +1,17 @@
 #include "animations/bonus-animation.h"
 
-BonusAnimation::~BonusAnimation() {
+BonusAnimation::BonusAnimation(std::vector<Sprite> &&sprites)
+        : SpriteAnimation{std::move(sprites)}
+        , m_ticks{0}
+        , m_display{true}
+{}
 
-}
-
-BonusAnimation::BonusAnimation() : SpriteAnimation({"bonus"}) {
-    m_ticks = 0;
-    m_display = true;
-}
-
-std::optional<Sprite> BonusAnimation::display() {
-    if (!freeze()) {
-        if (m_ticks > 10) {
+std::optional<Sprite> BonusAnimation::display()
+{
+    if (!freeze())
+    {
+        if (m_ticks > 10)
+        {
             m_ticks = 0;
             m_display = !m_display;
         }
@@ -21,7 +21,8 @@ std::optional<Sprite> BonusAnimation::display() {
     return m_display ? std::make_optional<Sprite>(sprites()[0]) : std::nullopt;
 }
 
-void BonusAnimation::start() {
+void BonusAnimation::start()
+{
     SpriteAnimation::start();
 }
 

@@ -5,58 +5,55 @@
 #include "board/board.h"
 #include "sprite-handler.h"
 
-Board::Board()
+Board::Board(std::optional<std::string> p_filePath)
+    : m_filePath{p_filePath.value_or(std::string{})}
+    , m_emptyBoardSprite{std::string{}}
+    , m_bonusAnimation{nullptr}
+    , m_pointSprite{std::string{}}
 {
-
-    for (int x = 0; x < BOARD_SIZE_X; ++x)
-        for (int y = 0; y < BOARD_SIZE_Y; ++y)
-            m_grid[BOARD_SIZE_X * x + y] = {x, y, BoardCaseType::PointPath, nullptr};
-
-    m_pointSprite = SpriteHandler::getSprite("point").value();
-    m_bonusAnimation = SpriteHandler::getSpriteAnimation("bonus");
-    m_emptyBoardSprite = SpriteHandler::getSprite("board_empty").value();
-
-}
-
-Board::~Board() = default;
-
-Board::Board(const std::string &p_filePath) : Board()
-{
-    m_filePath = p_filePath;
-    pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load_file(p_filePath.c_str());
-
-    if (!result)
+    if (!p_filePath)
     {
-        std::cout << "Could not import board from " << p_filePath.c_str()
-                  << ".\n";
-        return;
+        for (int x = 0; x < BOARD_SIZE_X; ++x)
+            for (int y = 0; y < BOARD_SIZE_Y; ++y)
+                m_grid[BOARD_SIZE_X * x + y] = {x, y, BoardCaseType::PointPath, nullptr};
     }
-
-    pugi::xpath_node_set tools_with_timeout = doc.select_nodes(".//case");
-
-    for (pugi::xpath_node node: tools_with_timeout)
+    else
     {
-        auto x = node.node().attribute("x").as_int();
-        auto y = node.node().attribute("y").as_int();
-        auto boardCase = getCase(x, y);
-        boardCase.type() = BoardCaseType(
-                node.node().attribute("type").as_int());
+        pugi::xml_document doc;
+        pugi::xml_parse_result result = doc.load_file(m_filePath.c_str());
 
-        switch (boardCase.type())
+        if (!result)
         {
-            case BoardCaseType::Bonus:
-                boardCase.animation() = m_bonusAnimation;
-                break;
-            default:
-                break;
+            std::cout << "Could not import board from " << m_filePath
+                      << std::endl;
+            return;
         }
 
+        pugi::xpath_node_set tools_with_timeout = doc.select_nodes(".//case");
 
+        for (pugi::xpath_node node: tools_with_timeout)
+        {
+            auto x = node.node().attribute("x").as_int();
+            auto y = node.node().attribute("y").as_int();
+            auto boardCase = getCase(x, y);
+            boardCase.type() = BoardCaseType(
+                    node.node().attribute("type").as_int());
+
+            switch (boardCase.type())
+            {
+                case BoardCaseType::Bonus:
+                    boardCase.animation() = m_bonusAnimation;
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+        std::cout << "Successfully loaded " << tools_with_timeout.size()
+                  << " case(s)!\n";
     }
-
-    std::cout << "Successfully loaded " << tools_with_timeout.size()
-              << " case(s)!\n";
 }
 
 void Board::save(const std::string &p_filePath)

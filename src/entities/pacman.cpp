@@ -1,10 +1,10 @@
 #include "../../include/entities/pacman.h"
 #include "../../include/sprite-handler.h"
 
-Pacman::Pacman(const Board& p_board) : Entity(0, 0, 1, Direction::LEFT, p_board) {
+/*Pacman::Pacman(const Board& p_board) : Entity(0, 0, 1, Direction::LEFT, p_board) {
 
-    currentAnimation() = m_pacmanLeftAnimation;
-}
+    //currentAnimation() = m_pacmanLeftAnimation;
+}*/
 
 void Pacman::tick() {
 
@@ -26,9 +26,9 @@ void Pacman::tick() {
     // Move pacman to next
     if (canMoveTo(direction())) {
         position() = position().getPositionAt(direction());
-        currentAnimation()->freeze() = false;
+        //currentAnimation()->freeze() = false;
     } else {
-        currentAnimation()->freeze() = true;
+        //currentAnimation()->freeze() = true;
     }
 
 }

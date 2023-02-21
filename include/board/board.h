@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string_view>
 #include <array>
 #include <memory>
 #include <SDL.h>
@@ -16,12 +17,11 @@ class Board {
     std::string m_filePath;
     Sprite m_pointSprite, m_emptyBoardSprite;
     SpriteAnimationPtr m_bonusAnimation;
+
 public:
-    Board();
+    explicit Board(std::optional<std::string> p_filePath = std::nullopt);
 
-    explicit Board(const std::string &p_filePath);
-
-    ~Board();
+    ~Board() = default;
 
     [[nodiscard]] const std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &
     grid() const { return m_grid; };

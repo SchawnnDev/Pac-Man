@@ -6,8 +6,8 @@ class BonusAnimation : public SpriteAnimation {
     int m_ticks;
     bool m_display;
 public:
-    BonusAnimation();
-    ~BonusAnimation();
+    explicit BonusAnimation(std::vector<Sprite> &&sprites);
+    ~BonusAnimation() = default;
 
     void start() override;
 

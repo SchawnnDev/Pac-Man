@@ -1,9 +1,11 @@
 #pragma once
 
-#include "sprite.h"
-#include <vector>
 #include <memory>
 #include <optional>
+#include <span>
+#include <vector>
+
+#include "sprite.h"
 
 class SpriteAnimation {
     std::vector<Sprite> m_sprites;
@@ -11,10 +13,10 @@ class SpriteAnimation {
     bool m_freeze;
     //int m_changeTicks;
 public:
-    SpriteAnimation(std::initializer_list<Sprite> args);
 
-    ~SpriteAnimation();
+    explicit SpriteAnimation(std::vector<Sprite> &&sprites);
 
+    ~SpriteAnimation() = default;
 
     virtual void start();
     virtual void stop();
@@ -23,14 +25,13 @@ public:
      */
     virtual std::optional<Sprite> display() = 0;
 
-    [[nodiscard]] std::vector<Sprite> const &sprites() const { return m_sprites; };
-    std::vector<Sprite> &sprites() { return m_sprites; };
+    [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
 
-    [[nodiscard]] bool const& activated() const { return m_activated; };
-    bool &activated() { return m_activated; };
+    [[nodiscard]] bool activated() const { return m_activated; }
+    bool &activated() { return m_activated; }
 
-    [[nodiscard]] bool const& freeze() const { return m_freeze; };
-    bool &freeze() { return m_freeze; };
+    [[nodiscard]] bool freeze() const { return m_freeze; }
+    bool &freeze() { return m_freeze; }
 
    // int const &changeTicks() const { return m_changeTicks; };
 

@@ -40,7 +40,7 @@ void init()
     count = 0;
     plancheTexture = SDL_CreateTextureFromSurface(m_window_renderer,plancheSprites);
 
-    SpriteHandler::importSprites("./assets/pacman.sprites");
+    //SpriteHandler::importSprites("./assets/pacman.sprites");
 
     board = new Board("./assets/board.xml");
 }
