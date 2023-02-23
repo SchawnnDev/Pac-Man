@@ -10,7 +10,6 @@
 #include "utils/constants.h"
 #include "sprite.h"
 #include "utils/position.h"
-#include "animations/bonus-animation.h"
 
 class Board {
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;

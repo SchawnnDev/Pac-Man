@@ -17,4 +17,10 @@ public:
     [[nodiscard]] SDL_Rect const &rect() const { return m_rect; };
     SDL_Rect &rect() { return m_rect; };
 
+    /**
+     * Used for animations that do not wish to display anything
+     * @return Is nothing
+     */
+    inline bool isNothing() { return m_name == "nothing"; }
+
 };

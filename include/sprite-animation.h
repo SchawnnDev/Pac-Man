@@ -11,19 +11,29 @@ class SpriteAnimation {
     std::vector<Sprite> m_sprites;
     bool m_activated;
     bool m_freeze;
-    //int m_changeTicks;
+    bool m_stopAfterLastSprite;
+    int m_ticksPerSprite;
+    int m_ticks;
+    int m_spriteCount;
+    int m_currentSprite;
 public:
 
-    explicit SpriteAnimation(std::vector<Sprite> &&sprites);
+    SpriteAnimation() = default;
+
+    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites,
+                    bool p_stopAfterLastSprite = false,
+                    int p_ticksPerSprite = 1);
 
     ~SpriteAnimation() = default;
 
-    virtual void start();
-    virtual void stop();
+    void start();
+    void stop();
+    void reset();
+
     /**
      * @return Sprite to display
      */
-    virtual std::optional<Sprite> display() = 0;
+    std::optional<Sprite> display();
 
     [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
 

@@ -4,12 +4,6 @@
 #include "pugixml.hpp"
 
 #include "sprite-handler.h"
-#include "animations/pacman/pacman-down-animation.h"
-#include "animations/pacman/pacman-dying-animation.h"
-#include "animations/pacman/pacman-up-animation.h"
-#include "animations/pacman/pacman-left-animation.h"
-#include "animations/pacman/pacman-right-animation.h"
-#include "animations/bonus-animation.h"
 
 void SpriteHandler::importSprites(std::string_view path) noexcept
 {
@@ -42,7 +36,8 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
 
 }
 
-std::optional<Sprite> SpriteHandler::getSprite(std::string_view name) const noexcept
+std::optional<Sprite>
+SpriteHandler::getSprite(std::string_view name) const noexcept
 {
     for (auto sprite: SpriteHandler::m_sprites)
     {
@@ -54,22 +49,33 @@ std::optional<Sprite> SpriteHandler::getSprite(std::string_view name) const noex
 
 void SpriteHandler::initAnimations() noexcept
 {
-    m_spriteAnimations["pacman-down"] = std::make_shared<PacmanDownAnimation>(std::vector<Sprite>{});
-    m_spriteAnimations["pacman-up"] = std::make_shared<PacmanUpAnimation>(std::vector<Sprite>{});
-    m_spriteAnimations["pacman-left"] = std::make_shared<PacmanLeftAnimation>(std::vector<Sprite>{});
-    m_spriteAnimations["pacman-right"] = std::make_shared<PacmanRightAnimation>(std::vector<Sprite>{});
-    m_spriteAnimations["pacman-dying"] = std::make_shared<PacmanDyingAnimation>(
+    m_spriteAnimations["pacman-down"] = SpriteAnimation{
+            getSprites("pacman_down_little_open", "pacman_down_big_open"),
+            false, 5};
+    m_spriteAnimations["pacman-up"] = SpriteAnimation{
+            getSprites("pacman_top_little_open", "pacman_top_big_open"), false,
+            5};
+    m_spriteAnimations["pacman-left"] = SpriteAnimation{
+            getSprites("pacman_left_little_open", "pacman_right_big_open"),
+            false, 5};
+    m_spriteAnimations["pacman-right"] = SpriteAnimation{
+            getSprites("pacman_right_little_open", "pacman_right_big_open"),
+            false, 5};
+    m_spriteAnimations["pacman-dying"] = SpriteAnimation{
             getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
-                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
-                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
-                        "pacman_dying_10"));
-    m_spriteAnimations["bonus"] = std::make_shared<BonusAnimation>(std::vector<Sprite>{});
+                       "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
+                       "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
+                       "pacman_dying_10"), true, 6};
+    m_spriteAnimations["bonus"] = SpriteAnimation{
+            getSprites("bonus", "nothing"), false, 10
+    };
 }
 
-std::optional<SpriteAnimationPtr>
+std::optional<SpriteAnimation>
 SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
 {
-    if (auto it = m_spriteAnimations.find(std::string{name}); it != std::end(m_spriteAnimations))
+    if (auto it = m_spriteAnimations.find(std::string{name}); it != std::end(
+            m_spriteAnimations))
         return std::make_optional(it->second);
     else
         return std::nullopt;
@@ -78,6 +84,11 @@ SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
 SpriteHandler::SpriteHandler(std::string_view path) noexcept
 {
     importSprites(path);
+
+    // Nothing sprite is a utility sprite that is used in animations to display "nothing"
+    m_sprites.emplace_back("nothing");
+
+    // Handle animation init
     initAnimations();
     initStructs();
 }

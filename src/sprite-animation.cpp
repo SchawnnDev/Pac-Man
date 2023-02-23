@@ -1,16 +1,66 @@
 #include "sprite-animation.h"
-#include "sprite-handler.h"
 
-SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites)
-    : m_sprites{p_sprites}
-    , m_activated{false}
-    , m_freeze{false}
-{ }
+SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
+                                 bool p_stopAfterLastSprite,
+                                 int p_ticksPerSprite)
+        : m_sprites{p_sprites}
+        , m_freeze{false}
+        , m_stopAfterLastSprite{p_stopAfterLastSprite}
+        , m_ticksPerSprite{p_ticksPerSprite}
+        , m_ticks{0}
+        , m_activated{false}
+        , m_spriteCount{static_cast<int>(p_sprites.size())}
+        , m_currentSprite{0}
+{}
 
-void SpriteAnimation::start() {
+std::optional<Sprite> SpriteAnimation::display()
+{
+    if(!activated())
+        return std::nullopt;
+
+    if(freeze())
+    {
+        auto sprite = sprites()[m_currentSprite];
+        if(sprite.isNothing()) return std::nullopt;
+        return sprite;
+    }
+
+    if(m_ticks >= m_ticksPerSprite)
+    {
+
+        if (m_currentSprite >= m_spriteCount)
+        {
+            if(m_stopAfterLastSprite)
+            {
+                stop();
+                return std::nullopt;
+            }
+
+            m_currentSprite = 0;
+            m_ticks = 0;
+        } else {
+            m_currentSprite++;
+        }
+
+    }
+
+    m_ticks++;
+
+    return sprites()[m_currentSprite];
+}
+
+void SpriteAnimation::start()
+{
     m_activated = true;
 }
 
-void SpriteAnimation::stop() {
+void SpriteAnimation::stop()
+{
     m_activated = false;
+}
+
+void SpriteAnimation::reset()
+{
+    m_ticks = 0;
+    m_currentSprite = 0;
 }

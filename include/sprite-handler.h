@@ -13,7 +13,7 @@
 
 class SpriteHandler {
     std::vector<Sprite> m_sprites{};
-    std::unordered_map<std::string, SpriteAnimationPtr> m_spriteAnimations{};
+    std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
     // structs
     PacmanAnimations m_pacmanAnimations;
 public:
@@ -32,7 +32,7 @@ public:
 
     void initStructs() noexcept;
 
-    std::optional<SpriteAnimationPtr> getSpriteAnimation(std::string_view name) noexcept;
+    std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
 
     [[nodiscard]] const PacmanAnimations &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 

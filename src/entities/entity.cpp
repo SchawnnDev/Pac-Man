@@ -8,9 +8,9 @@ void Entity::move(Direction newDirection) {
 }
 
 void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
-    if(!m_currentAnimation.has_value()) return;
-    auto sprite = m_currentAnimation.value()->display();
-    if (!sprite.has_value() || !m_currentAnimation.value()->activated()) return;
+    if(!m_currentAnimation) return;
+    auto sprite = m_currentAnimation.value().display();
+    if (!sprite.has_value() || !m_currentAnimation.value().activated()) return;
     // TODO: position may be wrong (seen by pixel)
     SDL_Rect destination{m_position.x(), m_position.y(), sprite->rect().w * 4, sprite->rect().h * 4};
     SDL_RenderCopy(p_window_renderer, p_texture, &sprite->rect(), &destination);
