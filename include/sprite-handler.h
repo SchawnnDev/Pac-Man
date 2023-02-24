@@ -55,7 +55,7 @@ public:
                             auto sprite = getSprite(p_spriteName);
                             if(!sprite) {
                                 std::cout << "Could not find sprite " << p_spriteName << std::endl;
-                                return nullptr;
+                                return getSprite("nothing").value();
                             }
                            return getSprite(p_spriteName).value();
                        });

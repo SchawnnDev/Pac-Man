@@ -96,8 +96,8 @@
         <spr name="pacman_left_big_open" x="64" y="90" w="9" h="14"/>
         <spr name="pacman_up_little_open" x="76" y="91" w="14" h="13"/>
         <spr name="pacman_up_big_open" x="93" y="95" w="14" h="9"/>
-        <spr name="pacman_bottom_little_open" x="110" y="91" w="14" h="13"/>
-        <spr name="pacman_bottom_big_open" x="127" y="95" w="14" h="9"/>
+        <spr name="pacman_down_little_open" x="110" y="91" w="14" h="13"/>
+        <spr name="pacman_down_big_open" x="127" y="95" w="14" h="9"/>
       </dir>
       <spr name="test1" x="338" y="238" w="12" h="12"/>
       <spr name="test2" x="371" y="239" w="11" h="11"/>
