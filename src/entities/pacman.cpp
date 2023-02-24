@@ -1,25 +1,20 @@
 #include "../../include/entities/pacman.h"
 #include "../../include/sprite-handler.h"
 
-/*Pacman::Pacman(const Board& p_board) : Entity(0, 0, 1, Direction::LEFT, p_board) {
-
-    //currentAnimation() = m_pacmanLeftAnimation;
-}*/
-
 void Pacman::tick() {
 
     switch (direction()) {
         case Direction::UP:
-            currentAnimation() = m_animations.pacmanUpAnimation;
+            currentAnimation() = m_animations.upAnimation;
             break;
         case Direction::DOWN:
-            currentAnimation() = m_animations.pacmanDownAnimation;
+            currentAnimation() = m_animations.downAnimation;
             break;
         case Direction::LEFT:
-            currentAnimation() = m_animations.pacmanLeftAnimation;
+            currentAnimation() = m_animations.leftAnimation;
             break;
         case Direction::RIGHT:
-            currentAnimation() = m_animations.pacmanRightAnimation;
+            currentAnimation() = m_animations.rightAnimation;
             break;
     }
 

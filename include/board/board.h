@@ -31,7 +31,7 @@ public:
         return m_grid[BOARD_SIZE_X * x + y];
     }
 
-    void save(const std::string &p_filePath);
+    void save(const std::string &p_filePath) const;
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
 

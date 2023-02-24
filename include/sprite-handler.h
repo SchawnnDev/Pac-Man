@@ -16,6 +16,7 @@ class SpriteHandler {
     std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
     // structs
     PacmanAnimations m_pacmanAnimations;
+    BlinkyAnimations m_blinkyAnimations;
 public:
 
     SpriteHandler() = default;
@@ -32,10 +33,13 @@ public:
 
     void initStructs() noexcept;
 
+    void initGhostStruct(const std::string& name) noexcept;
+
     std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
 
     [[nodiscard]] const PacmanAnimations &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 
+    [[nodiscard]] const BlinkyAnimations &blinkyAnimations() const noexcept { return m_blinkyAnimations; }
 
     template <typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)

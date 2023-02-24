@@ -1,8 +1,6 @@
 #include "entities/ghosts/ghost.h"
 
-Ghost::~Ghost() {
-
-}
+Ghost::~Ghost() = default;
 
 void Ghost::startEatenMode() {
 

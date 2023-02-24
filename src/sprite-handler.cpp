@@ -13,7 +13,7 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
 
     if (!result)
     {
-        std::cout << "Could not import sprite.\n";
+        std::cout << "Could not import sprite." << std::endl;;
         return;
     }
 
@@ -22,7 +22,7 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
     for (pugi::xpath_node node: tools_with_timeout)
     {
         std::cout << "Loading sprite " << node.node().attribute("name").value()
-                  << "...\n";
+                  << "..." << std::endl;
         Sprite spr{node.node().attribute("name").value()};
         spr.rect().x = node.node().attribute("x").as_int();
         spr.rect().y = node.node().attribute("y").as_int();
@@ -32,7 +32,7 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
     }
 
     std::cout << "Successfully loaded " << tools_with_timeout.size()
-              << " sprites!\n";
+              << " sprites!" << std::endl;
 
 }
 
@@ -49,11 +49,14 @@ SpriteHandler::getSprite(std::string_view name) const noexcept
 
 void SpriteHandler::initAnimations() noexcept
 {
+    std::cout << "Initializing sprite animations..." << std::endl;
+
+    // Pacman
     m_spriteAnimations["pacman-down"] = SpriteAnimation{
             getSprites("pacman_down_little_open", "pacman_down_big_open"),
             false, 5};
     m_spriteAnimations["pacman-up"] = SpriteAnimation{
-            getSprites("pacman_top_little_open", "pacman_top_big_open"), false,
+            getSprites("pacman_up_little_open", "pacman_up_big_open"), false,
             5};
     m_spriteAnimations["pacman-left"] = SpriteAnimation{
             getSprites("pacman_left_little_open", "pacman_right_big_open"),
@@ -66,9 +69,20 @@ void SpriteHandler::initAnimations() noexcept
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
                        "pacman_dying_10"), true, 6};
+
+    // Ghosts
+    initGhostStruct("blinky");
+    initGhostStruct("clyde");
+    initGhostStruct("inky");
+    initGhostStruct("pinky");
+
+    // Board
     m_spriteAnimations["bonus"] = SpriteAnimation{
             getSprites("bonus", "nothing"), false, 10
     };
+
+    std::cout << "Successfully created " << m_spriteAnimations.size()
+              << " sprite animations!" << std::endl;
 }
 
 std::optional<SpriteAnimation>
@@ -102,4 +116,27 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["pacman-right"],
             m_spriteAnimations["pacman-dying"],
     };
+
+    m_blinkyAnimations = {
+            m_spriteAnimations["blinky-up"],
+            m_spriteAnimations["blinky-down"],
+            m_spriteAnimations["blinky-left"],
+            m_spriteAnimations["blinky-right"],
+    };
+}
+
+void SpriteHandler::initGhostStruct(const std::string& name) noexcept
+{
+    m_spriteAnimations[name + "-down"] = SpriteAnimation{
+            getSprites("blinky_down_1", "blinky_down_2"),
+            false, 5};
+    m_spriteAnimations[name + "-up"] = SpriteAnimation{
+            getSprites(name + "_up_1", name + "_up_2"), false,
+            5};
+    m_spriteAnimations[name + "-left"] = SpriteAnimation{
+            getSprites(name + "_left_1", name + "_left_2"),
+            false, 5};
+    m_spriteAnimations[name + "-right"] = SpriteAnimation{
+            getSprites(name + "_right_1", name + "_right_2"),
+            false, 5};
 }

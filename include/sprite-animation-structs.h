@@ -4,10 +4,17 @@
 
 struct PacmanAnimations final
 {
-    SpriteAnimation pacmanUpAnimation;
-    SpriteAnimation pacmanDownAnimation;
-    SpriteAnimation pacmanLeftAnimation;
-    SpriteAnimation pacmanRightAnimation;
-    SpriteAnimation pacmanDyingAnimation;
+    SpriteAnimation upAnimation;
+    SpriteAnimation downAnimation;
+    SpriteAnimation leftAnimation;
+    SpriteAnimation rightAnimation;
+    SpriteAnimation dyingAnimation;
 };
 
+struct BlinkyAnimations final
+{
+    SpriteAnimation upAnimation;
+    SpriteAnimation downAnimation;
+    SpriteAnimation leftAnimation;
+    SpriteAnimation rightAnimation;
+};

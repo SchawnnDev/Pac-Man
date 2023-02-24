@@ -4,12 +4,54 @@
   <definitions>
     <dir name="/">
       <dir name="Ghosts">
-        <dir name="Red">
-          <spr name="red_test" x="322" y="238" w="12" h="12"/>
+        <dir name="Blinky">
+          <spr name="blinky_right_1" x="4" y="124" w="14" h="14"/>
+          <spr name="blinky_right_2" x="21" y="124" w="14" h="14"/>
+          <spr name="blinky_left_1" x="38" y="124" w="14" h="14"/>
+          <spr name="blinky_left_2" x="55" y="124" w="14" h="14"/>
+          <spr name="blinky_up_1" x="72" y="125" w="14" h="13"/>
+          <spr name="blinky_up_2" x="89" y="125" w="14" h="13"/>
+          <spr name="blinky_down_1" x="106" y="124" w="14" h="14"/>
+          <spr name="blinky_down_2" x="123" y="124" w="14" h="14"/>
         </dir>
-        <dir name="Pink"/>
-        <dir name="Cyan"/>
-        <dir name="Orange"/>
+        <dir name="Pinky">
+            <spr name="pinky_right_1" x="4" y="142" w="14" h="14"/>
+            <spr name="pinky_right_2" x="21" y="142" w="14" h="14"/>
+            <spr name="pinky_left_1" x="38" y="142" w="14" h="14"/>
+            <spr name="pinky_left_2" x="55" y="142" w="14" h="14"/>
+            <spr name="pinky_up_1" x="72" y="143" w="14" h="13"/>
+            <spr name="pinky_up_2" x="89" y="143" w="14" h="13"/>
+            <spr name="pinky_down_1" x="106" y="142" w="14" h="14"/>
+            <spr name="pinky_down_2" x="123" y="142" w="14" h="14"/>
+        </dir>
+        <dir name="Inky">
+            <spr name="inky_right_1" x="4" y="160" w="14" h="14"/>
+            <spr name="inky_right_2" x="21" y="160" w="14" h="14"/>
+            <spr name="inky_left_1" x="38" y="160" w="14" h="14"/>
+            <spr name="inky_left_2" x="55" y="160" w="14" h="14"/>
+            <spr name="inky_up_1" x="72" y="161" w="14" h="13"/>
+            <spr name="inky_up_2" x="89" y="161" w="14" h="13"/>
+            <spr name="inky_down_1" x="106" y="160" w="14" h="14"/>
+            <spr name="inky_down_2" x="123" y="160" w="14" h="14"/>
+        </dir>
+        <dir name="Clyde">
+            <spr name="clyde_right_1" x="4" y="178" w="14" h="14"/>
+            <spr name="clyde_right_2" x="21" y="178" w="14" h="14"/>
+            <spr name="clyde_left_1" x="38" y="178" w="14" h="14"/>
+            <spr name="clyde_left_2" x="55" y="178" w="14" h="14"/>
+            <spr name="clyde_up_1" x="72" y="179" w="14" h="13"/>
+            <spr name="clyde_up_2" x="89" y="179" w="14" h="13"/>
+            <spr name="clyde_down_1" x="106" y="178" w="14" h="14"/>
+            <spr name="clyde_down_2" x="123" y="178" w="14" h="14"/>
+        </dir>
+        <spr name="ghost_frightened_1" x="4" y="196" w="14" h="14"/>
+        <spr name="ghost_frightened_2" x="21" y="196" w="14" h="14"/>
+        <spr name="ghost_frightened_end_1" x="38" y="196" w="14" h="14"/>
+        <spr name="ghost_frightened_end_2" x="55" y="196" w="14" h="14"/>
+        <spr name="ghost_eyes_right" x="74" y="202" w="10" h="5"/>
+        <spr name="ghost_eyes_left" x="92" y="202" w="10" h="5"/>
+        <spr name="ghost_eyes_up" x="108" y="203" w="10" h="4"/>
+        <spr name="ghost_eyes_down" x="125" y="202" w="10" h="4"/>
       </dir>
       <dir name="Boards">
         <spr name="point" x="4" y="81" w="2" h="2"/>
@@ -19,8 +61,22 @@
         <spr name="board_normal" x="201" y="4" w="166" h="214"/>
       </dir>
       <dir name="Fruits"/>
-      <dir name="Scores"/>
-      <dir name="Banana">
+      <dir name="Scores">
+        <spr name="score_100" x="180" y="133" w="13" h="7"/>
+        <spr name="score_200" x="155" y="176" w="14" h="7"/>
+        <spr name="score_300" x="179" y="142" w="14" h="7"/>
+        <spr name="score_400" x="155" y="185" w="14" h="7"/>
+        <spr name="score_500" x="179" y="151" w="14" h="7"/>
+        <spr name="score_700" x="179" y="160" w="14" h="7"/>
+        <spr name="score_800" x="155" y="194" w="14" h="7"/>
+        <spr name="score_1000" x="177" y="169" w="16" h="7"/>
+        <spr name="score_1600" x="154" y="203" w="15" h="7"/>
+        <spr name="score_2000" x="177" y="178" w="16" h="7"/>
+        <spr name="score_3000" x="177" y="187" w="16" h="7"/>
+        <spr name="score_5000" x="177" y="196" w="16" h="7"/>
+        <spr name="score_pts" x="178" y="205" w="15" h="5"/>
+      </dir>
+      <dir name="Pacman">
         <dir name="Dying">
           <spr name="pacman_dying_1" x="4" y="111" w="16" h="8"/>
           <spr name="pacman_dying_2" x="23" y="113" w="16" h="6"/>
@@ -38,8 +94,8 @@
         <spr name="pacman_right_big_open" x="36" y="90" w="9" h="14"/>
         <spr name="pacman_left_little_open" x="48" y="90" w="13" h="14"/>
         <spr name="pacman_left_big_open" x="64" y="90" w="9" h="14"/>
-        <spr name="pacman_top_little_open" x="76" y="91" w="14" h="13"/>
-        <spr name="pacman_top_big_open" x="93" y="95" w="14" h="9"/>
+        <spr name="pacman_up_little_open" x="76" y="91" w="14" h="13"/>
+        <spr name="pacman_up_big_open" x="93" y="95" w="14" h="9"/>
         <spr name="pacman_bottom_little_open" x="110" y="91" w="14" h="13"/>
         <spr name="pacman_bottom_big_open" x="127" y="95" w="14" h="9"/>
       </dir>

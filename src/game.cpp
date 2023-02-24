@@ -28,23 +28,25 @@ void Game::end()
 
 
 Game::Game()
-: m_board("./assets/board.xml"),
-    m_spriteHandler("./assets/pacman.sprites"),
-    m_pacMan(m_board, {m_spriteHandler.pacmanAnimations()})
-    ,m_state{GameState::WaitingStart}
+        : m_board("./assets/board.xml"),
+          m_spriteHandler("./assets/pacman.sprites"),
+          m_pacMan(m_board, {m_spriteHandler.pacmanAnimations()}),
+          m_blinky(m_board, {m_spriteHandler.blinkyAnimations()}),
+          m_state{GameState::WaitingStart}
 {
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 )
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        std::cerr <<"Echec de l'initialisation de la SDL "<<SDL_GetError() << std::endl;
+        std::cerr << "Echec de l'initialisation de la SDL " << SDL_GetError()
+                  << std::endl;
         return;
     }
 
     m_window.reset(SDL_CreateWindow("PacMan", SDL_WINDOWPOS_UNDEFINED,
-                                SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_WIDTH,
-                                WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN));
+                                    SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_WIDTH,
+                                    WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN));
     m_windowRenderer.reset(SDL_CreateRenderer(m_window.get(), -1,
-                                          SDL_RENDERER_ACCELERATED));
+                                              SDL_RENDERER_ACCELERATED));
 
     m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
@@ -80,16 +82,20 @@ void Game::handleKeys()
     const Uint8 *keys = SDL_GetKeyboardState(&nbk);
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
-    if (keys[SDL_SCANCODE_LEFT]) {
+    if (keys[SDL_SCANCODE_LEFT])
+    {
         m_pacMan.move(Direction::LEFT);
     }
-    if (keys[SDL_SCANCODE_RIGHT]) {
+    if (keys[SDL_SCANCODE_RIGHT])
+    {
         m_pacMan.move(Direction::RIGHT);
     }
-    if (keys[SDL_SCANCODE_UP]) {
+    if (keys[SDL_SCANCODE_UP])
+    {
         m_pacMan.move(Direction::UP);
     }
-    if (keys[SDL_SCANCODE_DOWN]) {
+    if (keys[SDL_SCANCODE_DOWN])
+    {
         m_pacMan.move(Direction::DOWN);
     }
     // if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }

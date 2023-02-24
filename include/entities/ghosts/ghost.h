@@ -3,7 +3,8 @@
 #include "utils/position.h"
 #include "entities/entity.h"
 
-enum class GhostMode {
+enum class GhostMode
+{
     House, // At start of pacman, ghosts are in house
     Scatter,
     Chase,
@@ -11,19 +12,28 @@ enum class GhostMode {
     Eaten
 };
 
-class Ghost : public Entity {
+class Ghost : public Entity
+{
     GhostMode m_ghostMode;
     Position m_target;
 public:
-    Ghost() : m_ghostMode(GhostMode::Scatter), m_target{} {}
+    explicit Ghost(const Board &p_board, GhostMode ghostMode)
+            : Entity(0, 0, 1, Direction::LEFT, p_board), m_ghostMode(ghostMode),
+              m_target{}
+    {}
+
     ~Ghost() override;
 
-    [[nodiscard]] inline EntityType entityType() const override {
+    [[nodiscard]] inline EntityType entityType() const override
+    {
         return EntityType::Ghost;
     }
 
-    [[nodiscard]] const GhostMode &ghostMode() const { return m_ghostMode; };
-    GhostMode &ghostMode() { return m_ghostMode; };
+    [[nodiscard]] const GhostMode &ghostMode() const
+    { return m_ghostMode; };
+
+    GhostMode &ghostMode()
+    { return m_ghostMode; };
 
     void startScatterMode();
 

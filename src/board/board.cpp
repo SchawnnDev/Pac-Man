@@ -52,13 +52,13 @@ Board::Board(std::optional<std::string> p_filePath)
         }
 
         std::cout << "Successfully loaded " << tools_with_timeout.size()
-                  << " case(s)!\n";
+                  << " case(s)!" << std::endl;
     }
 }
 
-void Board::save(const std::string &p_filePath)
+void Board::save(const std::string &p_filePath) const
 {
-    std::cout << "Saving board to " << p_filePath.c_str() << ".\n";
+    std::cout << "Saving board to " << p_filePath.c_str() << "." << std::endl;
     pugi::xml_document doc;
     auto boardNode = doc.append_child("board");
 
@@ -75,7 +75,7 @@ void Board::save(const std::string &p_filePath)
     }
 
     doc.save_file(p_filePath.c_str());
-    std::cout << "Successfully saved board to " << p_filePath.c_str() << ".\n";
+    std::cout << "Successfully saved board to " << p_filePath.c_str() << "." << std::endl;
 }
 
 bool first = true;
