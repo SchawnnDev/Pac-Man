@@ -52,6 +52,11 @@ public:
         std::transform(std::cbegin(sprite_names), std::cend(sprite_names),
                        std::back_inserter(result), // Write results to vector
                        [this](std::string_view p_spriteName) {
+                            auto sprite = getSprite(p_spriteName);
+                            if(!sprite) {
+                                std::cout << "Could not find sprite " << p_spriteName << std::endl;
+                                return nullptr;
+                            }
                            return getSprite(p_spriteName).value();
                        });
         return result;
