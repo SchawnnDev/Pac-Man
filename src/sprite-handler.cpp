@@ -71,10 +71,10 @@ void SpriteHandler::initAnimations() noexcept
                        "pacman_dying_10"), true, 6};
 
     // Ghosts
-    initGhostStruct("blinky");
-    initGhostStruct("clyde");
-    initGhostStruct("inky");
-    initGhostStruct("pinky");
+    initGhostAnimations("blinky");
+    initGhostAnimations("clyde");
+    initGhostAnimations("inky");
+    initGhostAnimations("pinky");
 
     // Board
     m_spriteAnimations["bonus"] = SpriteAnimation{
@@ -123,9 +123,15 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["blinky-left"],
             m_spriteAnimations["blinky-right"],
     };
+
+    m_boardResources = {
+            m_spriteAnimations["bonus"],
+            getSprite("point").value(),
+            getSprite("board_empty").value()
+    };
 }
 
-void SpriteHandler::initGhostStruct(const std::string& name) noexcept
+void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
 {
     m_spriteAnimations[name + "-down"] = SpriteAnimation{
             getSprites("blinky_down_1", "blinky_down_2"),

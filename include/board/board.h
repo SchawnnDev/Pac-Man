@@ -10,15 +10,16 @@
 #include "utils/constants.h"
 #include "sprite.h"
 #include "utils/position.h"
+#include "sprite-animation-structs.h"
 
 class Board {
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
     std::string m_filePath;
-    Sprite m_pointSprite, m_emptyBoardSprite;
-    SpriteAnimationPtr m_bonusAnimation;
+    BoardResources m_boardResources;
 
 public:
-    explicit Board(std::optional<std::string> p_filePath = std::nullopt);
+
+    Board(BoardResources p_boardResources, std::optional<std::string> p_filePath = std::nullopt);
 
     ~Board() = default;
 

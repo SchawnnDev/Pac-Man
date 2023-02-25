@@ -18,3 +18,9 @@ struct BlinkyAnimations final
     SpriteAnimation leftAnimation;
     SpriteAnimation rightAnimation;
 };
+
+struct BoardResources final {
+    SpriteAnimation bonusAnimation;
+    Sprite pointSprite;
+    Sprite emptyBoardSprite;
+};

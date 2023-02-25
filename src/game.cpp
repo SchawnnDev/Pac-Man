@@ -28,8 +28,8 @@ void Game::end()
 
 
 Game::Game()
-        : m_board("./assets/board.xml"),
-          m_spriteHandler("./assets/pacman.sprites"),
+        : m_spriteHandler("./assets/pacman.sprites"),
+          m_board({m_spriteHandler.boardResources()}, "./assets/board.xml"),
           m_pacMan(m_board, {m_spriteHandler.pacmanAnimations()}),
           m_blinky(m_board, {m_spriteHandler.blinkyAnimations()}),
           m_state{GameState::WaitingStart}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <concepts>
 #include <string>
 #include <string_view>
@@ -17,6 +18,7 @@ class SpriteHandler {
     // structs
     PacmanAnimations m_pacmanAnimations;
     BlinkyAnimations m_blinkyAnimations;
+    BoardResources m_boardResources;
 public:
 
     SpriteHandler() = default;
@@ -33,13 +35,15 @@ public:
 
     void initStructs() noexcept;
 
-    void initGhostStruct(const std::string& name) noexcept;
+    void initGhostAnimations(const std::string& name) noexcept;
 
     std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
 
     [[nodiscard]] const PacmanAnimations &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 
     [[nodiscard]] const BlinkyAnimations &blinkyAnimations() const noexcept { return m_blinkyAnimations; }
+
+    [[nodiscard]] const BoardResources &boardResources() const noexcept { return m_boardResources; }
 
     template <typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)

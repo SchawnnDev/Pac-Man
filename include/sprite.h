@@ -8,6 +8,8 @@ class Sprite {
     std::string m_name;
 
 public:
+    Sprite() = default;
+
     explicit Sprite(const std::string& name);
     ~Sprite();
 

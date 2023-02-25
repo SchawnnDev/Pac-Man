@@ -42,7 +42,7 @@ void init()
 
     //SpriteHandler::importSprites("./assets/pacman.sprites");
 
-    board = new Board("./assets/board.xml");
+   // board = new Board("./assets/board.xml");
 }
 
 void animateGhost()
