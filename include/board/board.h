@@ -19,7 +19,7 @@ class Board {
 
 public:
 
-    explicit Board(std::optional<std::string> p_filePath);
+    Board(const std::optional<std::string>& p_filePath, BoardResources p_boardResources);
 
     ~Board() = default;
 
@@ -31,8 +31,9 @@ public:
     [[nodiscard]] inline const BoardCase &getCase(int x, int y) const {
         return m_grid[BOARD_SIZE_X * x + y];
     }
-
-    BoardResources &boardResources() { return m_boardResources; }
+    inline BoardCase &getCase(int x, int y) {
+        return m_grid[BOARD_SIZE_X * x + y];
+    }
 
     void save(const std::string &p_filePath) const;
 

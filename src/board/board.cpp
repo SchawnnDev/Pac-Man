@@ -6,9 +6,10 @@
 #include "board/board.h"
 #include "sprite-handler.h"
 
-Board::Board(std::optional<std::string> p_filePath)
-        : m_filePath{p_filePath.value_or(std::string{})} {
-
+Board::Board(const std::optional<std::string>& p_filePath, BoardResources p_boardResources)
+        : m_filePath{p_filePath.value_or(std::string{})}
+        , m_boardResources{std::move(p_boardResources)}
+{
     for (int x = 0; x < BOARD_SIZE_X; ++x)
         for (int y = 0; y < BOARD_SIZE_Y; ++y)
             m_grid[BOARD_SIZE_X * x + y] = {x, y, BoardCaseType::PointPath, std::nullopt};
@@ -30,7 +31,7 @@ Board::Board(std::optional<std::string> p_filePath)
     for (pugi::xpath_node node: tools_with_timeout) {
         auto x = node.node().attribute("x").as_int();
         auto y = node.node().attribute("y").as_int();
-        auto boardCase = getCase(x, y);
+        auto& boardCase = getCase(x, y);
         boardCase.type() = BoardCaseType(node.node().attribute("type").as_int());
 
         switch (boardCase.type()) {

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <memory>
 
 #include "pugixml.hpp"
 
@@ -78,7 +77,7 @@ void SpriteHandler::initAnimations() noexcept
 
     // Board
     m_spriteAnimations["bonus"] = SpriteAnimation{
-            getSprites("bonus", "nothing"), false, 10
+            getSprites("bonus", "nothing"), false, 10, true
     };
 
     std::cout << "Successfully created " << m_spriteAnimations.size()

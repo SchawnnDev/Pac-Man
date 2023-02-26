@@ -22,7 +22,8 @@ public:
 
     explicit SpriteAnimation(std::vector<Sprite> &&p_sprites,
                     bool p_stopAfterLastSprite = false,
-                    int p_ticksPerSprite = 1);
+                    int p_ticksPerSprite = 1,
+                    bool p_activated = false);
 
     ~SpriteAnimation() = default;
 
@@ -47,5 +48,3 @@ public:
 
    // int &changeTicks() { return m_changeTicks; };
 };
-
-using SpriteAnimationPtr = std::shared_ptr<SpriteAnimation>;

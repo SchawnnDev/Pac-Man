@@ -2,13 +2,14 @@
 
 SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
                                  bool p_stopAfterLastSprite,
-                                 int p_ticksPerSprite)
+                                 int p_ticksPerSprite,
+                                 bool p_activated)
         : m_sprites{p_sprites}
         , m_freeze{false}
         , m_stopAfterLastSprite{p_stopAfterLastSprite}
         , m_ticksPerSprite{p_ticksPerSprite}
         , m_ticks{0}
-        , m_activated{false}
+        , m_activated{p_activated}
         , m_spriteCount{static_cast<int>(p_sprites.size())}
         , m_currentSprite{0}
 {}

@@ -17,9 +17,9 @@ enum class GameState
 
 class Game
 {
+    SpriteHandler m_spriteHandler;
     Board m_board;
     GameState m_state;
-    SpriteHandler m_spriteHandler;
 
     // Entities
     Pacman m_pacMan;
