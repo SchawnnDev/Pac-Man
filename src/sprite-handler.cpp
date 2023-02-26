@@ -124,6 +124,7 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["blinky-right"],
     };
 
+    std::cout << "Loaded " << getSprite("board_empty").value().name() << std::endl;
     m_boardResources = {
             m_spriteAnimations["bonus"],
             getSprite("point").value(),

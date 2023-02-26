@@ -29,7 +29,7 @@ void Game::end()
 
 Game::Game()
         : m_spriteHandler("./assets/pacman.sprites"),
-          m_board({m_spriteHandler.boardResources()}, "./assets/board.xml"),
+          m_board("./assets/board.xml"),
           m_pacMan(m_board, {m_spriteHandler.pacmanAnimations()}),
           m_blinky(m_board, {m_spriteHandler.blinkyAnimations()}),
           m_state{GameState::WaitingStart}
@@ -51,8 +51,7 @@ Game::Game()
     m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
-
-
+    m_board.boardResources() = m_spriteHandler.boardResources();
 }
 
 Game::~Game()
@@ -109,6 +108,7 @@ void Game::handleLogic()
 void Game::handleDrawing()
 {
     SDL_RenderClear(m_windowRenderer.get());
+    SDL_SetRenderDrawColor(m_windowRenderer.get(), 255,255,255,255);
 
     m_board.draw(m_windowRenderer.get(), m_spriteTexture);
 
