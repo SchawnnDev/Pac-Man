@@ -1,3 +1,4 @@
+#include <iostream>
 #include "sprite-animation.h"
 
 SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
@@ -14,8 +15,7 @@ SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
         , m_currentSprite{0}
 {}
 
-std::optional<Sprite> SpriteAnimation::display()
-{
+std::optional<Sprite> SpriteAnimation::display() {
     if(!activated())
         return std::nullopt;
 
@@ -29,7 +29,7 @@ std::optional<Sprite> SpriteAnimation::display()
     if(m_ticks >= m_ticksPerSprite)
     {
 
-        if (m_currentSprite >= m_spriteCount)
+        if (m_currentSprite >= m_spriteCount - 1)
         {
             if(m_stopAfterLastSprite)
             {
@@ -38,16 +38,19 @@ std::optional<Sprite> SpriteAnimation::display()
             }
 
             m_currentSprite = 0;
-            m_ticks = 0;
         } else {
             m_currentSprite++;
         }
+
+        m_ticks = 0;
 
     }
 
     m_ticks++;
 
-    return sprites()[m_currentSprite];
+    auto sprite = sprites()[m_currentSprite];
+    if(sprite.isNothing()) return std::nullopt;
+    return sprite;
 }
 
 void SpriteAnimation::start()

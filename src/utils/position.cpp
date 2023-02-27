@@ -1,6 +1,3 @@
-#include "../../include/utils/position.h"
+#include "utils/position.h"
 
-Position::~Position() {
-
-}
 

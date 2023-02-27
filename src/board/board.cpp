@@ -6,13 +6,11 @@
 #include "board/board.h"
 #include "sprite-handler.h"
 
-Board::Board(const std::optional<std::string>& p_filePath, BoardResources p_boardResources)
-        : m_filePath{p_filePath.value_or(std::string{})}
-        , m_boardResources{std::move(p_boardResources)}
-{
+Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources)
+        : m_filePath{p_filePath.value_or(std::string{})}, m_boardResources{std::move(p_boardResources)} {
     for (int x = 0; x < BOARD_SIZE_X; ++x)
         for (int y = 0; y < BOARD_SIZE_Y; ++y)
-            m_grid[BOARD_SIZE_X * x + y] = {x, y, BoardCaseType::PointPath, std::nullopt};
+            m_grid[getGridIndex(x, y)] = {x, y, BoardCaseType::PointPath, std::nullopt};
 
     if (!p_filePath)
         return;
@@ -31,7 +29,7 @@ Board::Board(const std::optional<std::string>& p_filePath, BoardResources p_boar
     for (pugi::xpath_node node: tools_with_timeout) {
         auto x = node.node().attribute("x").as_int();
         auto y = node.node().attribute("y").as_int();
-        auto& boardCase = getCase(x, y);
+        auto &boardCase = getCase(x, y);
         boardCase.type() = BoardCaseType(node.node().attribute("type").as_int());
 
         switch (boardCase.type()) {
@@ -76,11 +74,16 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
     SDL_RenderCopy(p_window_renderer, p_texture, &m_boardResources.emptyBoardSprite.rect(),
                    &bg); // Copie du sprite grâce au SDL_Renderer
     // 10 14
-    for (int y = 0; y < BOARD_SIZE_Y; ++y) {
-        for (int x = 0; x < BOARD_SIZE_X; ++x) {
-            auto _case = getCase(x, y);
+    for (int x = 0; x < BOARD_SIZE_X; ++x) {
+        for (int y = 0; y < BOARD_SIZE_Y; ++y) {
+            auto& _case = getCase(x, y);
             auto caseType = _case.type();
             auto centered = getRectCenteredPosition(x, y);
+
+            if (x < 10 && y == 0 && first) {
+                std::cout << x << "-(" << _case.x() << "," << _case.y() << ") " << ": "
+                          << static_cast<int>(_case.type()) << std::endl;
+            }
 
             switch (caseType) {
                 case BoardCaseType::PointPath: {
@@ -99,20 +102,22 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
                                    &centered); // Copie du sprite grâce au SDL_Renderer
                     break;
                 }
-                case BoardCaseType::BasicPath:
-                    break;
                 case BoardCaseType::Bonus: {
                     if (!_case.animation().has_value()) break;
-                    auto sprite = _case.animation().value().display();
-                    if (!sprite.has_value()) break;
-                    centered.x -= sprite->rect().w * 2;
-                    centered.y -= sprite->rect().h * 2;
-                    centered.w = sprite->rect().w * 4;
-                    centered.h = sprite->rect().h * 4;
+                    auto& spriteAnimation = _case.animation().value();
+                    auto found = spriteAnimation.display();
+                    if (!found) break;
+                    auto sprite = found.value();
+                    centered.x -= sprite.rect().w * 2;
+                    centered.y -= sprite.rect().h * 2;
+                    centered.w = sprite.rect().w * 4;
+                    centered.h = sprite.rect().h * 4;
                     SDL_RenderCopy(p_window_renderer, p_texture,
-                                   &sprite->rect(), &centered);
+                                   &sprite.rect(), &centered);
                     break;
                 }
+                case BoardCaseType::BasicPath:
+                    break;
                 case BoardCaseType::Wall:
                     break;
                 case BoardCaseType::GhostHome:
