@@ -68,7 +68,7 @@ void SpriteHandler::initAnimations() noexcept
             getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
-                       "pacman_dying_10"), true, 6};
+                       "pacman_dying_10"), true, 6, false};
 
     // Ghosts
     initGhostAnimations("blinky");
@@ -78,7 +78,7 @@ void SpriteHandler::initAnimations() noexcept
 
     // Board
     m_spriteAnimations["bonus"] = SpriteAnimation{
-            getSprites("bonus", "nothing"), false, 15, true
+            getSprites("bonus", "nothing"), false, 15
     };
 
     std::cout << "Successfully created " << m_spriteAnimations.size()

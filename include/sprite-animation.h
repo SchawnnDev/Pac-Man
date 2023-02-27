@@ -18,10 +18,7 @@ class SpriteAnimation {
     int m_currentSprite;
 public:
     SpriteAnimation() = default;
-    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites,bool p_stopAfterLastSprite = false,int p_ticksPerSprite = 1,bool p_activated = false);
-
-    //SpriteAnimation(SpriteAnimation const&) = delete;
-    //SpriteAnimation& operator=(SpriteAnimation const&) = delete;
+    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites,bool p_stopAfterLastSprite = false,int p_ticksPerSprite = 1,bool p_activated = true);
 
     ~SpriteAnimation() = default;
 
