@@ -39,11 +39,11 @@ public:
 
     std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
 
-    [[nodiscard]] const PacmanAnimations &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
+    [[nodiscard]] PacmanAnimations const& pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 
-    [[nodiscard]] const BlinkyAnimations &blinkyAnimations() const noexcept { return m_blinkyAnimations; }
+    [[nodiscard]] BlinkyAnimations const& blinkyAnimations() const noexcept { return m_blinkyAnimations; }
 
-    [[nodiscard]] const BoardResources &boardResources() const noexcept { return m_boardResources; }
+    [[nodiscard]] BoardResources const& boardResources() const noexcept { return m_boardResources; }
 
     template <typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)

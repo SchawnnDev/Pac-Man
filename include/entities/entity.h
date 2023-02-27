@@ -33,19 +33,19 @@ public:
     // wow, modern (uses cpp move semantics)
     [[nodiscard]] virtual EntityType entityType() const = 0;
 
-    [[nodiscard]] const std::optional<SpriteAnimation> &currentAnimation() const { return m_currentAnimation; };
+    [[nodiscard]] std::optional<SpriteAnimation> const& currentAnimation() const { return m_currentAnimation; };
 
     std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
-    [[nodiscard]] const Board &board() const { return m_board; };
+    [[nodiscard]] Board const& board() const { return m_board; };
 
     Board &board() { return m_board; };
 
-    [[nodiscard]] const Direction &direction() const { return m_direction; };
+    [[nodiscard]] Direction const& direction() const { return m_direction; };
 
     Direction &direction() { return m_direction; };
 
-    [[nodiscard]] const Position &position() const { return m_position; };
+    [[nodiscard]] Position const& position() const { return m_position; };
 
     Position &position() { return m_position; };
 

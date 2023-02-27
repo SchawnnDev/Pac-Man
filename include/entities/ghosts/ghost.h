@@ -29,11 +29,8 @@ public:
         return EntityType::Ghost;
     }
 
-    [[nodiscard]] const GhostMode &ghostMode() const
-    { return m_ghostMode; };
-
-    GhostMode &ghostMode()
-    { return m_ghostMode; };
+    [[nodiscard]] GhostMode const& ghostMode() const { return m_ghostMode; };
+    GhostMode &ghostMode() { return m_ghostMode; };
 
     void startScatterMode();
 

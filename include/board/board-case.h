@@ -28,19 +28,19 @@ public:
               const std::optional<SpriteAnimation> &p_animation) : m_x(p_x), m_y(p_y), m_type(p_type),
                                                                      m_animation(p_animation) {}
 
-    [[nodiscard]] const int &x() const { return m_x; };
+    [[nodiscard]] constexpr int const& x() const { return m_x; };
 
-    int &x() { return m_x; };
+    constexpr int &x() { return m_x; };
 
-    [[nodiscard]] const int &y() const { return m_y; };
+    [[nodiscard]] constexpr int const& y() const { return m_y; };
 
-    int &y() { return m_y; };
+    constexpr int &y() { return m_y; };
 
-    [[nodiscard]] const BoardCaseType &type() const { return m_type; };
+    [[nodiscard]] const BoardCaseType& type() const { return m_type; };
 
     BoardCaseType &type() { return m_type; };
 
-    [[nodiscard]] const std::optional<SpriteAnimation> &animation() const { return m_animation; };
+    [[nodiscard]] std::optional<SpriteAnimation> const& animation() const { return m_animation; };
 
     std::optional<SpriteAnimation> &animation() { return m_animation; };
 

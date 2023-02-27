@@ -23,8 +23,7 @@ public:
 
     ~Board() = default;
 
-    [[nodiscard]] const std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &
-    grid() const { return m_grid; };
+    [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const& grid() const { return m_grid; };
 
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() { return m_grid; };
 
@@ -32,7 +31,7 @@ public:
         return BOARD_SIZE_X * y + x;
     }
 
-    [[nodiscard]] inline const BoardCase &getCase(int x, int y) const {
+    [[nodiscard]] inline BoardCase const& getCase(int x, int y) const {
         return m_grid[getGridIndex(x, y)];
     }
     inline BoardCase &getCase(int x, int y) {

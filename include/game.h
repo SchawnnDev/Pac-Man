@@ -51,13 +51,13 @@ public:
 
     void handleKeys();
 
-    [[nodiscard]] const GameState &gameState() const { return m_state; }
+    [[nodiscard]] GameState const& gameState() const { return m_state; }
     GameState &gameState(){ return m_state; }
 
-    [[nodiscard]] const Pacman &pacman() const { return m_pacMan; }
+    [[nodiscard]] Pacman const& pacman() const { return m_pacMan; }
     Pacman &pacman() { return m_pacMan; }
 
-    [[nodiscard]] const Board &board() const { return m_board; }
+    [[nodiscard]] Board const& board() const { return m_board; }
     Board &board() { return m_board; }
 
     void handleLogic();
