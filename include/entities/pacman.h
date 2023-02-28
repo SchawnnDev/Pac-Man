@@ -20,11 +20,14 @@ public:
             getPosition(10, 20), 1, Direction::LEFT, p_board),
             m_animations(std::move(p_pacmanAnimations)) {
         currentAnimation() = m_animations.leftAnimation;
+        speed() = 4;
     }
 
     ~Pacman() override;
 
-    void tick() override;
+    void tick() noexcept override;
+
+    void changeAnimation() noexcept override;
 
     [[nodiscard]] inline EntityType entityType() const override
     { return EntityType::Banana; };

@@ -11,6 +11,8 @@
 #include "sprite.h"
 #include "utils/position.h"
 #include "sprite-animation-structs.h"
+#include <iostream>
+
 
 class Board {
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
@@ -78,10 +80,8 @@ public:
             return {-1, -1};
 
         return {
-                (p_pixelX - (p_pixelX % BOARD_CASE_SIZE_WIDTH)) /
-                BOARD_CASE_SIZE_WIDTH,
-                (p_pixelY - (p_pixelY % BOARD_CASE_SIZE_HEIGHT)) /
-                BOARD_CASE_SIZE_HEIGHT
+                (p_pixelX - (p_pixelX % BOARD_CASE_SIZE_WIDTH)) / BOARD_CASE_SIZE_WIDTH,
+                (p_pixelY - (p_pixelY % BOARD_CASE_SIZE_HEIGHT)) / BOARD_CASE_SIZE_HEIGHT
         };
     }
 

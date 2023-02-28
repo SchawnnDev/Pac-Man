@@ -3,18 +3,15 @@
 void Entity::move(Direction newDirection) {
 
     // If entity walks in the same direction, check if
-    if(newDirection == direction())
-    {
-        return;
-    }
-
 
     // Only be able to change position if the entity is one middle of case
-    if (!canMoveTo(newDirection) || !Board::isCaseCenter(m_position))
+    if (!canMoveTo(newDirection) || !Board::isCase(m_position))
         return;
+    lastDirection() = direction();
     direction() = newDirection;
+    changeAnimation();
 
-    position().x()++;
+    std::cout << "new direction: " << static_cast<int>(direction()) << std::endl;
 }
 
 void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
@@ -31,6 +28,6 @@ bool Entity::canMoveTo(Direction p_direction) const {
     auto caseFound = Board::findCase(position());
     if (caseFound.x() == -1 || caseFound.y() == -1) return false;
     auto nextCasePos = caseFound.getPositionAt(p_direction);
-    if(Board::checkGridCoordinates(nextCasePos)) return false;
+    if(!Board::checkGridCoordinates(nextCasePos)) return false;
     return BoardCase::isPracticable(board().getCase(nextCasePos));
 }

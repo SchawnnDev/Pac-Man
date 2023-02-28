@@ -17,5 +17,7 @@ public:
 
     ~Blinky() override;
 
-    void tick() override;
+    void tick() noexcept override;
+
+    void changeAnimation() noexcept override;
 };

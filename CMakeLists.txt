@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME} ""
         include/entities/ghosts/ghost.h
         include/entities/ghosts/blinky.h
         include/game.h
+        include/sprite-animation-structs.h
 
         src/sprite.cpp
         src/sprite-handler.cpp
@@ -34,7 +35,7 @@ add_executable(${PROJECT_NAME} ""
         src/entities/ghosts/ghost.cpp
         src/entities/ghosts/blinky.cpp
         src/utils/position.cpp
-        src/game.cpp include/sprite-animation-structs.h)
+        src/game.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

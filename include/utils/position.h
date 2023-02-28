@@ -2,6 +2,7 @@
 
 #include "constants.h"
 #include <SDL_rect.h>
+#include <ostream>
 
 enum class Direction {
     UP,
@@ -13,6 +14,9 @@ enum class Direction {
 class Position {
     int m_x;
     int m_y;
+
+    friend std::ostream &operator<<(std::ostream &, const Position &);
+
 public:
 
     constexpr Position() : m_x(0), m_y(0) {}
@@ -39,9 +43,9 @@ public:
     [[nodiscard]] constexpr Position getPositionAt(Direction p_direction) const noexcept {
         switch (p_direction) {
             case Direction::UP:
-                return {m_x, m_y + 1};
-            case Direction::DOWN:
                 return {m_x, m_y - 1};
+            case Direction::DOWN:
+                return {m_x, m_y + 1};
             case Direction::LEFT:
                 return {m_x - 1, m_y};
             case Direction::RIGHT:
@@ -51,8 +55,24 @@ public:
         return {-1, -1};
     }
 
-};
+    constexpr void moveAt(Direction p_direction, int p_pixels) noexcept {
+        switch (p_direction) {
+            case Direction::UP:
+                m_y -= p_pixels;
+                break;
+            case Direction::DOWN:
+                m_y += p_pixels;
+                break;
+            case Direction::LEFT:
+                m_x -= p_pixels;
+                break;
+            case Direction::RIGHT:
+                m_x += p_pixels;
+                break;
+        }
+    }
 
+};
 
 constexpr Position getPosition(int p_x, int p_y) noexcept {
     return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT};
@@ -81,4 +101,17 @@ calculateSprite(SDL_Rect p_center, SDL_Rect p_sprite, int p_zoomFactor) noexcept
     p_center.w = p_sprite.w * p_zoomFactor;
     p_center.h = p_sprite.h * p_zoomFactor;
     return p_center;
+}
+
+constexpr Direction getOpposite(Direction p_direction) noexcept {
+    switch (p_direction) {
+        case Direction::UP:
+            return Direction::DOWN;
+        case Direction::DOWN:
+            return Direction::UP;
+        case Direction::LEFT:
+            return Direction::RIGHT;
+        case Direction::RIGHT:
+            return Direction::LEFT;
+    }
 }

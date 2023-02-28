@@ -34,30 +34,29 @@ public:
 
     virtual ~Entity() = default;
 
-    virtual void tick() = 0;
+    virtual void tick() noexcept = 0;
+    virtual void changeAnimation() noexcept = 0;
 
     // wow, modern (uses cpp move semantics)
     [[nodiscard]] virtual EntityType entityType() const = 0;
 
     [[nodiscard]] std::optional<SpriteAnimation> const& currentAnimation() const { return m_currentAnimation; };
-
     std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
     [[nodiscard]] Board const& board() const { return m_board; };
-
     Board &board() { return m_board; };
 
     [[nodiscard]] Direction const& direction() const { return m_direction; };
-
     Direction &direction() { return m_direction; };
 
     [[nodiscard]] Direction const& lastDirection() const { return m_lastDirection; };
-
     Direction &lastDirection() { return m_lastDirection; };
 
     [[nodiscard]] Position const& position() const { return m_position; };
-
     Position &position() { return m_position; };
+
+    [[nodiscard]] int const& speed() const { return m_speed; }
+    int &speed() { return m_speed; }
 
     void move(Direction newDirection);
 

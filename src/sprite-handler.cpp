@@ -135,14 +135,14 @@ void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
 {
     m_spriteAnimations[name + "-down"] = SpriteAnimation{
             getSprites("blinky_down_1", "blinky_down_2"),
-            false, 5};
+            false, 3};
     m_spriteAnimations[name + "-up"] = SpriteAnimation{
             getSprites(name + "_up_1", name + "_up_2"), false,
-            5};
+            3};
     m_spriteAnimations[name + "-left"] = SpriteAnimation{
             getSprites(name + "_left_1", name + "_left_2"),
-            false, 5};
+            false, 3};
     m_spriteAnimations[name + "-right"] = SpriteAnimation{
             getSprites(name + "_right_1", name + "_right_2"),
-            false, 5};
+            false, 3};
 }
