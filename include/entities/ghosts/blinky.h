@@ -10,7 +10,10 @@ public:
     Blinky(const Board &p_board, BlinkyAnimations p_animations)
             : Ghost(p_board, GhostMode::Scatter),
               m_animations(std::move(p_animations))
-    {}
+    {
+        currentAnimation() = m_animations.leftAnimation;
+        position() = getPosition(10, 10);
+    }
 
     ~Blinky() override;
 

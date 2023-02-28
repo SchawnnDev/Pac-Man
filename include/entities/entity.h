@@ -17,14 +17,20 @@ class Entity {
     Board m_board;
     std::optional<SpriteAnimation> m_currentAnimation;
     Direction m_direction;
+    Direction m_lastDirection;
     Position m_position;
     int m_speed; // speed in pixel per tick
 public:
 
-    Entity() = default;
+    Entity() = delete;
 
-    Entity(int p_x, int p_y, int p_speed, Direction p_direction, const Board& p_board) : m_position(
-            {p_x, p_y}), m_direction(p_direction), m_speed(p_speed), m_board(p_board) {}
+    Entity(Position p_position, int p_speed, Direction p_direction, const Board& p_board)
+    : m_position{p_position}
+    , m_direction{p_direction}
+    , m_speed{p_speed}
+    , m_board{p_board}
+    , m_lastDirection{p_direction}
+    {}
 
     virtual ~Entity() = default;
 
@@ -44,6 +50,10 @@ public:
     [[nodiscard]] Direction const& direction() const { return m_direction; };
 
     Direction &direction() { return m_direction; };
+
+    [[nodiscard]] Direction const& lastDirection() const { return m_lastDirection; };
+
+    Direction &lastDirection() { return m_lastDirection; };
 
     [[nodiscard]] Position const& position() const { return m_position; };
 

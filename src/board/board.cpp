@@ -73,6 +73,7 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
     //std::cout << m_boardResources.emptyBoardSprite.name() << std::endl;
     SDL_RenderCopy(p_window_renderer, p_texture, &m_boardResources.emptyBoardSprite.rect(),
                    &bg); // Copie du sprite grâce au SDL_Renderer
+
     // 10 14
     for (int x = 0; x < BOARD_SIZE_X; ++x) {
         for (int y = 0; y < BOARD_SIZE_Y; ++y) {
@@ -80,10 +81,11 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
             auto caseType = _case.type();
             auto centered = getRectCenteredPosition(x, y);
 
-            if (x < 10 && y == 0 && first) {
-                std::cout << x << "-(" << _case.x() << "," << _case.y() << ") " << ": "
-                          << static_cast<int>(_case.type()) << std::endl;
-            }
+            SDL_SetRenderDrawColor(p_window_renderer, 255, 255, 255, 255);
+            SDL_Rect sdlRect = {x * BOARD_CASE_SIZE_WIDTH, y * BOARD_CASE_SIZE_HEIGHT, BOARD_CASE_SIZE_WIDTH,
+                                BOARD_CASE_SIZE_HEIGHT};
+            SDL_RenderDrawRect(p_window_renderer, &sdlRect);
+            SDL_SetRenderDrawColor(p_window_renderer, 255, 255, 255, 255);
 
             switch (caseType) {
                 case BoardCaseType::PointPath: {

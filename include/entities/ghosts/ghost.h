@@ -18,7 +18,7 @@ class Ghost : public Entity
     Position m_target;
 public:
     explicit Ghost(const Board &p_board, GhostMode ghostMode)
-            : Entity(0, 0, 1, Direction::LEFT, p_board), m_ghostMode(ghostMode),
+            : Entity({0, 0}, 1, Direction::LEFT, p_board), m_ghostMode(ghostMode),
               m_target{}
     {}
 

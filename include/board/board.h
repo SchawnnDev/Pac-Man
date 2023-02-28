@@ -27,8 +27,20 @@ public:
 
     std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() { return m_grid; };
 
+    static constexpr bool checkGridCoordinates(Position p_position) {
+        return checkGridCoordinates(p_position.x(), p_position.y());
+    }
+
+    static constexpr bool checkGridCoordinates(int x, int y) {
+        return x < 0 || y < 0 || getGridIndex(x, y) < BOARD_SIZE_X * BOARD_SIZE_Y;
+    }
+
     static constexpr size_t getGridIndex(int x, int y) {
         return BOARD_SIZE_X * y + x;
+    }
+
+    [[nodiscard]] inline BoardCase const& getCase(Position p_position) const {
+        return getCase(p_position.x(), p_position.y());
     }
 
     [[nodiscard]] inline BoardCase const& getCase(int x, int y) const {

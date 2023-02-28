@@ -15,34 +15,34 @@
           <spr name="blinky_down_2" x="123" y="124" w="14" h="14"/>
         </dir>
         <dir name="Pinky">
-            <spr name="pinky_right_1" x="4" y="142" w="14" h="14"/>
-            <spr name="pinky_right_2" x="21" y="142" w="14" h="14"/>
-            <spr name="pinky_left_1" x="38" y="142" w="14" h="14"/>
-            <spr name="pinky_left_2" x="55" y="142" w="14" h="14"/>
-            <spr name="pinky_up_1" x="72" y="143" w="14" h="13"/>
-            <spr name="pinky_up_2" x="89" y="143" w="14" h="13"/>
-            <spr name="pinky_down_1" x="106" y="142" w="14" h="14"/>
-            <spr name="pinky_down_2" x="123" y="142" w="14" h="14"/>
+          <spr name="pinky_right_1" x="4" y="142" w="14" h="14"/>
+          <spr name="pinky_right_2" x="21" y="142" w="14" h="14"/>
+          <spr name="pinky_left_1" x="38" y="142" w="14" h="14"/>
+          <spr name="pinky_left_2" x="55" y="142" w="14" h="14"/>
+          <spr name="pinky_up_1" x="72" y="143" w="14" h="13"/>
+          <spr name="pinky_up_2" x="89" y="143" w="14" h="13"/>
+          <spr name="pinky_down_1" x="106" y="142" w="14" h="14"/>
+          <spr name="pinky_down_2" x="123" y="142" w="14" h="14"/>
         </dir>
         <dir name="Inky">
-            <spr name="inky_right_1" x="4" y="160" w="14" h="14"/>
-            <spr name="inky_right_2" x="21" y="160" w="14" h="14"/>
-            <spr name="inky_left_1" x="38" y="160" w="14" h="14"/>
-            <spr name="inky_left_2" x="55" y="160" w="14" h="14"/>
-            <spr name="inky_up_1" x="72" y="161" w="14" h="13"/>
-            <spr name="inky_up_2" x="89" y="161" w="14" h="13"/>
-            <spr name="inky_down_1" x="106" y="160" w="14" h="14"/>
-            <spr name="inky_down_2" x="123" y="160" w="14" h="14"/>
+          <spr name="inky_right_1" x="4" y="160" w="14" h="14"/>
+          <spr name="inky_right_2" x="21" y="160" w="14" h="14"/>
+          <spr name="inky_left_1" x="38" y="160" w="14" h="14"/>
+          <spr name="inky_left_2" x="55" y="160" w="14" h="14"/>
+          <spr name="inky_up_1" x="72" y="161" w="14" h="13"/>
+          <spr name="inky_up_2" x="89" y="161" w="14" h="13"/>
+          <spr name="inky_down_1" x="106" y="160" w="14" h="14"/>
+          <spr name="inky_down_2" x="123" y="160" w="14" h="14"/>
         </dir>
         <dir name="Clyde">
-            <spr name="clyde_right_1" x="4" y="178" w="14" h="14"/>
-            <spr name="clyde_right_2" x="21" y="178" w="14" h="14"/>
-            <spr name="clyde_left_1" x="38" y="178" w="14" h="14"/>
-            <spr name="clyde_left_2" x="55" y="178" w="14" h="14"/>
-            <spr name="clyde_up_1" x="72" y="179" w="14" h="13"/>
-            <spr name="clyde_up_2" x="89" y="179" w="14" h="13"/>
-            <spr name="clyde_down_1" x="106" y="178" w="14" h="14"/>
-            <spr name="clyde_down_2" x="123" y="178" w="14" h="14"/>
+          <spr name="clyde_right_1" x="4" y="178" w="14" h="14"/>
+          <spr name="clyde_right_2" x="21" y="178" w="14" h="14"/>
+          <spr name="clyde_left_1" x="38" y="178" w="14" h="14"/>
+          <spr name="clyde_left_2" x="55" y="178" w="14" h="14"/>
+          <spr name="clyde_up_1" x="72" y="179" w="14" h="13"/>
+          <spr name="clyde_up_2" x="89" y="179" w="14" h="13"/>
+          <spr name="clyde_down_1" x="106" y="178" w="14" h="14"/>
+          <spr name="clyde_down_2" x="123" y="178" w="14" h="14"/>
         </dir>
         <spr name="ghost_frightened_1" x="4" y="196" w="14" h="14"/>
         <spr name="ghost_frightened_2" x="21" y="196" w="14" h="14"/>

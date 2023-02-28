@@ -59,7 +59,7 @@ void SpriteHandler::initAnimations() noexcept
             getSprites("pacman_up_little_open", "pacman_up_big_open"), false,
             5};
     m_spriteAnimations["pacman-left"] = SpriteAnimation{
-            getSprites("pacman_left_little_open", "pacman_right_big_open"),
+            getSprites("pacman_left_little_open", "pacman_left_big_open"),
             false, 5};
     m_spriteAnimations["pacman-right"] = SpriteAnimation{
             getSprites("pacman_right_little_open", "pacman_right_big_open"),

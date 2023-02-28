@@ -101,19 +101,22 @@ void Game::handleKeys()
 
 void Game::handleLogic()
 {
-
+    m_pacMan.tick();
+    m_blinky.tick();
 }
 
 void Game::handleDrawing()
 {
     SDL_RenderClear(m_windowRenderer.get());
-    SDL_SetRenderDrawColor(m_windowRenderer.get(), 255,255,255,255);
+    SDL_SetRenderDrawColor(m_windowRenderer.get(), 0,0,0,255);
 
     m_board.draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw entities
     m_pacMan.draw(m_windowRenderer.get(), m_spriteTexture);
     m_blinky.draw(m_windowRenderer.get(), m_spriteTexture);
+
+    SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
     SDL_RenderPresent(m_windowRenderer.get());
     SDL_UpdateWindowSurface(m_window.get());

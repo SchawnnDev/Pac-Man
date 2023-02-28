@@ -17,8 +17,10 @@ class Pacman : public Entity
 public:
 
     Pacman(const Board &p_board, PacmanAnimations p_pacmanAnimations) : Entity(
-            0, 0, 1, Direction::LEFT, p_board),
-            m_animations(std::move(p_pacmanAnimations)) {}
+            getPosition(10, 20), 1, Direction::LEFT, p_board),
+            m_animations(std::move(p_pacmanAnimations)) {
+        currentAnimation() = m_animations.leftAnimation;
+    }
 
     ~Pacman() override;
 
