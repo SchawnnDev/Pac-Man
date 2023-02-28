@@ -11,6 +11,8 @@ enum class BoardCaseType {
     GhostHomeDoorLeft,
     GhostHomeDoorRight,
     GhostHomeDoor,
+    DoorLeft,
+    DoorRight,
     Nothing
 };
 
@@ -48,6 +50,8 @@ public:
     {
         return p_boardCase.type() == BoardCaseType::PointPath
                || p_boardCase.type() == BoardCaseType::BasicPath
-               || p_boardCase.type() == BoardCaseType::Bonus;
+               || p_boardCase.type() == BoardCaseType::Bonus
+               || p_boardCase.type() == BoardCaseType::DoorLeft
+               || p_boardCase.type() == BoardCaseType::DoorRight;
     }
 };

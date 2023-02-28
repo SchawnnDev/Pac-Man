@@ -2,16 +2,29 @@
 
 void Pacman::tick() noexcept {
 
-    if(!Board::isCase(position())) {
+    if(m_state == PacmanState::DYING) {
+        return;
+    }
+
+    if (!Board::isCase(position())) {
         position().moveAt(direction(), speed());
         std::cout << "pacman move to " << position() << std::endl;
     } else {
-        if(canMoveTo(direction()))
-        {
+        if (canMoveTo(direction())) {
             position().moveAt(direction(), speed());
             std::cout << "pacman move to " << position() << std::endl;
         } else {
-            currentAnimation()->freeze() = true;
+            // Check if user is at doors, then teleport
+            if (board().isOnLeftDoor(position())) {
+                auto boardCase = board().grid()[board().rightDoorIndex()];
+                position() = getPosition(boardCase.x(), boardCase.y());
+            } else if (board().isOnRightDoor(position())) {
+                auto boardCase = board().grid()[board().leftDoorIndex()];
+                position() = getPosition(boardCase.x(), boardCase.y());
+            } else {
+                currentAnimation()->freeze() = true;
+            }
+
         }
     }
 

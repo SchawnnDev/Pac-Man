@@ -3,15 +3,16 @@
 #include <string_view>
 #include <array>
 #include <memory>
-#include <SDL.h>
 #include <optional>
+#include <iostream>
+
+#include <SDL.h>
 
 #include "board-case.h"
-#include "utils/constants.h"
 #include "sprite.h"
-#include "utils/position.h"
 #include "sprite-animation-structs.h"
-#include <iostream>
+#include "utils/constants.h"
+#include "utils/position.h"
 
 
 class Board {
@@ -19,62 +20,79 @@ class Board {
     std::string m_filePath;
     BoardResources m_boardResources;
 
+    int m_leftDoorIndex;
+    int m_rightDoorIndex;
 public:
 
-    Board(const std::optional<std::string>& p_filePath, BoardResources p_boardResources);
+    Board(const std::optional<std::string>& p_filePath, BoardResources p_boardResources) noexcept;
 
     ~Board() = default;
 
-    [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const& grid() const { return m_grid; };
+    [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const& grid() const noexcept { return m_grid; };
+    std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() noexcept { return m_grid; };
 
-    std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() { return m_grid; };
+    [[nodiscard]] int const& leftDoorIndex() const { return m_leftDoorIndex; }
+    [[nodiscard]] int const& rightDoorIndex() const { return m_rightDoorIndex; }
 
-    static constexpr bool checkGridCoordinates(Position p_position) {
+    static constexpr bool checkGridCoordinates(Position p_position) noexcept {
         return checkGridCoordinates(p_position.x(), p_position.y());
     }
 
-    static constexpr bool checkGridCoordinates(int x, int y) {
-        return x < 0 || y < 0 || getGridIndex(x, y) < BOARD_SIZE_X * BOARD_SIZE_Y;
+    static constexpr bool checkGridCoordinates(int p_x, int p_y) noexcept {
+        return p_x < 0 || p_y < 0 || getGridIndex(p_x, p_y) < BOARD_SIZE_X * BOARD_SIZE_Y;
     }
 
-    static constexpr size_t getGridIndex(int x, int y) {
-        return BOARD_SIZE_X * y + x;
+    static constexpr size_t getGridIndex(int p_x, int p_y) noexcept {
+        return BOARD_SIZE_X * p_y + p_x;
     }
 
-    [[nodiscard]] inline BoardCase const& getCase(Position p_position) const {
+    [[nodiscard]] inline BoardCase const& getCase(Position p_position) const noexcept {
         return getCase(p_position.x(), p_position.y());
     }
-
-    [[nodiscard]] inline BoardCase const& getCase(int x, int y) const {
-        return m_grid[getGridIndex(x, y)];
+    [[nodiscard]] inline BoardCase const& getCase(int p_x, int p_y) const noexcept {
+        return m_grid[getGridIndex(p_x, p_y)];
     }
-    inline BoardCase &getCase(int x, int y) {
-        return m_grid[getGridIndex(x, y)];
+    inline BoardCase &getCase(int p_x, int p_y) noexcept {
+        return m_grid[getGridIndex(p_x, p_y)];
     }
 
-    void save(const std::string &p_filePath) const;
+    [[nodiscard]] static constexpr bool isOnBoardCase(Position p_position, size_t p_boardCaseIndex) noexcept {
+        auto caseFound = Board::findCase(p_position);
+        if (caseFound.x() == -1 || caseFound.y() == -1) return false;
+        return getGridIndex(caseFound.x(), caseFound.y()) == p_boardCaseIndex;
+    }
 
-    void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
+    [[nodiscard]] constexpr bool isOnLeftDoor(Position p_position) const noexcept {
+        return m_leftDoorIndex >= 0 && isOnBoardCase(p_position, m_leftDoorIndex);
+    }
+
+    [[nodiscard]] constexpr bool isOnRightDoor(Position p_position) const noexcept {
+        return m_rightDoorIndex >= 0 && isOnBoardCase(p_position, m_rightDoorIndex);
+    }
+
+    void save(const std::string &p_filePath) const noexcept;
+
+    void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;
 
     /**
      *
      * @param p_pixelPosition
      * @return
      */
-    static constexpr bool isCase(Position p_pixelPosition) {
+    static constexpr bool isCase(Position p_pixelPosition) noexcept {
         return isCase(p_pixelPosition.x(), p_pixelPosition.y());
     }
 
-    static constexpr bool isCase(int p_pixelX, int p_pixelY) {
+    static constexpr bool isCase(int p_pixelX, int p_pixelY) noexcept {
         return p_pixelX % BOARD_CASE_SIZE_WIDTH == 0 &&
                p_pixelY % BOARD_CASE_SIZE_HEIGHT == 0;
     }
 
-    static constexpr Position findCase(Position p_pixelPosition) {
+    static constexpr Position findCase(Position p_pixelPosition) noexcept {
         return findCase(p_pixelPosition.x(), p_pixelPosition.y());
     }
 
-    static constexpr Position findCase(int p_pixelX, int p_pixelY) {
+    static constexpr Position findCase(int p_pixelX, int p_pixelY) noexcept {
         if (p_pixelX < 0 || p_pixelX > BOARD_SIZE_WIDTH || p_pixelY < 0 ||
             p_pixelY > BOARD_SIZE_HEIGHT)
             return {-1, -1};
@@ -85,11 +103,11 @@ public:
         };
     }
 
-    static constexpr bool isCaseCenter(Position p_pixelPosition) {
+    static constexpr bool isCaseCenter(Position p_pixelPosition) noexcept {
         return isCaseCenter(p_pixelPosition.x(), p_pixelPosition.y());
     }
 
-    static constexpr bool isCaseCenter(int p_pixelX, int p_pixelY) {
+    static constexpr bool isCaseCenter(int p_pixelX, int p_pixelY) noexcept {
         Position foundCase = findCase(p_pixelX, p_pixelY);
         if (foundCase.x() == -1 || foundCase.y() == -1) return false;
         auto pos = getCenteredPosition(foundCase.x(), foundCase.y());

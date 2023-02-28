@@ -53,17 +53,17 @@ void SpriteHandler::initAnimations() noexcept
 
     // Pacman
     m_spriteAnimations["pacman-down"] = SpriteAnimation{
-            getSprites("pacman_down_little_open", "pacman_down_big_open"),
-            false, 5};
+            getSprites("full_pacman", "pacman_down_little_open", "pacman_down_big_open"),
+            false, 1};
     m_spriteAnimations["pacman-up"] = SpriteAnimation{
-            getSprites("pacman_up_little_open", "pacman_up_big_open"), false,
-            5};
+            getSprites("full_pacman", "pacman_up_little_open", "pacman_up_big_open"), false,
+            1};
     m_spriteAnimations["pacman-left"] = SpriteAnimation{
-            getSprites("pacman_left_little_open", "pacman_left_big_open"),
-            false, 5};
+            getSprites("full_pacman", "pacman_left_little_open", "pacman_left_big_open"),
+            false, 1};
     m_spriteAnimations["pacman-right"] = SpriteAnimation{
-            getSprites("pacman_right_little_open", "pacman_right_big_open"),
-            false, 5};
+            getSprites("full_pacman", "pacman_right_little_open", "pacman_right_big_open"),
+            false, 1};
     m_spriteAnimations["pacman-dying"] = SpriteAnimation{
             getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",

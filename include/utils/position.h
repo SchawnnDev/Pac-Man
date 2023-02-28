@@ -72,6 +72,8 @@ public:
         }
     }
 
+    [[nodiscard]] constexpr int distanceTo(Position p_target) const noexcept;
+
 };
 
 constexpr Position getPosition(int p_x, int p_y) noexcept {
@@ -114,4 +116,5 @@ constexpr Direction getOpposite(Direction p_direction) noexcept {
         case Direction::RIGHT:
             return Direction::LEFT;
     }
+    return Direction::LEFT;
 }
