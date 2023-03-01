@@ -105,6 +105,10 @@ void Game::handleKeys()
 void Game::handleLogic()
 {
     m_pacMan.tick();
+
+    if(m_blinky.ghostMode() != GhostMode::Scatter)
+        m_blinky.startScatterMode();
+
     m_blinky.tick();
 }
 

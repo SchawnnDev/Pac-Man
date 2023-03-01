@@ -18,7 +18,7 @@ class Ghost : public Entity
     Position m_target;
 public:
     explicit Ghost(const Board &p_board, GhostMode ghostMode)
-            : Entity({0, 0}, 1, Direction::LEFT, p_board), m_ghostMode(ghostMode),
+            : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(ghostMode),
               m_target{}
     {}
 
@@ -29,12 +29,14 @@ public:
         return EntityType::Ghost;
     }
 
-    [[nodiscard]] GhostMode const& ghostMode() const { return m_ghostMode; };
-    GhostMode &ghostMode() { return m_ghostMode; };
+    [[nodiscard]] GhostMode const& ghostMode() const { return m_ghostMode; }
+    GhostMode &ghostMode() { return m_ghostMode; }
 
-    void startScatterMode();
+    [[nodiscard]] Position const& target() const { return m_target; }
+    Position &target() { return m_target; }
 
-    void startChaseMode();
+    virtual void startScatterMode() = 0;
+    virtual void startChaseMode() = 0;
 
     void startFrightenedMode();
 

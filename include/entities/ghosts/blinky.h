@@ -8,7 +8,7 @@ class Blinky : public Ghost
     BlinkyAnimations m_animations;
 public:
     Blinky(const Board &p_board, BlinkyAnimations p_animations)
-            : Ghost(p_board, GhostMode::Scatter),
+            : Ghost(p_board, GhostMode::House),
               m_animations(std::move(p_animations))
     {
         currentAnimation() = m_animations.leftAnimation;
@@ -20,4 +20,8 @@ public:
     void tick() noexcept override;
 
     void changeAnimation() noexcept override;
+
+    void startScatterMode() noexcept override;
+
+    void startChaseMode() noexcept override;
 };

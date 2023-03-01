@@ -1,14 +1,17 @@
 #pragma once
 
 #include "constants.h"
+#include "utils.h"
+
 #include <SDL_rect.h>
 #include <ostream>
+#include <cmath>
 
 enum class Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    UP = 0,
+    DOWN = 2,
+    LEFT = 3,
+    RIGHT = 1
 };
 
 class Position {
@@ -124,7 +127,7 @@ constexpr Direction getOpposite(Direction p_direction) noexcept {
 }
 
 constexpr Direction getDirectionByAngle(Direction p_direction, int angle) noexcept {
-    return Direction((static_cast<int>(p_direction) - angle / 90) % 4);
+    return Direction(positiveModulo(static_cast<int>(p_direction) - angle / 90, 4));
 }
 
 constexpr int getDirectionPriority(Direction p_direction) noexcept {
@@ -139,4 +142,18 @@ constexpr int getDirectionPriority(Direction p_direction) noexcept {
             return 0;
     }
     return -1;
+}
+
+inline std::string getDirectionName(Direction p_direction) noexcept {
+    switch (p_direction) {
+        case Direction::UP:
+            return "up";
+        case Direction::DOWN:
+            return "down";
+        case Direction::LEFT:
+            return "left";
+        case Direction::RIGHT:
+            return "right";
+    }
+    return "";
 }

@@ -8,11 +8,9 @@ void Pacman::tick() noexcept {
 
     if (!Board::isCase(position())) {
         position().moveAt(direction(), speed());
-        std::cout << "pacman move to " << position() << std::endl;
     } else {
         if (canMoveTo(direction())) {
             position().moveAt(direction(), speed());
-            std::cout << "pacman move to " << position() << std::endl;
         } else {
             // Check if user is at doors, then teleport
             if (board().isOnLeftDoor(position())) {
