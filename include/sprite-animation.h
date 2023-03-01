@@ -17,13 +17,19 @@ class SpriteAnimation {
     int m_spriteCount;
     int m_currentSprite;
 public:
-    SpriteAnimation() = default;
-    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites,bool p_stopAfterLastSprite = false,int p_ticksPerSprite = 1,bool p_activated = true);
+    SpriteAnimation() : m_activated{false}, m_freeze{false}, m_stopAfterLastSprite{false}, m_ticks{0},
+                        m_currentSprite{0}, m_spriteCount{0}, m_ticksPerSprite{0}
+    {}
+
+    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites, bool p_stopAfterLastSprite = false,
+                             int p_ticksPerSprite = 1, bool p_activated = true);
 
     ~SpriteAnimation() = default;
 
     void start();
+
     void stop();
+
     void reset();
 
     /**
@@ -33,13 +39,13 @@ public:
 
     [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
 
-    [[nodiscard]] bool const& activated() const { return m_activated; }
+    [[nodiscard]] bool const &activated() const { return m_activated; }
     bool &activated() { return m_activated; }
 
-    [[nodiscard]] bool const& freeze() const { return m_freeze; }
+    [[nodiscard]] bool const &freeze() const { return m_freeze; }
     bool &freeze() { return m_freeze; }
 
-   // int const &changeTicks() const { return m_changeTicks; };
+    // int const &changeTicks() const { return m_changeTicks; };
 
-   // int &changeTicks() { return m_changeTicks; };
+    // int &changeTicks() { return m_changeTicks; };
 };

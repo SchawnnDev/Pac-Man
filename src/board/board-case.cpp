@@ -1,6 +1,6 @@
 #include "board/board-case.h"
 
-DirectionBoardCasePair getClosestBoardCase(Position p_target, std::span<DirectionBoardCasePair> p_boardCases) noexcept {
+DirectionBoardCasePair getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases) noexcept {
     DirectionBoardCasePair result{Direction::DOWN, std::nullopt};
     int distanceTo = -1;
 

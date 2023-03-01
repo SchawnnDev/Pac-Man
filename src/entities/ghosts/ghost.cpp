@@ -13,4 +13,3 @@ void Ghost::startFrightenedMode() {
 void Ghost::handleScatterMode() {
 
 }
-

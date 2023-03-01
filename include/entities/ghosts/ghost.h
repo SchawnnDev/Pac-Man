@@ -45,4 +45,5 @@ public:
     void handleScatterMode();
     virtual void handleHomeMode() noexcept = 0;
     virtual void handleChaseTarget(const Entity& p_pacman) noexcept = 0;
+
 };

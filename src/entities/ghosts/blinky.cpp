@@ -2,17 +2,20 @@
 
 void Blinky::tick() noexcept {
     auto actualCase = board().getBoardCaseAtPixels(position());
-    auto actualSpeed = speed();
 
-    // TODO: review this (should be 40%)
-    if (actualCase->type() == BoardCaseType::GhostTunnelSlowDown) {
-    //    actualSpeed /= 2;
-    }
+    if(!actualCase) return; // could and should not happen
 
     // On position
     if (!Board::isCase(position())) {
-        position().moveAt(direction(), actualSpeed);
-    } else if (actualCase) { // actualCase cannot be null
+        position().moveAt(direction(), speed());
+    } else { // actualCase cannot be null
+
+        // TODO: review this (should be 40%)
+        if (actualCase->isTunnel()) {
+            speed() = 2;
+        } else if (speed() == 2) {
+            speed() = 4;
+        }
 
         if (direction() == Direction::RIGHT && actualCase->type() == BoardCaseType::DoorRight) {
             auto boardCase = board().grid()[board().leftDoorIndex()];
@@ -30,16 +33,16 @@ void Blinky::tick() noexcept {
             auto rightDirection = getDirectionByAngle(direction(), -90);
             auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
 
-            if (frontCase && (direction() != Direction::UP || frontCase->type() != BoardCaseType::GhostUpForbidden)) {
+
+            if (frontCase && !(direction() == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
                 pairs.emplace_back(direction(), frontCase);
             }
 
-            if (leftCase && (leftDirection != Direction::UP || leftCase->type() != BoardCaseType::GhostUpForbidden)) {
+            if (leftCase && !(leftDirection == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
                 pairs.emplace_back(leftDirection, leftCase);
             }
 
-            if (rightCase &&
-                (rightDirection != Direction::UP || rightCase->type() != BoardCaseType::GhostUpForbidden)) {
+            if (rightCase && !(rightDirection == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
                 pairs.emplace_back(rightDirection, rightCase);
             }
 
@@ -48,9 +51,8 @@ void Blinky::tick() noexcept {
             // foundCase should not be null
             if (foundCase.second) {
                 move(foundCase.first);
-                position().moveAt(direction(), actualSpeed);
+                position().moveAt(direction(), speed());
             }
-
 
         }
 

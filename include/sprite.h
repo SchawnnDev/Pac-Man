@@ -4,14 +4,14 @@
 #include <string>
 
 class Sprite {
-    SDL_Rect m_rect;
+    SDL_Rect m_rect{};
     std::string m_name;
 
 public:
     Sprite() = default;
 
     explicit Sprite(const std::string& name);
-    ~Sprite();
+    ~Sprite() = default;
 
     [[nodiscard]] std::string const& name() const { return m_name; };
     std::string &name() { return m_name; };
