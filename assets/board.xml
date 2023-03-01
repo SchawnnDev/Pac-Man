@@ -66,21 +66,21 @@
 	<case x="0" y="3" type="3" />
 	<case x="1" y="3" type="2" />
 	<case x="2" y="3" type="3" />
-	<case x="3" y="3" type="10" />
+	<case x="3" y="3" type="12" />
 	<case x="4" y="3" type="3" />
 	<case x="5" y="3" type="0" />
 	<case x="6" y="3" type="3" />
-	<case x="7" y="3" type="10" />
+	<case x="7" y="3" type="12" />
 	<case x="8" y="3" type="3" />
 	<case x="9" y="3" type="0" />
 	<case x="10" y="3" type="3" />
 	<case x="11" y="3" type="0" />
 	<case x="12" y="3" type="3" />
-	<case x="13" y="3" type="10" />
+	<case x="13" y="3" type="12" />
 	<case x="14" y="3" type="3" />
 	<case x="15" y="3" type="0" />
 	<case x="16" y="3" type="3" />
-	<case x="17" y="3" type="10" />
+	<case x="17" y="3" type="12" />
 	<case x="18" y="3" type="3" />
 	<case x="19" y="3" type="2" />
 	<case x="20" y="3" type="3" />
@@ -210,31 +210,31 @@
 	<case x="18" y="9" type="3" />
 	<case x="19" y="9" type="3" />
 	<case x="20" y="9" type="3" />
-	<case x="0" y="10" type="10" />
-	<case x="1" y="10" type="10" />
-	<case x="2" y="10" type="10" />
-	<case x="3" y="10" type="10" />
+	<case x="0" y="10" type="12" />
+	<case x="1" y="10" type="12" />
+	<case x="2" y="10" type="12" />
+	<case x="3" y="10" type="12" />
 	<case x="4" y="10" type="3" />
 	<case x="5" y="10" type="0" />
 	<case x="6" y="10" type="3" />
 	<case x="7" y="10" type="1" />
-	<case x="8" y="10" type="1" />
-	<case x="9" y="10" type="1" />
-	<case x="10" y="10" type="1" />
-	<case x="11" y="10" type="1" />
-	<case x="12" y="10" type="1" />
+	<case x="8" y="10" type="10" />
+	<case x="9" y="10" type="10" />
+	<case x="10" y="10" type="10" />
+	<case x="11" y="10" type="10" />
+	<case x="12" y="10" type="10" />
 	<case x="13" y="10" type="1" />
 	<case x="14" y="10" type="3" />
 	<case x="15" y="10" type="0" />
 	<case x="16" y="10" type="3" />
-	<case x="17" y="10" type="10" />
-	<case x="18" y="10" type="10" />
-	<case x="19" y="10" type="10" />
-	<case x="20" y="10" type="10" />
-	<case x="0" y="11" type="10" />
-	<case x="1" y="11" type="10" />
-	<case x="2" y="11" type="10" />
-	<case x="3" y="11" type="10" />
+	<case x="17" y="10" type="12" />
+	<case x="18" y="10" type="12" />
+	<case x="19" y="10" type="12" />
+	<case x="20" y="10" type="12" />
+	<case x="0" y="11" type="12" />
+	<case x="1" y="11" type="12" />
+	<case x="2" y="11" type="12" />
+	<case x="3" y="11" type="12" />
 	<case x="4" y="11" type="3" />
 	<case x="5" y="11" type="0" />
 	<case x="6" y="11" type="3" />
@@ -248,10 +248,10 @@
 	<case x="14" y="11" type="3" />
 	<case x="15" y="11" type="0" />
 	<case x="16" y="11" type="3" />
-	<case x="17" y="11" type="10" />
-	<case x="18" y="11" type="10" />
-	<case x="19" y="11" type="10" />
-	<case x="20" y="11" type="10" />
+	<case x="17" y="11" type="12" />
+	<case x="18" y="11" type="12" />
+	<case x="19" y="11" type="12" />
+	<case x="20" y="11" type="12" />
 	<case x="0" y="12" type="3" />
 	<case x="1" y="12" type="3" />
 	<case x="2" y="12" type="3" />
@@ -274,10 +274,10 @@
 	<case x="19" y="12" type="3" />
 	<case x="20" y="12" type="3" />
 	<case x="0" y="13" type="8" />
-	<case x="1" y="13" type="1" />
-	<case x="2" y="13" type="1" />
-	<case x="3" y="13" type="1" />
-	<case x="4" y="13" type="1" />
+	<case x="1" y="13" type="11" />
+	<case x="2" y="13" type="11" />
+	<case x="3" y="13" type="11" />
+	<case x="4" y="13" type="11" />
 	<case x="5" y="13" type="0" />
 	<case x="6" y="13" type="1" />
 	<case x="7" y="13" type="1" />
@@ -289,10 +289,10 @@
 	<case x="13" y="13" type="1" />
 	<case x="14" y="13" type="1" />
 	<case x="15" y="13" type="0" />
-	<case x="16" y="13" type="1" />
-	<case x="17" y="13" type="1" />
-	<case x="18" y="13" type="1" />
-	<case x="19" y="13" type="1" />
+	<case x="16" y="13" type="11" />
+	<case x="17" y="13" type="11" />
+	<case x="18" y="13" type="11" />
+	<case x="19" y="13" type="11" />
 	<case x="20" y="13" type="9" />
 	<case x="0" y="14" type="3" />
 	<case x="1" y="14" type="3" />
@@ -315,10 +315,10 @@
 	<case x="18" y="14" type="3" />
 	<case x="19" y="14" type="3" />
 	<case x="20" y="14" type="3" />
-	<case x="0" y="15" type="10" />
-	<case x="1" y="15" type="10" />
-	<case x="2" y="15" type="10" />
-	<case x="3" y="15" type="10" />
+	<case x="0" y="15" type="12" />
+	<case x="1" y="15" type="12" />
+	<case x="2" y="15" type="12" />
+	<case x="3" y="15" type="12" />
 	<case x="4" y="15" type="3" />
 	<case x="5" y="15" type="0" />
 	<case x="6" y="15" type="3" />
@@ -332,14 +332,14 @@
 	<case x="14" y="15" type="3" />
 	<case x="15" y="15" type="0" />
 	<case x="16" y="15" type="3" />
-	<case x="17" y="15" type="10" />
-	<case x="18" y="15" type="10" />
-	<case x="19" y="15" type="10" />
-	<case x="20" y="15" type="10" />
-	<case x="0" y="16" type="10" />
-	<case x="1" y="16" type="10" />
-	<case x="2" y="16" type="10" />
-	<case x="3" y="16" type="10" />
+	<case x="17" y="15" type="12" />
+	<case x="18" y="15" type="12" />
+	<case x="19" y="15" type="12" />
+	<case x="20" y="15" type="12" />
+	<case x="0" y="16" type="12" />
+	<case x="1" y="16" type="12" />
+	<case x="2" y="16" type="12" />
+	<case x="3" y="16" type="12" />
 	<case x="4" y="16" type="3" />
 	<case x="5" y="16" type="0" />
 	<case x="6" y="16" type="3" />
@@ -353,10 +353,10 @@
 	<case x="14" y="16" type="3" />
 	<case x="15" y="16" type="0" />
 	<case x="16" y="16" type="3" />
-	<case x="17" y="16" type="10" />
-	<case x="18" y="16" type="10" />
-	<case x="19" y="16" type="10" />
-	<case x="20" y="16" type="10" />
+	<case x="17" y="16" type="12" />
+	<case x="18" y="16" type="12" />
+	<case x="19" y="16" type="12" />
+	<case x="20" y="16" type="12" />
 	<case x="0" y="17" type="3" />
 	<case x="1" y="17" type="3" />
 	<case x="2" y="17" type="3" />
@@ -428,11 +428,11 @@
 	<case x="5" y="20" type="0" />
 	<case x="6" y="20" type="0" />
 	<case x="7" y="20" type="0" />
-	<case x="8" y="20" type="0" />
-	<case x="9" y="20" type="0" />
-	<case x="10" y="20" type="0" />
-	<case x="11" y="20" type="0" />
-	<case x="12" y="20" type="0" />
+	<case x="8" y="20" type="10" />
+	<case x="9" y="20" type="10" />
+	<case x="10" y="20" type="10" />
+	<case x="11" y="20" type="10" />
+	<case x="12" y="20" type="10" />
 	<case x="13" y="20" type="0" />
 	<case x="14" y="20" type="0" />
 	<case x="15" y="20" type="0" />

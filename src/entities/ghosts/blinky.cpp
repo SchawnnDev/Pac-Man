@@ -1,34 +1,56 @@
 #include "entities/ghosts/blinky.h"
 
 void Blinky::tick() noexcept {
+    auto actualCase = board().getBoardCaseAtPixels(position());
+    auto actualSpeed = speed();
 
+    // TODO: review this (should be 40%)
+    if (actualCase->type() == BoardCaseType::GhostTunnelSlowDown) {
+    //    actualSpeed /= 2;
+    }
 
     // On position
     if (!Board::isCase(position())) {
-        position().moveAt(direction(), speed());
-    } else {
+        position().moveAt(direction(), actualSpeed);
+    } else if (actualCase) { // actualCase cannot be null
 
-        // Ghost is on a tile, and he must choose a direction
-        auto actualCase = board().getBoardCaseAtPixels(position());
-        auto frontCase = board().getBoardCaseAtPixels(position(), direction());
-        auto leftDirection = getDirectionByAngle(direction(), 90);
-        auto leftCase = board().getBoardCaseAtPixels(position(), leftDirection);
-        auto rightDirection = getDirectionByAngle(direction(), -90);
-        auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
+        if (direction() == Direction::RIGHT && actualCase->type() == BoardCaseType::DoorRight) {
+            auto boardCase = board().grid()[board().leftDoorIndex()];
+            position() = getPosition(boardCase.x(), boardCase.y());
+        } else if (direction() == Direction::LEFT && actualCase->type() == BoardCaseType::DoorLeft) {
+            auto boardCase = board().grid()[board().rightDoorIndex()];
+            position() = getPosition(boardCase.x(), boardCase.y());
+        } else {
+            auto pairs = std::vector<DirectionBoardCasePair>{};
 
-        // actualCase cannot be null
-        if (actualCase) {
-            auto foundCase = getClosestBoardCase(target(),
-                                                 std::make_pair(direction(), frontCase),
-                                                 std::make_pair(leftDirection, leftCase),
-                                                 std::make_pair(rightDirection, rightCase)
-            );
+            // Ghost is on a tile, and he must choose a direction
+            auto frontCase = board().getBoardCaseAtPixels(position(), direction());
+            auto leftDirection = getDirectionByAngle(direction(), 90);
+            auto leftCase = board().getBoardCaseAtPixels(position(), leftDirection);
+            auto rightDirection = getDirectionByAngle(direction(), -90);
+            auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
+
+            if (frontCase && (direction() != Direction::UP || frontCase->type() != BoardCaseType::GhostUpForbidden)) {
+                pairs.emplace_back(direction(), frontCase);
+            }
+
+            if (leftCase && (leftDirection != Direction::UP || leftCase->type() != BoardCaseType::GhostUpForbidden)) {
+                pairs.emplace_back(leftDirection, leftCase);
+            }
+
+            if (rightCase &&
+                (rightDirection != Direction::UP || rightCase->type() != BoardCaseType::GhostUpForbidden)) {
+                pairs.emplace_back(rightDirection, rightCase);
+            }
+
+            auto foundCase = getClosestBoardCase(target(), pairs);
 
             // foundCase should not be null
             if (foundCase.second) {
                 move(foundCase.first);
-                position().moveAt(direction(), speed());
+                position().moveAt(direction(), actualSpeed);
             }
+
 
         }
 
