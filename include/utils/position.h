@@ -27,11 +27,9 @@ public:
     constexpr Position(int p_x, int p_y) : m_x(p_x), m_y(p_y) {}
 
     [[nodiscard]] constexpr int const &x() const { return m_x; };
-
     constexpr int &x() { return m_x; };
 
     [[nodiscard]] constexpr int const &y() const { return m_y; };
-
     constexpr int &y() { return m_y; };
 
     inline bool operator==(const Position &rhs) const noexcept {

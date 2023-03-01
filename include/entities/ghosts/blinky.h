@@ -24,4 +24,8 @@ public:
     void startScatterMode() noexcept override;
 
     void startChaseMode() noexcept override;
+
+    void handleHomeMode() noexcept override;
+
+    void handleChaseTarget(const Entity& p_pacman) noexcept override;
 };

@@ -106,8 +106,9 @@ void Game::handleLogic()
 {
     m_pacMan.tick();
 
-    if(m_blinky.ghostMode() != GhostMode::Scatter)
-        m_blinky.startScatterMode();
+    m_blinky.startChaseMode();
+
+    m_blinky.handleChaseTarget(m_pacMan);
 
     m_blinky.tick();
 }

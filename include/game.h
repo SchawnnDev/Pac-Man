@@ -35,6 +35,9 @@ class Game
             decltype(&SDL_FreeSurface)> m_spriteSurface{nullptr,
                                                         SDL_FreeSurface};
     SDL_Texture *m_spriteTexture;
+
+    // Game logic
+    int m_level;
 public:
     Game();
 
@@ -59,6 +62,9 @@ public:
 
     [[nodiscard]] Board const& board() const { return m_board; }
     Board &board() { return m_board; }
+
+    [[nodiscard]] int const& level() const { return m_level; }
+    int &level() { return m_level; }
 
     void handleLogic();
 

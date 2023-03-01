@@ -36,7 +36,7 @@ add_executable(${PROJECT_NAME} ""
         src/entities/ghosts/blinky.cpp
         src/utils/position.cpp
         src/game.cpp
-        include/utils/utils.h)
+        include/utils/utils.h include/board/text.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

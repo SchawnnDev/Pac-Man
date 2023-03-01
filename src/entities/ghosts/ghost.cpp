@@ -10,11 +10,7 @@ void Ghost::startFrightenedMode() {
 
 }
 
-void Ghost::startScatterMode() {
-
-}
-
-void Ghost::startChaseMode() {
+void Ghost::handleScatterMode() {
 
 }
 

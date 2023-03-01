@@ -14,6 +14,8 @@ enum class BoardCaseType {
     GhostHomeDoor,
     DoorLeft,
     DoorRight,
+    GhostUpForbidden,
+    GhostTunnelSlowDown,
     Nothing
 };
 
@@ -73,7 +75,7 @@ auto getClosestBoardCase(Position p_target, Args... p_boardCases) noexcept {
     int distanceTo = -1;
 
     for (const std::pair<Direction, std::optional<BoardCase>> &pair: boardCases) {
-        auto boardCase = pair.second;
+        auto& boardCase = pair.second;
         if (!boardCase || !BoardCase::isPracticable(boardCase.value())) continue;
 
         auto distance = boardCase.value().position().distanceTo(p_target);

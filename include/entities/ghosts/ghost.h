@@ -35,11 +35,14 @@ public:
     [[nodiscard]] Position const& target() const { return m_target; }
     Position &target() { return m_target; }
 
-    virtual void startScatterMode() = 0;
-    virtual void startChaseMode() = 0;
+    virtual void startScatterMode() noexcept = 0;
+    virtual void startChaseMode() noexcept = 0;
 
     void startFrightenedMode();
 
     void startEatenMode();
 
+    void handleScatterMode();
+    virtual void handleHomeMode() noexcept = 0;
+    virtual void handleChaseTarget(const Entity& p_pacman) noexcept = 0;
 };
