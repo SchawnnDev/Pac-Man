@@ -51,6 +51,9 @@ Game::Game()
     m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
+
+    SDL_SetColorKey(m_spriteSurface.get(), true,  SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
+
 }
 
 Game::~Game()

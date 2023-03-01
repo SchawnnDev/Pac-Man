@@ -70,6 +70,9 @@ public:
         return m_rightDoorIndex >= 0 && isOnBoardCase(p_position, m_rightDoorIndex);
     }
 
+    [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position, Direction p_direction) const noexcept;
+    [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position) const noexcept;
+
     void save(const std::string &p_filePath) const noexcept;
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;

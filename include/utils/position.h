@@ -72,7 +72,11 @@ public:
         }
     }
 
-    [[nodiscard]] constexpr int distanceTo(Position p_target) const noexcept;
+    [[nodiscard]] constexpr int distanceTo(Position p_target) const noexcept {
+        auto x = p_target.x() - m_x;
+        auto y = p_target.y() - m_y;
+        return x * x + y * y;
+    }
 
 };
 
@@ -117,4 +121,22 @@ constexpr Direction getOpposite(Direction p_direction) noexcept {
             return Direction::LEFT;
     }
     return Direction::LEFT;
+}
+
+constexpr Direction getDirectionByAngle(Direction p_direction, int angle) noexcept {
+    return Direction((static_cast<int>(p_direction) - angle / 90) % 4);
+}
+
+constexpr int getDirectionPriority(Direction p_direction) noexcept {
+    switch (p_direction) {
+        case Direction::UP:
+            return 3;
+        case Direction::DOWN:
+            return 1;
+        case Direction::LEFT:
+            return 2;
+        case Direction::RIGHT:
+            return 0;
+    }
+    return -1;
 }
