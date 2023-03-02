@@ -19,6 +19,7 @@ class Entity {
     Direction m_direction;
     Direction m_lastDirection;
     Position m_position;
+    std::optional<BoardCase> m_currentCase;
     int m_speed; // speed in pixel per tick
 public:
 
@@ -30,6 +31,7 @@ public:
     , m_speed{p_speed}
     , m_board{p_board}
     , m_lastDirection{p_direction}
+    , m_currentCase{std::nullopt}
     {}
 
     virtual ~Entity() = default;
@@ -54,6 +56,9 @@ public:
 
     [[nodiscard]] Position const& position() const { return m_position; };
     Position &position() { return m_position; };
+
+    [[nodiscard]] std::optional<BoardCase> const& currentCase() const { return m_currentCase; };
+    std::optional<BoardCase> &currentCase() { return m_currentCase; };
 
     [[nodiscard]] int const& speed() const { return m_speed; }
     int &speed() { return m_speed; }

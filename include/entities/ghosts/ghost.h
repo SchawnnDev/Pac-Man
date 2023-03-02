@@ -16,11 +16,16 @@ class Ghost : public Entity
 {
     GhostMode m_ghostMode;
     Position m_target;
+    GhostAnimations m_ghostAnimations;
 public:
-    explicit Ghost(const Board &p_board, GhostMode ghostMode)
-            : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(ghostMode),
-              m_target{}
-    {}
+    Ghost(const Board &p_board, GhostMode p_ghostMode, GhostAnimations p_ghostAnimations)
+            : Entity({0, 0}, 4, Direction::LEFT, p_board)
+            , m_ghostMode(p_ghostMode)
+            , m_target{}
+            , m_ghostAnimations{std::move(p_ghostAnimations)}
+    {
+        currentAnimation() = m_ghostAnimations.leftAnimation;
+    }
 
     ~Ghost() override;
 
@@ -37,13 +42,14 @@ public:
 
     virtual void startScatterMode() noexcept = 0;
     virtual void startChaseMode() noexcept = 0;
-
-    void startFrightenedMode();
-
-    void startEatenMode();
-
-    void handleScatterMode();
     virtual void handleHomeMode() noexcept = 0;
     virtual void handleChaseTarget(const Entity& p_pacman) noexcept = 0;
+
+    void startFrightenedMode() noexcept;
+    void startEatenMode() noexcept;
+    void handleScatterMode() noexcept;
+    void handlePathFinding() noexcept;
+    void handleMovement() noexcept;
+    void changeAnimation() noexcept override;
 
 };

@@ -11,7 +11,7 @@ struct PacmanAnimations final
     SpriteAnimation dyingAnimation;
 };
 
-struct BlinkyAnimations final
+struct GhostAnimations final
 {
     SpriteAnimation upAnimation;
     SpriteAnimation downAnimation;

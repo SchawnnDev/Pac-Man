@@ -4,7 +4,6 @@
 
 void Game::start()
 {
-
     if (m_state != GameState::WaitingStart)
         return;
 
@@ -28,11 +27,15 @@ void Game::end()
 
 
 Game::Game()
-        : m_spriteHandler("./assets/pacman.sprites"),
-          m_board("./assets/board.xml", {m_spriteHandler.boardResources()}),
-          m_pacMan(m_board, {m_spriteHandler.pacmanAnimations()}),
-          m_blinky(m_board, {m_spriteHandler.blinkyAnimations()}),
-          m_state{GameState::WaitingStart}
+        : m_spriteHandler{"./assets/pacman.sprites"},
+          m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
+          m_pacMan{m_board, m_spriteHandler.pacmanAnimations()},
+          m_blinky{m_board, m_spriteHandler.blinkyAnimations()},
+          m_clyde{m_board, m_spriteHandler.clydeAnimations()},
+          m_pinky{m_board, m_spriteHandler.pinkyAnimations()},
+          m_inky{m_board, m_spriteHandler.inkyAnimations()},
+          m_state{GameState::WaitingStart},
+          m_level{1}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -106,11 +109,27 @@ void Game::handleLogic()
 {
     m_pacMan.tick();
 
-    m_blinky.startChaseMode();
+    // Scatter test
+    m_blinky.startScatterMode();
+    m_clyde.startScatterMode();
+    m_pinky.startScatterMode();
+    m_inky.startScatterMode();
 
     m_blinky.handleChaseTarget(m_pacMan);
+    m_clyde.handleChaseTarget(m_pacMan);
+    m_pinky.handleChaseTarget(m_pacMan);
+    m_inky.handleChaseTarget(m_pacMan);
+
+    // Chase test
+    // m_blinky.startChaseMode();
+    // m_clyde.startChaseMode();
+    // m_pinky.startChaseMode();
+    // m_inky.startChaseMode();
 
     m_blinky.tick();
+    m_clyde.tick();
+    m_pinky.tick();
+    m_inky.tick();
 }
 
 void Game::handleDrawing()
@@ -123,6 +142,9 @@ void Game::handleDrawing()
     // Draw entities
     m_pacMan.draw(m_windowRenderer.get(), m_spriteTexture);
     m_blinky.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_clyde.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_pinky.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_inky.draw(m_windowRenderer.get(), m_spriteTexture);
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 

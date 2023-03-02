@@ -6,6 +6,9 @@
 #include "entities/pacman.h"
 #include "entities/ghosts/blinky.h"
 #include "sprite-handler.h"
+#include "entities/ghosts/clyde.h"
+#include "entities/ghosts/pinky.h"
+#include "entities/ghosts/inky.h"
 
 enum class GameState
 {
@@ -24,6 +27,9 @@ class Game
     // Entities
     Pacman m_pacMan;
     Blinky m_blinky;
+    Clyde m_clyde;
+    Pinky m_pinky;
+    Inky m_inky;
 
     // SDL
     std::unique_ptr<SDL_Window,
@@ -37,7 +43,7 @@ class Game
     SDL_Texture *m_spriteTexture;
 
     // Game logic
-    int m_level;
+    int m_level{};
 public:
     Game();
 

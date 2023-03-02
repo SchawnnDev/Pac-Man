@@ -109,6 +109,7 @@ SpriteHandler::SpriteHandler(std::string_view path) noexcept
 
 void SpriteHandler::initStructs() noexcept
 {
+    // Pacman
     m_pacmanAnimations = {
             m_spriteAnimations["pacman-up"],
             m_spriteAnimations["pacman-down"],
@@ -117,13 +118,33 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["pacman-dying"],
     };
 
+    // Ghosts
     m_blinkyAnimations = {
             m_spriteAnimations["blinky-up"],
             m_spriteAnimations["blinky-down"],
             m_spriteAnimations["blinky-left"],
             m_spriteAnimations["blinky-right"],
     };
+    m_pinkyAnimations = {
+            m_spriteAnimations["pinky-up"],
+            m_spriteAnimations["pinky-down"],
+            m_spriteAnimations["pinky-left"],
+            m_spriteAnimations["pinky-right"],
+    };
+    m_inkyAnimations = {
+            m_spriteAnimations["inky-up"],
+            m_spriteAnimations["inky-down"],
+            m_spriteAnimations["inky-left"],
+            m_spriteAnimations["inky-right"],
+    };
+    m_clydeAnimations = {
+            m_spriteAnimations["clyde-up"],
+            m_spriteAnimations["clyde-down"],
+            m_spriteAnimations["clyde-left"],
+            m_spriteAnimations["clyde-right"],
+    };
 
+    // Board
     m_boardResources = {
             m_spriteAnimations["bonus"],
             getSprite("point").value(),
@@ -134,7 +155,7 @@ void SpriteHandler::initStructs() noexcept
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
 {
     m_spriteAnimations[name + "-down"] = SpriteAnimation{
-            getSprites("blinky_down_1", "blinky_down_2"),
+            getSprites(name + "_down_1", name + "_down_2"),
             false, 3};
     m_spriteAnimations[name + "-up"] = SpriteAnimation{
             getSprites(name + "_up_1", name + "_up_2"), false,

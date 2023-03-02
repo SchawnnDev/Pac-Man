@@ -17,7 +17,10 @@ class SpriteHandler {
     std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
     // structs
     PacmanAnimations m_pacmanAnimations;
-    BlinkyAnimations m_blinkyAnimations;
+    GhostAnimations m_blinkyAnimations;
+    GhostAnimations m_clydeAnimations;
+    GhostAnimations m_pinkyAnimations;
+    GhostAnimations m_inkyAnimations;
     BoardResources m_boardResources;
 public:
 
@@ -41,8 +44,13 @@ public:
 
     [[nodiscard]] PacmanAnimations const& pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 
-    [[nodiscard]] BlinkyAnimations const& blinkyAnimations() const noexcept { return m_blinkyAnimations; }
+    // Ghosts
+    [[nodiscard]] GhostAnimations const& blinkyAnimations() const noexcept { return m_blinkyAnimations; }
+    [[nodiscard]] GhostAnimations const& clydeAnimations() const noexcept { return m_clydeAnimations; }
+    [[nodiscard]] GhostAnimations const& inkyAnimations() const noexcept { return m_inkyAnimations; }
+    [[nodiscard]] GhostAnimations const& pinkyAnimations() const noexcept { return m_pinkyAnimations; }
 
+    // Board
     [[nodiscard]] BoardResources const& boardResources() const noexcept { return m_boardResources; }
 
     template <typename... Args>
