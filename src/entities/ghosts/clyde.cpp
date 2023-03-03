@@ -1,6 +1,7 @@
 #include "entities/ghosts/clyde.h"
 
 void Clyde::tick() noexcept {
+    if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
 
     // handle path finding & movements

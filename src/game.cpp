@@ -25,7 +25,6 @@ void Game::end()
     m_state = GameState::End;
 }
 
-
 Game::Game()
         : m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_spriteHandler.boardResources()},

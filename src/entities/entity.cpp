@@ -1,7 +1,7 @@
 #include "entities/entity.h"
 
 void Entity::move(Direction newDirection) {
-
+    if(m_freeze) return;
     // If entity walks in the same direction, check if
     // Only be able to change position if the entity is one middle of case
     if (!canMoveTo(newDirection) || !Board::isCase(m_position)
@@ -29,4 +29,20 @@ bool Entity::canMoveTo(Direction p_direction) const {
     auto nextCasePos = caseFound.getPositionAt(p_direction);
     if (!Board::checkGridCoordinates(nextCasePos)) return false;
     return BoardCase::isPracticable(board().getCase(nextCasePos));
+}
+
+void Entity::freeze() {
+    if(m_freeze) return;
+    m_freeze = true;
+    if(m_currentAnimation) {
+        m_currentAnimation->freeze() = true;
+    }
+}
+
+void Entity::unfreeze() {
+    if(!m_freeze) return;
+    m_freeze = true;
+    if(m_currentAnimation) {
+        m_currentAnimation->freeze() = false;
+    }
 }

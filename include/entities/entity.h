@@ -21,6 +21,7 @@ class Entity {
     Position m_position;
     std::optional<BoardCase> m_currentCase;
     int m_speed; // speed in pixel per tick
+    bool m_freeze;
 public:
 
     Entity() = delete;
@@ -32,6 +33,7 @@ public:
     , m_board{p_board}
     , m_lastDirection{p_direction}
     , m_currentCase{std::nullopt}
+    , m_freeze{false}
     {}
 
     virtual ~Entity() = default;
@@ -63,11 +65,16 @@ public:
     [[nodiscard]] int const& speed() const { return m_speed; }
     int &speed() { return m_speed; }
 
+    [[nodiscard]] bool const& freezed() const { return m_freeze; }
+
     void move(Direction newDirection);
 
     void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
 
     [[nodiscard]] bool canMoveTo(Direction p_direction) const;
+
+    void freeze();
+    void unfreeze();
 
 
 };

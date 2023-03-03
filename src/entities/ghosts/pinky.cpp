@@ -1,6 +1,7 @@
 #include "entities/ghosts/pinky.h"
 
 void Pinky::tick() noexcept {
+    if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
 
     // handle path finding & movements

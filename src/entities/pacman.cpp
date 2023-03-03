@@ -1,6 +1,7 @@
 #include "entities/pacman.h"
 
 void Pacman::tick() noexcept {
+    if(freezed()) return;
 
     if(m_state == PacmanState::DYING) {
         return;

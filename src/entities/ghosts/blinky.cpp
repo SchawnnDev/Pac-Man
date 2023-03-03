@@ -1,6 +1,7 @@
 #include "entities/ghosts/blinky.h"
 
 void Blinky::tick() noexcept {
+    if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
 
     // handle path finding & movements

@@ -1,6 +1,7 @@
 #include "entities/ghosts/inky.h"
 
 void Inky::tick() noexcept {
+    if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
 
     // handle path finding & movements
