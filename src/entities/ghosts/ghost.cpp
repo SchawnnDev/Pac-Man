@@ -29,15 +29,15 @@ void Ghost::handlePathFinding() noexcept {
     auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
 
 
-    if (frontCase && !(direction() == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
+    if (frontCase && !(direction() == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
         pairs.emplace_back(direction(), frontCase);
     }
 
-    if (leftCase && !(leftDirection == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
+    if (leftCase && !(leftDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
         pairs.emplace_back(leftDirection, leftCase);
     }
 
-    if (rightCase && !(rightDirection == Direction::UP && actualCase->type() == BoardCaseType::GhostUpForbidden)) {
+    if (rightCase && !(rightDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
         pairs.emplace_back(rightDirection, rightCase);
     }
 
@@ -55,7 +55,7 @@ void Ghost::handleMovement() noexcept {
     auto currentSpeed = speed();
 
     // TODO: review this (should be 40%)
-    if (actualCase->isTunnel()) {
+    if (actualCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
         currentSpeed /= 2;
     }
 

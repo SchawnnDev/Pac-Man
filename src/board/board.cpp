@@ -16,7 +16,7 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
         {
     for (int x = 0; x < BOARD_SIZE_X; ++x)
         for (int y = 0; y < BOARD_SIZE_Y; ++y)
-            m_grid[getGridIndex(x, y)] = {x, y, BoardCaseType::PointPath, std::nullopt};
+            m_grid[getGridIndex(x, y)] = {x, y, BoardCaseType::PointPath, 0, std::nullopt};
 
     if (!p_filePath)
         return;
@@ -30,13 +30,14 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
         return;
     }
 
-    pugi::xpath_node_set tools_with_timeout = doc.select_nodes(".//case");
+    auto tools_with_timeout = doc.select_nodes(".//case");
 
     for (pugi::xpath_node node: tools_with_timeout) {
         auto x = node.node().attribute("x").as_int();
         auto y = node.node().attribute("y").as_int();
         auto &boardCase = getCase(x, y);
         boardCase.type() = BoardCaseType(node.node().attribute("type").as_int());
+        boardCase.flags() = node.node().attribute("flags").as_int(0);
 
         switch (boardCase.type()) {
             case BoardCaseType::Bonus:
@@ -51,7 +52,6 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
             default:
                 break;
         }
-
 
     }
 
@@ -135,12 +135,6 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
                 case BoardCaseType::Wall:
                     break;
                 case BoardCaseType::GhostHome:
-                    break;
-                case BoardCaseType::GhostHomeDoorLeft:
-                    break;
-                case BoardCaseType::GhostHomeDoorRight:
-                    break;
-                case BoardCaseType::GhostHomeDoor:
                     break;
                 case BoardCaseType::Nothing:
                     break;
