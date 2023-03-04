@@ -13,16 +13,17 @@ void Game::start()
 
     while (m_state != GameState::End)
     {
+        clock.begin_frame();
+
         handleEvents();
         handleKeys();
-
         handleLogic();
         handleDrawing();
 
-        clock.tick();
+        clock.end_frame();
 
-        auto delta_t_us = clock.last_delta();
-        auto wait_ms = (1000u / FRAMERATE) - static_cast<uint>(delta_t_us * 1000);
+        const auto ms_per_frame = (1000.0 / FRAMERATE);
+        auto wait_ms = (int)(ms_per_frame - std::min(clock.last_delta(), ms_per_frame));
         SDL_Delay(wait_ms);
     }
 }

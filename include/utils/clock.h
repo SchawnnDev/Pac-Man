@@ -4,7 +4,8 @@
 
 namespace pacman {
 
-    class Clock final {
+    class Clock final
+    {
         using source_clock = std::chrono::steady_clock;
         using time_point = source_clock::time_point;
         using duration = source_clock::duration;
@@ -12,27 +13,28 @@ namespace pacman {
         const time_point m_start;
 
         uint64_t m_frame_count{};
-        time_point m_last_tick{};
         duration m_last_delta{};
-
-        static constexpr double to_seconds(duration du) noexcept {
-            return std::chrono::duration_cast<std::chrono::microseconds>(
-                    du).count() *
-                   static_cast<double>(std::chrono::microseconds::period::den);
-        }
+        time_point m_frame_start{};
 
     public:
         Clock() noexcept
-                : m_start{source_clock::now()} {}
+                : m_start{ source_clock::now() }
+                , m_frame_start{ m_start }
+        { }
 
         [[nodiscard]] inline uint64_t frame_count() const noexcept { return m_frame_count; }
-        [[nodiscard]] inline double since_start() const noexcept { return to_seconds(source_clock::now() - m_start); }
-        [[nodiscard]] inline double last_delta() const noexcept { return to_seconds(m_last_delta); }
+        [[nodiscard]] inline uint64_t since_start() const noexcept { return std::chrono::duration_cast<std::chrono::milliseconds>(source_clock::now() - m_start).count(); }
+        [[nodiscard]] inline double last_delta() const noexcept { return std::chrono::duration<double, std::milli>{m_last_delta}.count(); }
 
-        void tick() noexcept {
-            auto now = source_clock::now();
-            m_last_delta = now - m_last_tick;
-            m_last_tick = now;
+        void begin_frame() noexcept
+        {
+            m_frame_start = source_clock::now();
+        }
+
+        void end_frame() noexcept
+        {
+            const auto now = source_clock::now();
+            m_last_delta = now - m_frame_start;
 
             m_frame_count++;
         }
