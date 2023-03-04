@@ -1,5 +1,7 @@
 #include "entities/pacman.h"
 
+using namespace pacman;
+
 void Pacman::tick() noexcept {
     if(freezed()) return;
 

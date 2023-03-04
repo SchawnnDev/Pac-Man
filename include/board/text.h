@@ -1,5 +1,7 @@
 #pragma once
 
-class Text {
-    
-};
+namespace pacman {
+    class Text {
+
+    };
+}

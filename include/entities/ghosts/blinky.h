@@ -4,24 +4,26 @@
 #include "sprite-animation-structs.h"
 #include "entities/pacman.h"
 
-class Blinky : public Ghost
-{
-public:
-    Blinky(Board const&p_board, Pacman const &p_pacman, GhostAnimations const& p_animations)
-            : Ghost(p_board, p_pacman, GhostMode::House, p_animations)
-    {
-        position() = getPosition(10, 10);
-    }
+namespace pacman {
 
-    ~Blinky() override = default;
+    class Blinky : public Ghost {
+    public:
+        Blinky(Board const &p_board, Pacman const &p_pacman, GhostAnimations const &p_animations)
+                : Ghost(p_board, p_pacman, GhostMode::House, p_animations) {
+            position() = getPosition(10, 10);
+        }
 
-    void tick() noexcept override;
+        ~Blinky() override = default;
 
-    void startScatterMode() noexcept override;
+        void tick() noexcept override;
 
-    void startChaseMode() noexcept override;
+        void startScatterMode() noexcept override;
 
-    void handleHomeMode() noexcept override;
+        void startChaseMode() noexcept override;
 
-    void handleChaseTarget() noexcept;
-};
+        void handleHomeMode() noexcept override;
+
+        void handleChaseTarget() noexcept;
+    };
+
+}

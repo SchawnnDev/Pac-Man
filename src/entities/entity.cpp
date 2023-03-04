@@ -1,5 +1,7 @@
 #include "entities/entity.h"
 
+using namespace pacman;
+
 void Entity::move(Direction newDirection) {
     if(m_freeze) return;
     // If entity walks in the same direction, check if

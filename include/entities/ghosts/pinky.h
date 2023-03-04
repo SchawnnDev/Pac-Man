@@ -3,24 +3,26 @@
 #include "ghost.h"
 #include "sprite-animation-structs.h"
 
-class Pinky : public Ghost
-{
-public:
-    Pinky( Board const&p_board, Pacman const &p_pacman,  GhostAnimations const& p_animations)
-            : Ghost(p_board, p_pacman, GhostMode::House, p_animations)
-    {
-        position() = getPosition(10, 10);
-    }
+namespace pacman {
 
-    ~Pinky() override = default;
+    class Pinky : public Ghost {
+    public:
+        Pinky(Board const &p_board, Pacman const &p_pacman, GhostAnimations const &p_animations)
+                : Ghost(p_board, p_pacman, GhostMode::House, p_animations) {
+            position() = getPosition(10, 10);
+        }
 
-    void tick() noexcept override;
+        ~Pinky() override = default;
 
-    void startScatterMode() noexcept override;
+        void tick() noexcept override;
 
-    void startChaseMode() noexcept override;
+        void startScatterMode() noexcept override;
 
-    void handleHomeMode() noexcept override;
+        void startChaseMode() noexcept override;
 
-    void handleChaseTarget() noexcept override;
-};
+        void handleHomeMode() noexcept override;
+
+        void handleChaseTarget() noexcept override;
+    };
+
+}

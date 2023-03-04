@@ -1,5 +1,7 @@
 #include "entities/ghosts/blinky.h"
 
+using namespace pacman;
+
 void Blinky::tick() noexcept {
     if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());

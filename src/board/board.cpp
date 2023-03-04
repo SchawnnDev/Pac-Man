@@ -6,6 +6,8 @@
 #include "board/board.h"
 #include "sprite-handler.h"
 
+using namespace pacman;
+
 Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept
         : m_filePath{p_filePath.value_or(std::string{})}, m_boardResources{std::move(p_boardResources)},
           m_leftDoorIndex{-1}, m_rightDoorIndex{-1} {

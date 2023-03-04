@@ -2,25 +2,27 @@
 
 #include "sprite-animation.h"
 
-struct PacmanAnimations final
-{
-    SpriteAnimation upAnimation;
-    SpriteAnimation downAnimation;
-    SpriteAnimation leftAnimation;
-    SpriteAnimation rightAnimation;
-    SpriteAnimation dyingAnimation;
-};
+namespace pacman {
 
-struct GhostAnimations final
-{
-    SpriteAnimation upAnimation;
-    SpriteAnimation downAnimation;
-    SpriteAnimation leftAnimation;
-    SpriteAnimation rightAnimation;
-};
+    struct PacmanAnimations final {
+        SpriteAnimation upAnimation;
+        SpriteAnimation downAnimation;
+        SpriteAnimation leftAnimation;
+        SpriteAnimation rightAnimation;
+        SpriteAnimation dyingAnimation;
+    };
 
-struct BoardResources final {
-    SpriteAnimation bonusAnimation;
-    Sprite pointSprite;
-    Sprite emptyBoardSprite;
-};
+    struct GhostAnimations final {
+        SpriteAnimation upAnimation;
+        SpriteAnimation downAnimation;
+        SpriteAnimation leftAnimation;
+        SpriteAnimation rightAnimation;
+    };
+
+    struct BoardResources final {
+        SpriteAnimation bonusAnimation;
+        Sprite pointSprite;
+        Sprite emptyBoardSprite;
+    };
+
+}

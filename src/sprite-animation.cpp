@@ -1,6 +1,8 @@
 #include <iostream>
 #include "sprite-animation.h"
 
+using namespace pacman;
+
 SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
                                  bool p_stopAfterLastSprite,
                                  int p_ticksPerSprite,

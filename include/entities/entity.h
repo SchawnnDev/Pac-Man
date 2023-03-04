@@ -7,74 +7,80 @@
 #include "utils/position.h"
 #include "board/board.h"
 
-enum class EntityType {
-    Banana,
-    Ghost,
-    Fruit
-};
+namespace pacman {
 
-class Entity {
-    Board m_board;
-    std::optional<SpriteAnimation> m_currentAnimation;
-    Direction m_direction;
-    Direction m_lastDirection;
-    Position m_position;
-    std::optional<BoardCase> m_currentCase;
-    int m_speed; // speed in pixel per tick
-    bool m_freeze;
-public:
+    enum class EntityType {
+        Banana,
+        Ghost,
+        Fruit
+    };
 
-    Entity() = delete;
+    class Entity {
+        Board m_board;
+        std::optional<SpriteAnimation> m_currentAnimation;
+        Direction m_direction;
+        Direction m_lastDirection;
+        Position m_position;
+        std::optional<BoardCase> m_currentCase;
+        int m_speed; // speed in pixel per tick
+        bool m_freeze;
+    public:
 
-    Entity(Position p_position, int p_speed, Direction p_direction, const Board& p_board)
-    : m_position{p_position}
-    , m_direction{p_direction}
-    , m_speed{p_speed}
-    , m_board{p_board}
-    , m_lastDirection{p_direction}
-    , m_currentCase{std::nullopt}
-    , m_freeze{false}
-    {}
+        Entity() = delete;
 
-    virtual ~Entity() = default;
+        Entity(Position p_position, int p_speed, Direction p_direction, const Board &p_board)
+                : m_position{p_position}, m_direction{p_direction}, m_speed{p_speed}, m_board{p_board},
+                  m_lastDirection{p_direction}, m_currentCase{std::nullopt}, m_freeze{false} {}
 
-    virtual void tick() noexcept = 0;
-    virtual void changeAnimation() noexcept = 0;
+        virtual ~Entity() = default;
 
-    // wow, modern (uses cpp move semantics)
-    [[nodiscard]] virtual EntityType entityType() const = 0;
+        virtual void tick() noexcept = 0;
 
-    [[nodiscard]] std::optional<SpriteAnimation> const& currentAnimation() const { return m_currentAnimation; };
-    std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
+        virtual void changeAnimation() noexcept = 0;
 
-    [[nodiscard]] Board const& board() const { return m_board; };
-    Board &board() { return m_board; };
+        // wow, modern (uses cpp move semantics)
+        [[nodiscard]] virtual EntityType entityType() const = 0;
 
-    [[nodiscard]] Direction direction() const { return m_direction; };
-    Direction &direction() { return m_direction; };
+        [[nodiscard]] std::optional<SpriteAnimation> const &currentAnimation() const { return m_currentAnimation; };
 
-    [[nodiscard]] Direction lastDirection() const { return m_lastDirection; };
-    Direction &lastDirection() { return m_lastDirection; };
+        std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
-    [[nodiscard]] Position position() const { return m_position; };
-    Position &position() { return m_position; };
+        [[nodiscard]] Board const &board() const { return m_board; };
 
-    [[nodiscard]] std::optional<BoardCase> const& currentCase() const { return m_currentCase; };
-    std::optional<BoardCase> &currentCase() { return m_currentCase; };
+        Board &board() { return m_board; };
 
-    [[nodiscard]] int speed() const { return m_speed; }
-    int &speed() { return m_speed; }
+        [[nodiscard]] Direction direction() const { return m_direction; };
 
-    [[nodiscard]] bool const& freezed() const { return m_freeze; }
+        Direction &direction() { return m_direction; };
 
-    void move(Direction newDirection);
+        [[nodiscard]] Direction lastDirection() const { return m_lastDirection; };
 
-    void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
+        Direction &lastDirection() { return m_lastDirection; };
 
-    [[nodiscard]] bool canMoveTo(Direction p_direction) const;
+        [[nodiscard]] Position position() const { return m_position; };
 
-    void freeze();
-    void unfreeze();
+        Position &position() { return m_position; };
 
+        [[nodiscard]] std::optional<BoardCase> const &currentCase() const { return m_currentCase; };
 
-};
+        std::optional<BoardCase> &currentCase() { return m_currentCase; };
+
+        [[nodiscard]] int speed() const { return m_speed; }
+
+        int &speed() { return m_speed; }
+
+        [[nodiscard]] bool const &freezed() const { return m_freeze; }
+
+        void move(Direction newDirection);
+
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture);
+
+        [[nodiscard]] bool canMoveTo(Direction p_direction) const;
+
+        void freeze();
+
+        void unfreeze();
+
+    };
+
+}

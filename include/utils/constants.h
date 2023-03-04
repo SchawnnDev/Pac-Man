@@ -2,14 +2,14 @@
 
 #include <cstddef>
 
-constinit const size_t BOARD_SIZE_X = 21;
-#define BOARD_SIZE_Y 27
-#define BOARD_SIZE_WIDTH 672
-#define BOARD_SIZE_HEIGHT 864
-#define WINDOW_SIZE_WIDTH 672
-#define WINDOW_SIZE_HEIGHT 864
-#define BOARD_CASE_SIZE_WIDTH (BOARD_SIZE_WIDTH / BOARD_SIZE_X)
-#define BOARD_CASE_SIZE_HEIGHT (BOARD_SIZE_HEIGHT / BOARD_SIZE_Y)
-#define FRAMERATE 60
-#define ENTITY_WIDTH 13
-#define ENTITY_HEIGHT 14
+constinit const int BOARD_SIZE_X = 21;
+constinit const int BOARD_SIZE_Y = 27;
+constinit const int BOARD_SIZE_WIDTH = 672;
+constinit const int BOARD_SIZE_HEIGHT = 864;
+constinit const int WINDOW_SIZE_WIDTH = 672;
+constinit const int WINDOW_SIZE_HEIGHT = 864;
+constinit const int BOARD_CASE_SIZE_WIDTH(BOARD_SIZE_WIDTH / BOARD_SIZE_X);
+constinit const int BOARD_CASE_SIZE_HEIGHT(BOARD_SIZE_HEIGHT / BOARD_SIZE_Y);
+constinit const int FRAMERATE = 60;
+constinit const int ENTITY_WIDTH = 13;
+constinit const int ENTITY_HEIGHT = 14;

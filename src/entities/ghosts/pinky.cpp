@@ -1,5 +1,7 @@
 #include "entities/ghosts/pinky.h"
 
+using namespace pacman;
+
 void Pinky::tick() noexcept {
     if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());

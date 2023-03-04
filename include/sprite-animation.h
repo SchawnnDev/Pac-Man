@@ -7,45 +7,50 @@
 
 #include "sprite.h"
 
-class SpriteAnimation {
-    std::vector<Sprite> m_sprites;
-    bool m_activated;
-    bool m_freeze;
-    bool m_stopAfterLastSprite;
-    int m_ticksPerSprite;
-    int m_ticks;
-    int m_spriteCount;
-    int m_currentSprite;
-public:
-    SpriteAnimation() : m_activated{false}, m_freeze{false}, m_stopAfterLastSprite{false}, m_ticks{0},
-                        m_currentSprite{0}, m_spriteCount{0}, m_ticksPerSprite{0}
-    {}
+namespace pacman {
 
-    explicit SpriteAnimation(std::vector<Sprite> &&p_sprites, bool p_stopAfterLastSprite = false,
-                             int p_ticksPerSprite = 1, bool p_activated = true);
+    class SpriteAnimation {
+        std::vector<Sprite> m_sprites;
+        bool m_activated;
+        bool m_freeze;
+        bool m_stopAfterLastSprite;
+        int m_ticksPerSprite;
+        int m_ticks;
+        int m_spriteCount;
+        int m_currentSprite;
+    public:
+        SpriteAnimation() : m_activated{false}, m_freeze{false}, m_stopAfterLastSprite{false}, m_ticks{0},
+                            m_currentSprite{0}, m_spriteCount{0}, m_ticksPerSprite{0} {}
 
-    ~SpriteAnimation() = default;
+        explicit SpriteAnimation(std::vector<Sprite> &&p_sprites, bool p_stopAfterLastSprite = false,
+                                 int p_ticksPerSprite = 1, bool p_activated = true);
 
-    void start();
+        ~SpriteAnimation() = default;
 
-    void stop();
+        void start();
 
-    void reset();
+        void stop();
 
-    /**
-     * @return Sprite to display
-     */
-    std::optional<Sprite> display();
+        void reset();
 
-    [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
+        /**
+         * @return Sprite to display
+         */
+        std::optional<Sprite> display();
 
-    [[nodiscard]] bool const &activated() const { return m_activated; }
-    bool &activated() { return m_activated; }
+        [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
 
-    [[nodiscard]] bool const &freeze() const { return m_freeze; }
-    bool &freeze() { return m_freeze; }
+        [[nodiscard]] bool const &activated() const { return m_activated; }
 
-    // int const &changeTicks() const { return m_changeTicks; };
+        bool &activated() { return m_activated; }
 
-    // int &changeTicks() { return m_changeTicks; };
-};
+        [[nodiscard]] bool const &freeze() const { return m_freeze; }
+
+        bool &freeze() { return m_freeze; }
+
+        // int const &changeTicks() const { return m_changeTicks; };
+
+        // int &changeTicks() { return m_changeTicks; };
+    };
+
+}

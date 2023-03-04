@@ -1,5 +1,7 @@
 #include "entities/ghosts/ghost.h"
 
+using namespace pacman;
+
 Ghost::~Ghost() = default;
 
 void Ghost::startEatenMode() noexcept {

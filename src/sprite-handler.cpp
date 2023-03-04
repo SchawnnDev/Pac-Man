@@ -4,6 +4,8 @@
 
 #include "sprite-handler.h"
 
+using namespace pacman;
+
 void SpriteHandler::importSprites(std::string_view path) noexcept
 {
     std::cout << "Importing sprite positions: " << path << std::endl;

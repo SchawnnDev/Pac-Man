@@ -1,5 +1,7 @@
 #include "entities/ghosts/inky.h"
 
+using namespace pacman;
+
 void Inky::tick() noexcept {
     if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());

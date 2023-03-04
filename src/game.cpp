@@ -2,6 +2,8 @@
 
 #include "game.h"
 
+using namespace pacman;
+
 void Game::start()
 {
     if (m_state != GameState::WaitingStart)

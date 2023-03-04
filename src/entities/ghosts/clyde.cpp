@@ -1,5 +1,7 @@
 #include "entities/ghosts/clyde.h"
 
+using namespace pacman;
+
 void Clyde::tick() noexcept {
     if(freezed()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
