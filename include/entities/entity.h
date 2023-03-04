@@ -50,19 +50,19 @@ public:
     [[nodiscard]] Board const& board() const { return m_board; };
     Board &board() { return m_board; };
 
-    [[nodiscard]] Direction const& direction() const { return m_direction; };
+    [[nodiscard]] Direction direction() const { return m_direction; };
     Direction &direction() { return m_direction; };
 
-    [[nodiscard]] Direction const& lastDirection() const { return m_lastDirection; };
+    [[nodiscard]] Direction lastDirection() const { return m_lastDirection; };
     Direction &lastDirection() { return m_lastDirection; };
 
-    [[nodiscard]] Position const& position() const { return m_position; };
+    [[nodiscard]] Position position() const { return m_position; };
     Position &position() { return m_position; };
 
     [[nodiscard]] std::optional<BoardCase> const& currentCase() const { return m_currentCase; };
     std::optional<BoardCase> &currentCase() { return m_currentCase; };
 
-    [[nodiscard]] int const& speed() const { return m_speed; }
+    [[nodiscard]] int speed() const { return m_speed; }
     int &speed() { return m_speed; }
 
     [[nodiscard]] bool const& freezed() const { return m_freeze; }

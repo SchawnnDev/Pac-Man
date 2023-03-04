@@ -9,6 +9,8 @@
 #include "entities/ghosts/clyde.h"
 #include "entities/ghosts/pinky.h"
 #include "entities/ghosts/inky.h"
+#include "utils/clock.h"
+
 
 enum class GameState
 {

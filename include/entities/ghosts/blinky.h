@@ -2,12 +2,13 @@
 
 #include "ghost.h"
 #include "sprite-animation-structs.h"
+#include "entities/pacman.h"
 
 class Blinky : public Ghost
 {
 public:
-    Blinky(const Board &p_board, const GhostAnimations& p_animations)
-            : Ghost(p_board, GhostMode::House, p_animations)
+    Blinky(Board const&p_board, Pacman const &p_pacman, GhostAnimations const& p_animations)
+            : Ghost(p_board, p_pacman, GhostMode::House, p_animations)
     {
         position() = getPosition(10, 10);
     }
@@ -22,5 +23,5 @@ public:
 
     void handleHomeMode() noexcept override;
 
-    void handleChaseTarget(std::convertible_to<Entity> auto ...indices) noexcept override;
+    void handleChaseTarget() noexcept;
 };

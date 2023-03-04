@@ -2,6 +2,7 @@
 
 #include "utils/position.h"
 #include "entities/entity.h"
+#include "entities/pacman.h"
 
 enum class GhostMode
 {
@@ -16,13 +17,17 @@ class Ghost : public Entity
 {
     GhostMode m_ghostMode;
     Position m_target;
-    GhostAnimations m_ghostAnimations;
+    GhostAnimations const& m_ghostAnimations;
+    Pacman const& m_pacman;
+protected:
+    [[nodiscard]] Pacman const& pacman() const { return m_pacman; }
 public:
-    Ghost(const Board &p_board, GhostMode p_ghostMode, GhostAnimations p_ghostAnimations)
+    Ghost(Board const&p_board, Pacman const& p_pacman, GhostMode p_ghostMode, GhostAnimations const& p_ghostAnimations)
             : Entity({0, 0}, 4, Direction::LEFT, p_board)
             , m_ghostMode(p_ghostMode)
             , m_target{}
-            , m_ghostAnimations{std::move(p_ghostAnimations)}
+            , m_ghostAnimations{p_ghostAnimations}
+            , m_pacman{p_pacman}
     {
         currentAnimation() = m_ghostAnimations.leftAnimation;
     }
@@ -43,7 +48,7 @@ public:
     virtual void startScatterMode() noexcept = 0;
     virtual void startChaseMode() noexcept = 0;
     virtual void handleHomeMode() noexcept = 0;
-    virtual void handleChaseTarget(std::span<const Entity> p_targets) noexcept = 0;
+    virtual void handleChaseTarget() noexcept = 0;
 
     void startFrightenedMode() noexcept;
     void startEatenMode() noexcept;

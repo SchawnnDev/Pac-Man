@@ -6,8 +6,8 @@
 class Clyde : public Ghost
 {
 public:
-    Clyde(const Board &p_board, const GhostAnimations& p_animations)
-            : Ghost(p_board, GhostMode::House, p_animations)
+    Clyde(Board const& p_board, Pacman const &p_pacman,  GhostAnimations const& p_animations)
+            : Ghost(p_board, p_pacman, GhostMode::House, p_animations)
     {
         position() = getPosition(10, 10);
     }
@@ -22,5 +22,5 @@ public:
 
     void handleHomeMode() noexcept override;
 
-    void handleChaseTarget(std::span<const Entity> p_targets) noexcept override;
+    void handleChaseTarget() noexcept override;
 };

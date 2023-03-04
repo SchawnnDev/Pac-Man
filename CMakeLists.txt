@@ -42,7 +42,7 @@ add_executable(${PROJECT_NAME} ""
         include/entities/ghosts/clyde.h
         include/entities/ghosts/inky.h
         include/entities/ghosts/pinky.h
-        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp)
+        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

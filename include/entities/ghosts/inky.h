@@ -5,9 +5,13 @@
 
 class Inky : public Ghost
 {
+
+    Ghost const& m_blinky;
+
 public:
-    Inky(const Board &p_board, const GhostAnimations& p_animations)
-            : Ghost(p_board, GhostMode::House, p_animations)
+    Inky(Board const& p_board, Pacman const &p_pacman, Ghost const& p_blinky, GhostAnimations const& p_animations)
+            : Ghost(p_board, p_pacman, GhostMode::House, p_animations)
+            , m_blinky{p_blinky}
     {
         position() = getPosition(10, 10);
     }
@@ -22,5 +26,5 @@ public:
 
     void handleHomeMode() noexcept override;
 
-    void handleChaseTarget(std::span<const Entity> p_targets) noexcept override;
+    void handleChaseTarget() noexcept override;
 };

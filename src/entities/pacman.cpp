@@ -15,10 +15,10 @@ void Pacman::tick() noexcept {
         } else {
             // Check if user is at doors, then teleport
             if (board().isOnLeftDoor(position())) {
-                auto boardCase = board().grid()[board().rightDoorIndex()];
+                auto const& boardCase = board().grid()[board().rightDoorIndex()];
                 position() = getPosition(boardCase.x(), boardCase.y());
             } else if (board().isOnRightDoor(position())) {
-                auto boardCase = board().grid()[board().leftDoorIndex()];
+                auto const& boardCase = board().grid()[board().leftDoorIndex()];
                 position() = getPosition(boardCase.x(), boardCase.y());
             } else {
                 currentAnimation()->freeze() = true;

@@ -19,11 +19,11 @@ void Inky::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Inky::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
+void Inky::handleChaseTarget() noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
-    auto currentPosition = Board::findCase(position());
-    auto position = Board::findCase(p_pacman.position());
+/*    auto currentPosition = Board::findCase(position());
+    auto position = Board::findCase(pacman().position());
 
     if(position.distanceTo(currentPosition) >= 64) // distance without sqrt => 8^2
     {
@@ -31,7 +31,7 @@ void Inky::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
     } else {
         // Clyde switches to scatter when pacman is located at 8 or more cases
         target() = {0, BOARD_SIZE_Y + 1};
-    }
+    }*/
 
 }
 

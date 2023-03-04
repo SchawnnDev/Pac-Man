@@ -1,6 +1,8 @@
 #pragma once
 
-#define BOARD_SIZE_X 21
+#include <cstddef>
+
+constinit const size_t BOARD_SIZE_X = 21;
 #define BOARD_SIZE_Y 27
 #define BOARD_SIZE_WIDTH 672
 #define BOARD_SIZE_HEIGHT 864

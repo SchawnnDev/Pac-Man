@@ -19,15 +19,16 @@ void Clyde::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Clyde::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
+void Clyde::handleChaseTarget() noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
+    auto pacmanPosition = pacman().position();
     auto currentPosition = Board::findCase(position());
-    auto position = Board::findCase(p_pacman.position());
+    auto position = Board::findCase(pacmanPosition);
 
     if(position.distanceTo(currentPosition) >= 64) // distance without sqrt => 8^2
     {
-        target() = p_pacman.position();
+        target() = pacmanPosition;
     } else {
         // Clyde switches to scatter when pacman is located at 8 or more cases
         target() = {0, BOARD_SIZE_Y + 1};

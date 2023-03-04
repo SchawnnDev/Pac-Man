@@ -7,6 +7,8 @@ void Game::start()
     if (m_state != GameState::WaitingStart)
         return;
 
+    Clock clock{};
+
     while (m_state != GameState::End)
     {
         handleEvents();
@@ -15,9 +17,12 @@ void Game::start()
         handleLogic();
         handleDrawing();
 
-        SDL_Delay(1000 / FRAMERATE);
-    }
+        clock.tick();
 
+        auto delta_t_µs = clock.last_delta();
+        auto wait_ms = (1000u / FRAMERATE) - static_cast<uint>(delta_t_µs * 1000);
+        SDL_Delay(wait_ms);
+    }
 }
 
 void Game::end()
@@ -29,10 +34,10 @@ Game::Game()
         : m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
           m_pacMan{m_board, m_spriteHandler.pacmanAnimations()},
-          m_blinky{m_board, m_spriteHandler.blinkyAnimations()},
-          m_clyde{m_board, m_spriteHandler.clydeAnimations()},
-          m_pinky{m_board, m_spriteHandler.pinkyAnimations()},
-          m_inky{m_board, m_spriteHandler.inkyAnimations()},
+          m_blinky{m_board, m_pacMan, m_spriteHandler.blinkyAnimations()},
+          m_clyde{m_board, m_pacMan, m_spriteHandler.clydeAnimations()},
+          m_pinky{m_board, m_pacMan, m_spriteHandler.pinkyAnimations()},
+          m_inky{m_board, m_pacMan, m_blinky, m_spriteHandler.inkyAnimations()},
           m_state{GameState::WaitingStart},
           m_level{1}
 {
@@ -109,15 +114,16 @@ void Game::handleLogic()
     m_pacMan.tick();
 
     // Scatter test
+    // std::foreach
     m_blinky.startScatterMode();
     m_clyde.startScatterMode();
     m_pinky.startScatterMode();
     m_inky.startScatterMode();
 
-    m_blinky.handleChaseTarget(m_pacMan);
-    m_clyde.handleChaseTarget(m_pacMan);
-    m_pinky.handleChaseTarget(m_pacMan);
-    m_inky.handleChaseTarget(m_pacMan);
+    m_blinky.handleChaseTarget();
+    m_clyde.handleChaseTarget();
+    m_pinky.handleChaseTarget();
+    m_inky.handleChaseTarget();
 
     // Chase test
     // m_blinky.startChaseMode();
