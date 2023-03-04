@@ -22,5 +22,5 @@ public:
 
     void handleHomeMode() noexcept override;
 
-    void handleChaseTarget(const Entity& p_pacman) noexcept override;
+    void handleChaseTarget(std::convertible_to<Entity> auto ...indices) noexcept override;
 };

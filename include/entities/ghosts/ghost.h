@@ -43,7 +43,7 @@ public:
     virtual void startScatterMode() noexcept = 0;
     virtual void startChaseMode() noexcept = 0;
     virtual void handleHomeMode() noexcept = 0;
-    virtual void handleChaseTarget(const Entity& p_pacman) noexcept = 0;
+    virtual void handleChaseTarget(std::span<const Entity> p_targets) noexcept = 0;
 
     void startFrightenedMode() noexcept;
     void startEatenMode() noexcept;

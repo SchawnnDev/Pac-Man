@@ -19,9 +19,9 @@ void Blinky::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Blinky::handleChaseTarget(const Entity &p_pacman) noexcept {
-    if (ghostMode() != GhostMode::Chase) return;
-    target() = Board::findCase(p_pacman.position());
+void Blinky::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
+    if (ghostMode() != GhostMode::Chase || p_targets.size() == 0) return;
+    target() = Board::findCase(p_targets..position());
 }
 
 void Blinky::handleHomeMode() noexcept {}

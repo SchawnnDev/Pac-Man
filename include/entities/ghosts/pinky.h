@@ -22,5 +22,5 @@ public:
 
     void handleHomeMode() noexcept override;
 
-    void handleChaseTarget(const Entity& p_pacman) noexcept override;
+    void handleChaseTarget(std::span<const Entity> p_targets) noexcept override;
 };

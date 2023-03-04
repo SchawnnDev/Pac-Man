@@ -19,8 +19,8 @@ void Pinky::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Pinky::handleChaseTarget(const Entity &p_pacman) noexcept {
-    if (ghostMode() != GhostMode::Chase) return;
+void Pinky::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
+    if (ghostMode() != GhostMode::Chase || p_targets.size()) return;
 
     auto position = Board::findCase(p_pacman.position());
     // move 4 cases in the front of blinky

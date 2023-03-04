@@ -19,7 +19,7 @@ void Inky::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Inky::handleChaseTarget(const Entity &p_pacman) noexcept {
+void Inky::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
     auto currentPosition = Board::findCase(position());

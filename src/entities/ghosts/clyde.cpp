@@ -19,7 +19,7 @@ void Clyde::startChaseMode() noexcept {
     ghostMode() = GhostMode::Chase;
 }
 
-void Clyde::handleChaseTarget(const Entity &p_pacman) noexcept {
+void Clyde::handleChaseTarget(std::span<const Entity> p_targets) noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
     auto currentPosition = Board::findCase(position());
