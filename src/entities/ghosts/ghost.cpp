@@ -41,7 +41,7 @@ void Ghost::handlePathFinding() noexcept {
         pairs.emplace_back(rightDirection, rightCase);
     }
 
-    auto foundCase = getClosestBoardCase(target(), pairs);
+    auto foundCase = pacman::getClosestBoardCase(target(), pairs);
 
     // foundCase should not be null
     if (foundCase.second) {

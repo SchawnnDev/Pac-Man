@@ -21,8 +21,8 @@ namespace pacman {
         std::string m_filePath;
         BoardResources m_boardResources;
 
-        int m_leftDoorIndex;
-        int m_rightDoorIndex;
+        size_t m_leftDoorIndex;
+        size_t m_rightDoorIndex;
     public:
 
         Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept;
@@ -34,9 +34,9 @@ namespace pacman {
 
         std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() noexcept { return m_grid; };
 
-        [[nodiscard]] int const &leftDoorIndex() const { return m_leftDoorIndex; }
+        [[nodiscard]] size_t leftDoorIndex() const { return m_leftDoorIndex; }
 
-        [[nodiscard]] int const &rightDoorIndex() const { return m_rightDoorIndex; }
+        [[nodiscard]] size_t rightDoorIndex() const { return m_rightDoorIndex; }
 
         static constexpr bool checkGridCoordinates(Position p_position) noexcept {
             return checkGridCoordinates(p_position.x(), p_position.y());
@@ -69,11 +69,11 @@ namespace pacman {
         }
 
         [[nodiscard]] constexpr bool isOnLeftDoor(Position p_position) const noexcept {
-            return m_leftDoorIndex >= 0 && isOnBoardCase(p_position, m_leftDoorIndex);
+            return isOnBoardCase(p_position, m_leftDoorIndex);
         }
 
         [[nodiscard]] constexpr bool isOnRightDoor(Position p_position) const noexcept {
-            return m_rightDoorIndex >= 0 && isOnBoardCase(p_position, m_rightDoorIndex);
+            return isOnBoardCase(p_position, m_rightDoorIndex);
         }
 
         [[nodiscard]] std::optional<BoardCase>

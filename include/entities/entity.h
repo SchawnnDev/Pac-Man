@@ -69,7 +69,7 @@ namespace pacman {
 
         int &speed() { return m_speed; }
 
-        [[nodiscard]] bool const &freezed() const { return m_freeze; }
+        [[nodiscard]] bool freezed() const { return m_freeze; }
 
         void move(Direction newDirection);
 

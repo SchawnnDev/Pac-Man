@@ -9,8 +9,11 @@
 using namespace pacman;
 
 Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept
-        : m_filePath{p_filePath.value_or(std::string{})}, m_boardResources{std::move(p_boardResources)},
-          m_leftDoorIndex{-1}, m_rightDoorIndex{-1} {
+        : m_filePath{p_filePath.value_or(std::string{})}
+        , m_boardResources{std::move(p_boardResources)}
+        , m_leftDoorIndex{0}
+        , m_rightDoorIndex{0}
+        {
     for (int x = 0; x < BOARD_SIZE_X; ++x)
         for (int y = 0; y < BOARD_SIZE_Y; ++y)
             m_grid[getGridIndex(x, y)] = {x, y, BoardCaseType::PointPath, std::nullopt};

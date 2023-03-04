@@ -78,7 +78,7 @@ namespace pacman {
 
     using DirectionBoardCasePair = std::pair<Direction, std::optional<BoardCase>>;
 
-    [[nodiscard]] static DirectionBoardCasePair
+    [[nodiscard]] DirectionBoardCasePair
     getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases) noexcept;
 
 

@@ -61,7 +61,7 @@ namespace pacman {
 
         void handleKeys();
 
-        [[nodiscard]] GameState const &gameState() const { return m_state; }
+        [[nodiscard]] GameState gameState() const { return m_state; }
 
         GameState &gameState() { return m_state; }
 
@@ -73,7 +73,7 @@ namespace pacman {
 
         Board &board() { return m_board; }
 
-        [[nodiscard]] int const &level() const { return m_level; }
+        [[nodiscard]] int level() const { return m_level; }
 
         int &level() { return m_level; }
 

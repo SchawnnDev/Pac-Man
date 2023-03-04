@@ -21,8 +21,8 @@ void Game::start()
 
         clock.tick();
 
-        auto delta_t_µs = clock.last_delta();
-        auto wait_ms = (1000u / FRAMERATE) - static_cast<uint>(delta_t_µs * 1000);
+        auto delta_t_us = clock.last_delta();
+        auto wait_ms = (1000u / FRAMERATE) - static_cast<uint>(delta_t_us * 1000);
         SDL_Delay(wait_ms);
     }
 }

@@ -40,11 +40,11 @@ namespace pacman {
 
         [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
 
-        [[nodiscard]] bool const &activated() const { return m_activated; }
+        [[nodiscard]] bool activated() const { return m_activated; }
 
         bool &activated() { return m_activated; }
 
-        [[nodiscard]] bool const &freeze() const { return m_freeze; }
+        [[nodiscard]] bool freeze() const { return m_freeze; }
 
         bool &freeze() { return m_freeze; }
 

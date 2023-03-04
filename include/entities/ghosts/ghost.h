@@ -36,7 +36,7 @@ namespace pacman {
             return EntityType::Ghost;
         }
 
-        [[nodiscard]] GhostMode const &ghostMode() const { return m_ghostMode; }
+        [[nodiscard]] GhostMode ghostMode() const { return m_ghostMode; }
 
         GhostMode &ghostMode() { return m_ghostMode; }
 
