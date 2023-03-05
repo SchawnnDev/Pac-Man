@@ -24,17 +24,18 @@ void Inky::startChaseMode() noexcept {
 void Inky::handleChaseTarget() noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
-/*    auto currentPosition = Board::findCase(position());
     auto position = Board::findCase(pacman().position());
+    // move 2 cases in the front of pacman
+    position.moveAt(pacman().direction(), 2);
 
-    if(position.distanceTo(currentPosition) >= 64) // distance without sqrt => 8^2
-    {
-        target() = p_pacman.position();
-    } else {
-        // Clyde switches to scatter when pacman is located at 8 or more cases
-        target() = {0, BOARD_SIZE_Y + 1};
-    }*/
+    // move 2 cases to the left if pacman is going up (specific)
+    if (pacman().direction() == Direction::UP) {
+        position.moveAt(Direction::LEFT, 2);
+    }
 
+    // Calculate the vector between above point and blinky's position
+    // Rotate vec2 by 180 degrees (just switch signs)
+    target() = m_blinky.position().subtract(position).rotateVec(180);
 }
 
 void Inky::handleHomeMode() noexcept {}

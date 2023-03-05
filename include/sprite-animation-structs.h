@@ -17,6 +17,7 @@ namespace pacman {
         SpriteAnimation downAnimation;
         SpriteAnimation leftAnimation;
         SpriteAnimation rightAnimation;
+        SpriteAnimation frightenedAnimation;
     };
 
     struct BoardResources final {

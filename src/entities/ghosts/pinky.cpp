@@ -25,7 +25,7 @@ void Pinky::handleChaseTarget() noexcept {
     if (ghostMode() != GhostMode::Chase) return;
 
     auto position = Board::findCase(pacman().position());
-    // move 4 cases in the front of blinky
+    // move 4 cases in the front of pacman
     position.moveAt(pacman().direction(), 4);
 
     // move 4 cases to the left if pacman is going up (specific)

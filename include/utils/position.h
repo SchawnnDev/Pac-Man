@@ -45,6 +45,18 @@ namespace pacman {
             return !(rhs == *this);
         }
 
+        [[nodiscard]] constexpr Position subtract(Position position) const noexcept {
+            return {m_x - position.x(), m_y - position.y()};
+        }
+
+        [[nodiscard]] constexpr Position rotateVec(int angle) const noexcept {
+            auto cs = std::cos(angle);
+            auto sn = std::sin(angle);
+            auto rX = m_x * cs - m_y * sn;
+            auto rY = m_x * sn + m_y * cs;
+            return {(int) rX, (int) rY};
+        }
+
         [[nodiscard]] constexpr Position getPositionAt(Direction p_direction) const noexcept {
             switch (p_direction) {
                 case Direction::UP:
