@@ -53,10 +53,6 @@ namespace pacman {
 
         [[nodiscard]] Position position() const noexcept { return {m_x, m_y}; }
 
-        [[nodiscard]] inline bool isTunnel() const noexcept {
-            return m_type == BoardCaseType::DoorLeft || m_type == BoardCaseType::DoorRight;
-        }
-
         static inline bool isPracticable(BoardCase p_boardCase) noexcept {
             return isTypePracticable(p_boardCase.type());
         }

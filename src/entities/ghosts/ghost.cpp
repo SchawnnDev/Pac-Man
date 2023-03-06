@@ -16,8 +16,8 @@ void Ghost::handleScatterMode() noexcept{
 
 }
 
-void Ghost::handlePathFinding() noexcept {
-    if(!currentCase()) return;
+std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
+    if(!currentCase()) return std::nullopt;
     auto& actualCase = currentCase();
     auto pairs = std::vector<DirectionBoardCasePair>{};
 
@@ -47,35 +47,85 @@ void Ghost::handlePathFinding() noexcept {
     if (foundCase.second) {
         move(foundCase.first);
     }
+
+    return foundCase.second;
 }
 
 void Ghost::handleMovement() noexcept {
     if(!currentCase()) return;
-    auto& actualCase = currentCase();
+    auto const& actualCase = currentCase();
     auto currentSpeed = speed();
-
-    // TODO: review this (should be 40%)
-    if (actualCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
-        currentSpeed /= 2;
-    }
 
     if (Board::isCase(position())) { // actualCase cannot be null
 
         if (direction() == Direction::RIGHT && actualCase->type() == BoardCaseType::DoorRight) {
-            auto boardCase = board().grid()[board().leftDoorIndex()];
+            auto& boardCase = board().grid()[board().leftDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
             return;
-        } else if (direction() == Direction::LEFT && actualCase->type() == BoardCaseType::DoorLeft) {
-            auto boardCase = board().grid()[board().rightDoorIndex()];
+        }
+
+        if (direction() == Direction::LEFT && actualCase->type() == BoardCaseType::DoorLeft) {
+            auto& boardCase = board().grid()[board().rightDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
             return;
-        } else {
-            handlePathFinding();
+        }
+
+
+        auto const& newCase = handlePathFinding();
+
+        // TODO: convert to fct
+        // TODO: review this (should be 40%)
+        if (newCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
+            currentSpeed /= 2;
+        }
+
+    } else {
+
+        if (actualCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
+            currentSpeed /= 2;
         }
 
     }
 
+/*
+    auto next = Board::findCase(position().getPositionAt(direction(), currentSpeed));
+*/
+
     position().moveAt(direction(), currentSpeed);
+
+/*    if(next == actualCase->position())
+        return;
+
+    next.toPixels();
+
+    switch (direction()) {
+        case Direction::UP:
+
+            if (position().y() < next.y()) {
+                position().y() = next.y();
+            }
+
+            break;
+        case Direction::DOWN:
+
+            if (position().y() > next.y()) {
+                position().y() = next.y();
+            }
+
+            break;
+        case Direction::LEFT:
+
+            if (position().x() < next.x()) {
+                position().x() = next.x();
+            }
+
+            break;
+        case Direction::RIGHT:
+            if (position().x() > next.x()) {
+                position().x() = next.x();
+            }
+            break;
+    }*/
 
 }
 

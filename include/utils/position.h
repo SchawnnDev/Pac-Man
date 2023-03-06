@@ -69,16 +69,16 @@ namespace pacman {
             return result;
         }
 
-        [[nodiscard]] constexpr Position getPositionAt(Direction p_direction) const noexcept {
+        [[nodiscard]] constexpr Position getPositionAt(Direction p_direction, int count) const noexcept {
             switch (p_direction) {
                 case Direction::UP:
-                    return {m_x, m_y - 1};
+                    return {m_x, m_y - count};
                 case Direction::DOWN:
-                    return {m_x, m_y + 1};
+                    return {m_x, m_y + count};
                 case Direction::LEFT:
-                    return {m_x - 1, m_y};
+                    return {m_x - count, m_y};
                 case Direction::RIGHT:
-                    return {m_x + 1, m_y};
+                    return {m_x + count, m_y};
             }
 
             return {-1, -1};
@@ -105,6 +105,11 @@ namespace pacman {
             auto x = p_target.x() - m_x;
             auto y = p_target.y() - m_y;
             return x * x + y * y;
+        }
+
+        constexpr void toPixels() noexcept {
+            m_x *= BOARD_CASE_SIZE_WIDTH;
+            m_y *= BOARD_CASE_SIZE_HEIGHT;
         }
 
     };

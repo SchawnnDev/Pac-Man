@@ -28,7 +28,7 @@ void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
 bool Entity::canMoveTo(Direction p_direction) const {
     auto caseFound = Board::findCase(position());
     if (caseFound.x() == -1 || caseFound.y() == -1) return false;
-    auto nextCasePos = caseFound.getPositionAt(p_direction);
+    auto nextCasePos = caseFound.getPositionAt(p_direction, 1);
     if (!Board::checkGridCoordinates(nextCasePos)) return false;
     return BoardCase::isPracticable(board().getCase(nextCasePos));
 }

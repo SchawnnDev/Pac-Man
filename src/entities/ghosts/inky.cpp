@@ -37,7 +37,7 @@ void Inky::handleChaseTarget() noexcept {
     // Rotate vec2 by 180 degrees (just switch signs)
     auto newTarget = Board::findCase(m_blinky.position()).rotateVec(position, 180);
     target() = newTarget;
-    std::cout << "inky new target: " << newTarget << std::endl;
+    //std::cout << "inky new target: " << newTarget << std::endl;
 }
 
 void Inky::handleHomeMode() noexcept {}

@@ -58,7 +58,7 @@ namespace pacman {
 
         void handleScatterMode() noexcept;
 
-        void handlePathFinding() noexcept;
+        std::optional<BoardCase> handlePathFinding() noexcept;
 
         void handleMovement() noexcept;
 
