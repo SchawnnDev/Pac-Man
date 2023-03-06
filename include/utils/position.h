@@ -49,12 +49,24 @@ namespace pacman {
             return {m_x - position.x(), m_y - position.y()};
         }
 
-        [[nodiscard]] constexpr Position rotateVec(int angle) const noexcept {
-            auto cs = std::cos(angle);
+        [[nodiscard]] constexpr Position rotateVec(const Position pivot, int angle) const
+        {
             auto sn = std::sin(angle);
-            auto rX = m_x * cs - m_y * sn;
-            auto rY = m_x * sn + m_y * cs;
-            return {(int) rX, (int) rY};
+            auto cn = std::cos(angle);
+            Position result{m_x, m_y};
+
+            // translate point back to origin
+            result.x() -= pivot.x();
+            result.y() -= pivot.y();
+
+            // rotate point
+            auto newX = (int) (result.x() * cn - result.y() * sn);
+            auto newY = (int) (result.x() * sn + result.y() * cn);
+
+            // translate point back
+            result.x() = newX + pivot.x();
+            result.x() = newY + pivot.x();
+            return result;
         }
 
         [[nodiscard]] constexpr Position getPositionAt(Direction p_direction) const noexcept {

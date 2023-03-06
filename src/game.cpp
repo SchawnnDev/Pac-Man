@@ -118,21 +118,21 @@ void Game::handleLogic()
 
     // Scatter test
     // std::foreach
-    m_blinky.startScatterMode();
+/*    m_blinky.startScatterMode();
     m_clyde.startScatterMode();
     m_pinky.startScatterMode();
-    m_inky.startScatterMode();
+    m_inky.startScatterMode();*/
+
+    // Chase test
+    m_blinky.startChaseMode();
+    m_clyde.startChaseMode();
+    m_pinky.startChaseMode();
+    m_inky.startChaseMode();
 
     m_blinky.handleChaseTarget();
     m_clyde.handleChaseTarget();
     m_pinky.handleChaseTarget();
     m_inky.handleChaseTarget();
-
-    // Chase test
-    // m_blinky.startChaseMode();
-    // m_clyde.startChaseMode();
-    // m_pinky.startChaseMode();
-    // m_inky.startChaseMode();
 
     m_blinky.tick();
     m_clyde.tick();

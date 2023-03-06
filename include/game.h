@@ -44,7 +44,7 @@ namespace pacman {
         SDL_Texture *m_spriteTexture;
 
         // Game logic
-        int m_level{};
+        int m_level;
     public:
         Game();
 

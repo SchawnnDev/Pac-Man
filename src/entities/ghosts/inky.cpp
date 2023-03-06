@@ -35,7 +35,9 @@ void Inky::handleChaseTarget() noexcept {
 
     // Calculate the vector between above point and blinky's position
     // Rotate vec2 by 180 degrees (just switch signs)
-    target() = m_blinky.position().subtract(position).rotateVec(180);
+    auto newTarget = Board::findCase(m_blinky.position()).rotateVec(position, 180);
+    target() = newTarget;
+    std::cout << "inky new target: " << newTarget << std::endl;
 }
 
 void Inky::handleHomeMode() noexcept {}

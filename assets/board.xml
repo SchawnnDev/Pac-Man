@@ -273,7 +273,7 @@
 	<case x="18" y="12" type="3" />
 	<case x="19" y="12" type="3" />
 	<case x="20" y="12" type="3" />
-	<case x="0" y="13" type="6" />
+	<case x="0" y="13" type="6" flags="2" />
 	<case x="1" y="13" type="1" flags="2" />
 	<case x="2" y="13" type="1" flags="2" />
 	<case x="3" y="13" type="1" flags="2" />
@@ -293,7 +293,7 @@
 	<case x="17" y="13" type="1" flags="2" />
 	<case x="18" y="13" type="1" flags="2" />
 	<case x="19" y="13" type="1" flags="2" />
-	<case x="20" y="13" type="7" />
+	<case x="20" y="13" type="7" flags="2" />
 	<case x="0" y="14" type="3" />
 	<case x="1" y="14" type="3" />
 	<case x="2" y="14" type="3" />

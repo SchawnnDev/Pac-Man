@@ -64,9 +64,11 @@ void Ghost::handleMovement() noexcept {
         if (direction() == Direction::RIGHT && actualCase->type() == BoardCaseType::DoorRight) {
             auto boardCase = board().grid()[board().leftDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
+            return;
         } else if (direction() == Direction::LEFT && actualCase->type() == BoardCaseType::DoorLeft) {
             auto boardCase = board().grid()[board().rightDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
+            return;
         } else {
             handlePathFinding();
         }
