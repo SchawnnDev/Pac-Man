@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include "sprite-animation.h"
 
 namespace pacman {
@@ -24,6 +25,11 @@ namespace pacman {
         SpriteAnimation bonusAnimation;
         Sprite pointSprite;
         Sprite emptyBoardSprite;
+    };
+
+    struct TextResources final {
+        std::map<char, Sprite> alphabetSprites;
+        Sprite nothingSprite;
     };
 
 }

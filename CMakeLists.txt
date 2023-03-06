@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME} ""
         include/entities/ghosts/ghost.h
         include/entities/ghosts/blinky.h
         include/game.h
-        include/sprite-animation-structs.h
+        include/sprite-resources-structs.h
 
         src/sprite.cpp
         src/sprite-handler.cpp
@@ -37,12 +37,12 @@ add_executable(${PROJECT_NAME} ""
         src/utils/position.cpp
         src/game.cpp
         include/utils/utils.h
-        include/board/text.h
+        include/screens/text.h
         src/entities/ghosts/clyde.cpp
         include/entities/ghosts/clyde.h
         include/entities/ghosts/inky.h
         include/entities/ghosts/pinky.h
-        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h)
+        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/text.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

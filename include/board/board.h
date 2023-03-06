@@ -10,7 +10,7 @@
 
 #include "board-case.h"
 #include "sprite.h"
-#include "sprite-animation-structs.h"
+#include "sprite-resources-structs.h"
 #include "utils/constants.h"
 #include "utils/position.h"
 

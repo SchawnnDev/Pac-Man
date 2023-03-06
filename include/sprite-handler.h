@@ -10,7 +10,7 @@
 #include <optional>
 #include "sprite.h"
 #include "sprite-animation.h"
-#include "sprite-animation-structs.h"
+#include "sprite-resources-structs.h"
 
 namespace pacman {
 

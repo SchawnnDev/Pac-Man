@@ -114,6 +114,10 @@ namespace pacman {
             m_y *= BOARD_CASE_SIZE_HEIGHT;
         }
 
+        constexpr SDL_Rect toSDLRect() noexcept {
+            return {m_x, m_y, 0, 0};
+        }
+
     };
 
     constexpr Position getPosition(int p_x, int p_y) noexcept {
