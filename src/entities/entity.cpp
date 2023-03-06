@@ -2,7 +2,7 @@
 
 using namespace pacman;
 
-void Entity::move(Direction newDirection) {
+void Entity::move(Direction newDirection) noexcept {
     if(m_freeze) return;
     // If entity walks in the same direction, check if
     // Only be able to change position if the entity is one middle of case
@@ -15,7 +15,7 @@ void Entity::move(Direction newDirection) {
     changeAnimation();
 }
 
-void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
+void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
     if (!m_currentAnimation) return;
     auto &spriteAnimation = m_currentAnimation.value();
     auto sprite = spriteAnimation.display();
@@ -25,7 +25,7 @@ void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
     SDL_RenderCopy(p_window_renderer, p_texture, &sprite->rect(), &destination);
 }
 
-bool Entity::canMoveTo(Direction p_direction) const {
+bool Entity::canMoveTo(Direction p_direction) const noexcept {
     auto caseFound = Board::findCase(position());
     if (caseFound.x() == -1 || caseFound.y() == -1) return false;
     auto nextCasePos = caseFound.getPositionAt(p_direction, 1);
@@ -33,7 +33,7 @@ bool Entity::canMoveTo(Direction p_direction) const {
     return BoardCase::isPracticable(board().getCase(nextCasePos));
 }
 
-void Entity::freeze() {
+void Entity::freeze() noexcept {
     if(m_freeze) return;
     m_freeze = true;
     if(m_currentAnimation) {
@@ -41,10 +41,18 @@ void Entity::freeze() {
     }
 }
 
-void Entity::unfreeze() {
+void Entity::unfreeze() noexcept {
     if(!m_freeze) return;
     m_freeze = true;
     if(m_currentAnimation) {
         m_currentAnimation->freeze() = false;
     }
+}
+
+bool Entity::isGhost() const noexcept {
+    const auto type = entityType();
+    return type == EntityType::Blinky
+           || type == EntityType::Clyde
+           || type == EntityType::Pinky
+           || type == EntityType::Inky;
 }

@@ -37,3 +37,10 @@ void Pinky::handleChaseTarget() noexcept {
 }
 
 void Pinky::handleHomeMode() noexcept {}
+
+void Pinky::startHomeMode() noexcept {
+    if(ghostMode() == GhostMode::Home) return;
+    direction() = Direction::UP;
+    position() = {10, 13};
+
+}

@@ -39,3 +39,7 @@ void Inky::handleChaseTarget() noexcept {
 }
 
 void Inky::handleHomeMode() noexcept {}
+
+void Inky::startHomeMode() noexcept {
+
+}

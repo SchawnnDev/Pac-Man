@@ -32,7 +32,7 @@ namespace pacman {
 
         void changeAnimation() noexcept override;
 
-        [[nodiscard]] inline EntityType entityType() const override { return EntityType::Banana; };
+        [[nodiscard]] inline EntityType entityType() const override { return EntityType::Pacman; };
     };
 
 }

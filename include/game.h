@@ -31,6 +31,7 @@ namespace pacman {
         Clyde m_clyde;
         Pinky m_pinky;
         Inky m_inky;
+        std::vector<Entity> m_entities;
 
         // SDL
         std::unique_ptr<SDL_Window,

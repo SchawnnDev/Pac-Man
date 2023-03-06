@@ -7,7 +7,7 @@
 namespace pacman {
 
     enum class GhostMode {
-        House, // At start of pacman, ghosts are in house
+        Home, // At start of pacman, ghosts are at home
         Scatter,
         Chase,
         Frightened,
@@ -19,6 +19,7 @@ namespace pacman {
         Position m_target;
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
+        int m_dotsCounter;
     protected:
         [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
 
@@ -26,27 +27,26 @@ namespace pacman {
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode,
               GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(p_ghostMode), m_target{},
-                  m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman} {
+                  m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman}, m_dotsCounter{0} {
             currentAnimation() = m_ghostAnimations.leftAnimation;
         }
 
         ~Ghost() override;
 
-        [[nodiscard]] inline EntityType entityType() const override {
-            return EntityType::Ghost;
-        }
-
         [[nodiscard]] GhostMode ghostMode() const { return m_ghostMode; }
-
         GhostMode &ghostMode() { return m_ghostMode; }
 
         [[nodiscard]] Position const &target() const { return m_target; }
-
         Position &target() { return m_target; }
+
+        [[nodiscard]] int dotsCounter() const { return m_dotsCounter; }
+        int& dotsCounter() { return m_dotsCounter; }
 
         virtual void startScatterMode() noexcept = 0;
 
         virtual void startChaseMode() noexcept = 0;
+
+        virtual void startHomeMode() noexcept = 0;
 
         virtual void handleHomeMode() noexcept = 0;
 
@@ -65,5 +65,18 @@ namespace pacman {
         void changeAnimation() noexcept override;
 
     };
+
+    static constexpr int getPriority(const Ghost& ghost) noexcept {
+        switch (ghost.entityType()) {
+            case EntityType::Pinky:
+                return 2;
+            case EntityType::Inky:
+                return 1;
+            case EntityType::Clyde:
+                return 0;
+            default:
+                return -1;
+        }
+    }
 
 }

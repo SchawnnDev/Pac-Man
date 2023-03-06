@@ -38,3 +38,7 @@ void Clyde::handleChaseTarget() noexcept {
 }
 
 void Clyde::handleHomeMode() noexcept {}
+
+void Clyde::startHomeMode() noexcept {
+
+}

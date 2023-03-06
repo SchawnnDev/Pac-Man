@@ -41,6 +41,7 @@ Game::Game()
           m_clyde{m_board, m_pacMan, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacMan, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacMan, m_blinky, m_spriteHandler.inkyAnimations()},
+          m_entities{{m_pacMan, m_blinky, m_clyde, m_pinky, m_inky}},
           m_state{GameState::WaitingStart},
           m_level{1}
 {
@@ -124,6 +125,12 @@ void Game::handleLogic()
     m_inky.startScatterMode();*/
 
     // Chase test
+    std::for_each(m_entities.cbegin(), m_entities.cend(), [&](Entity const& e){
+        if(!e.isGhost()) return;
+        auto const& ghost = dynamic_cast<Ghost const&>(e);
+        ghost.startChaseMode();
+    });
+
     m_blinky.startChaseMode();
     m_clyde.startChaseMode();
     m_pinky.startChaseMode();

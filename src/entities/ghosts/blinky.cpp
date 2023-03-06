@@ -27,3 +27,7 @@ void Blinky::handleChaseTarget() noexcept {
 }
 
 void Blinky::handleHomeMode() noexcept {}
+
+void Blinky::startHomeMode() noexcept {
+
+}
