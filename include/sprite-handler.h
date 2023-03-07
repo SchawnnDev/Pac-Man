@@ -24,6 +24,7 @@ namespace pacman {
         GhostAnimations m_pinkyAnimations;
         GhostAnimations m_inkyAnimations;
         BoardResources m_boardResources;
+        TextResources m_textResources;
     public:
 
         SpriteHandler() = default;
@@ -54,6 +55,9 @@ namespace pacman {
         [[nodiscard]] GhostAnimations const &inkyAnimations() const noexcept { return m_inkyAnimations; }
 
         [[nodiscard]] GhostAnimations const &pinkyAnimations() const noexcept { return m_pinkyAnimations; }
+
+        [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
+
 
         // Board
         [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }

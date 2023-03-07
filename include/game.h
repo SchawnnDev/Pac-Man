@@ -10,6 +10,7 @@
 #include "entities/ghosts/pinky.h"
 #include "entities/ghosts/inky.h"
 #include "utils/clock.h"
+#include "screens/loading-screen.h"
 
 namespace pacman {
 
@@ -34,6 +35,9 @@ namespace pacman {
         Pinky m_pinky;
         Inky m_inky;
 
+        // Screens
+        LoadingScreen m_loadingScreen;
+
         // SDL
         std::unique_ptr<SDL_Window,
                 decltype(&SDL_DestroyWindow)> m_window{nullptr, SDL_DestroyWindow};
@@ -51,9 +55,6 @@ namespace pacman {
         Game();
 
         ~Game();
-
-/*    Game(Game const&) = delete;
-    Game& operator=(Game const&) = delete;*/
 
         void start();
 

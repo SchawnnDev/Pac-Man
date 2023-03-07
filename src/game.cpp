@@ -41,7 +41,8 @@ Game::Game()
           m_clyde{m_board, m_pacMan, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacMan, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacMan, m_blinky, m_spriteHandler.inkyAnimations()},
-          m_state{GameState::WaitingStart},
+          m_loadingScreen{m_spriteHandler.textResources()},
+          m_state{GameState::LoadingScreen},
           m_level{1}
 {
 
@@ -114,6 +115,16 @@ void Game::handleKeys()
 
 void Game::handleLogic()
 {
+
+    if(m_state == GameState::LoadingScreen)
+    {
+        // be sure it is always activated
+        m_loadingScreen.activated() = true;
+        m_loadingScreen.tick();
+        return;
+    }
+
+
     m_pacMan.tick();
 
     // Scatter test
@@ -153,6 +164,9 @@ void Game::handleDrawing()
     m_clyde.draw(m_windowRenderer.get(), m_spriteTexture);
     m_pinky.draw(m_windowRenderer.get(), m_spriteTexture);
     m_inky.draw(m_windowRenderer.get(), m_spriteTexture);
+
+    // Draw screens
+    m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture);
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 

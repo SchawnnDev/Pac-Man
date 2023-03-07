@@ -99,6 +99,56 @@
         <spr name="pacman_down_little_open" x="110" y="91" w="14" h="13"/>
         <spr name="pacman_down_big_open" x="127" y="95" w="14" h="9"/>
       </dir>
+      <dir name="Alphabet">
+        <spr name="0" x="4" y="53" w="7" h="7"/>
+        <spr name="1" x="12" y="53" w="7" h="7"/>
+        <spr name="2" x="20" y="53" w="7" h="7"/>
+        <spr name="3" x="28" y="53" w="7" h="7"/>
+        <spr name="4" x="36" y="53" w="7" h="7"/>
+        <spr name="5" x="44" y="53" w="7" h="7"/>
+        <spr name="6" x="52" y="53" w="7" h="7"/>
+        <spr name="7" x="60" y="53" w="7" h="7"/>
+        <spr name="8" x="68" y="53" w="7" h="7"/>
+        <spr name="-" x="84" y="53" w="7" h="7"/>
+        <spr name="/" x="92" y="53" w="7" h="7"/>
+        <spr name="!" x="101" y="52" w="7" h="7"/>
+        <spr name="&apos;" x="109" y="53" w="7" h="7"/>
+        <spr name="9" x="76" y="53" w="7" h="7"/>
+        <spr name="a" x="12" y="61" w="7" h="7"/>
+        <spr name="b" x="20" y="61" w="7" h="7"/>
+        <spr name="c" x="28" y="61" w="7" h="7"/>
+        <spr name="d" x="36" y="61" w="7" h="7"/>
+        <spr name="e" x="44" y="61" w="7" h="7"/>
+        <spr name="f" x="52" y="61" w="7" h="7"/>
+        <spr name="g" x="60" y="61" w="7" h="7"/>
+        <spr name="h" x="68" y="61" w="7" h="7"/>
+        <spr name="i" x="76" y="61" w="7" h="7"/>
+        <spr name="j" x="84" y="61" w="7" h="7"/>
+        <spr name="k" x="92" y="61" w="7" h="7"/>
+        <spr name="l" x="100" y="61" w="7" h="7"/>
+        <spr name="m" x="108" y="61" w="7" h="7"/>
+        <spr name="n" x="116" y="61" w="7" h="7"/>
+        <spr name="o" x="124" y="61" w="7" h="7"/>
+        <spr name="p" x="4" y="69" w="7" h="7"/>
+        <spr name="q" x="12" y="69" w="7" h="7"/>
+        <spr name="r" x="20" y="69" w="7" h="7"/>
+        <spr name="s" x="28" y="69" w="7" h="7"/>
+        <spr name="t" x="36" y="69" w="7" h="7"/>
+        <spr name="u" x="44" y="69" w="7" h="7"/>
+        <spr name="v" x="52" y="69" w="7" h="7"/>
+        <spr name="w" x="60" y="69" w="7" h="7"/>
+        <spr name="x" x="68" y="69" w="7" h="7"/>
+        <spr name="y" x="76" y="69" w="7" h="7"/>
+        <spr name="z" x="84" y="69" w="7" h="7"/>
+        <spr name="." x="92" y="69" w="7" h="7"/>
+        <spr name="&gt;" x="99" y="69" w="8" h="7"/>
+        <spr name="@" x="116" y="69" w="8" h="8"/>
+        <spr name="&quot;" x="125" y="69" w="7" h="7"/>
+      </dir>
+      <dir name="Logos">
+        <spr name="pacman" x="4" y="4" w="180" h="46"/>
+        <spr name="namco" x="28" y="78" w="60" h="8"/>
+      </dir>
       <spr name="test1" x="338" y="238" w="12" h="12"/>
       <spr name="test2" x="371" y="239" w="11" h="11"/>
       <spr name="test3" x="355" y="14" w="2" h="2"/>

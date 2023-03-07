@@ -9,7 +9,7 @@ void Screen::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexc
     }
 
     for(auto& text : m_texts) {
-        text.draw(p_window_renderer, p_texture);
+        text->draw(p_window_renderer, p_texture);
     }
 
 }

@@ -151,6 +151,17 @@ void SpriteHandler::initStructs() noexcept
             getSprite("point").value(),
             getSprite("board_empty").value()
     };
+
+    // Text
+    m_textResources = {};
+    const std::string str = "abcdefghijklmnopqrstuvwxy0123456789-/!'>@\"";
+    std::for_each(str.cbegin(), str.cend(), [this](const char p_char){
+        auto sprite = getSprite(std::string{p_char});
+        if(!sprite) return;
+        m_textResources.alphabetSprites[p_char] = sprite.value();
+    });
+
+    m_textResources.nothingSprite = getSprite("nothing").value();
 }
 
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
