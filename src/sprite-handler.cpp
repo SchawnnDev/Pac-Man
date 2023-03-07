@@ -97,11 +97,11 @@ SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
 }
 
 SpriteHandler::SpriteHandler(std::string_view path) noexcept
+    : m_sprites{Sprite{"nothing"}}
+    , m_textResources{m_alphabetSprites, getSprite("nothing").value()}
 {
     importSprites(path);
-
     // Nothing sprite is a utility sprite that is used in animations to display "nothing"
-    m_sprites.emplace_back("nothing");
 
     // Handle animation init
     initAnimations();
@@ -153,15 +153,13 @@ void SpriteHandler::initStructs() noexcept
     };
 
     // Text
-    m_textResources = {};
     const std::string str = "abcdefghijklmnopqrstuvwxy0123456789-/!'>@\"";
     std::for_each(str.cbegin(), str.cend(), [this](const char p_char){
         auto sprite = getSprite(std::string{p_char});
         if(!sprite) return;
-        m_textResources.alphabetSprites[p_char] = sprite.value();
+        m_alphabetSprites.insert({p_char, sprite.value()});
     });
 
-    m_textResources.nothingSprite = getSprite("nothing").value();
 }
 
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept

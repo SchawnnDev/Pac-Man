@@ -29,7 +29,7 @@ namespace pacman {
         GameState m_state;
 
         // Entities
-        Pacman m_pacMan;
+        Pacman m_pacman;
         Blinky m_blinky;
         Clyde m_clyde;
         Pinky m_pinky;
@@ -68,9 +68,9 @@ namespace pacman {
 
         GameState &gameState() { return m_state; }
 
-        [[nodiscard]] Pacman const &pacman() const { return m_pacMan; }
+        [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
 
-        Pacman &pacman() { return m_pacMan; }
+        Pacman &pacman() { return m_pacman; }
 
         [[nodiscard]] Board const &board() const { return m_board; }
 

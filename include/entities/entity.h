@@ -18,7 +18,7 @@ namespace pacman {
         Fruit
     };
 
-    class Entity {
+    class Entity : public Drawable {
         Board m_board;
         std::optional<SpriteAnimation> m_currentAnimation;
         Direction m_direction;
@@ -76,7 +76,7 @@ namespace pacman {
 
         void move(Direction newDirection) noexcept;
 
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
         [[nodiscard]] bool canMoveTo(Direction p_direction) const noexcept;
 

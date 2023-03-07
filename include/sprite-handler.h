@@ -15,8 +15,9 @@
 namespace pacman {
 
     class SpriteHandler {
-        std::vector<Sprite> m_sprites{};
+        std::vector<Sprite> m_sprites;
         std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
+        std::unordered_map<char, Sprite> m_alphabetSprites;
         // structs
         PacmanAnimations m_pacmanAnimations;
         GhostAnimations m_blinkyAnimations;

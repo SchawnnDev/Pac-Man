@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include "sprite-animation.h"
 
 namespace pacman {
@@ -28,7 +29,7 @@ namespace pacman {
     };
 
     struct TextResources final {
-        std::map<char, Sprite> alphabetSprites;
+        std::unordered_map<char, Sprite> const& alphabetSprites;
         Sprite nothingSprite;
     };
 

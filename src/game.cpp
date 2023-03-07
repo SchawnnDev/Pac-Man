@@ -6,11 +6,19 @@ using namespace pacman;
 
 void Game::start()
 {
-    if (m_state != GameState::WaitingStart)
+    if (m_state != GameState::LoadingScreen)
         return;
 
+    // Init
     Clock clock{};
+    m_board.activated() = false;
+    m_pacman.activated() = false;
+    m_blinky.activated() = false;
+    m_pinky.activated() = false;
+    m_inky.activated() = false;
+    m_clyde.activated() = false;
 
+    // Main loop
     while (m_state != GameState::End)
     {
         clock.begin_frame();
@@ -36,11 +44,11 @@ void Game::end()
 Game::Game()
         : m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
-          m_pacMan{m_board, m_spriteHandler.pacmanAnimations()},
-          m_blinky{m_board, m_pacMan, m_spriteHandler.blinkyAnimations()},
-          m_clyde{m_board, m_pacMan, m_spriteHandler.clydeAnimations()},
-          m_pinky{m_board, m_pacMan, m_spriteHandler.pinkyAnimations()},
-          m_inky{m_board, m_pacMan, m_blinky, m_spriteHandler.inkyAnimations()},
+          m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
+          m_blinky{m_board, m_pacman, m_spriteHandler.blinkyAnimations()},
+          m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
+          m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
+          m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.textResources()},
           m_state{GameState::LoadingScreen},
           m_level{1}
@@ -96,19 +104,19 @@ void Game::handleKeys()
         m_state = GameState::End;
     if (keys[SDL_SCANCODE_LEFT])
     {
-        m_pacMan.move(Direction::LEFT);
+        m_pacman.move(Direction::LEFT);
     }
     if (keys[SDL_SCANCODE_RIGHT])
     {
-        m_pacMan.move(Direction::RIGHT);
+        m_pacman.move(Direction::RIGHT);
     }
     if (keys[SDL_SCANCODE_UP])
     {
-        m_pacMan.move(Direction::UP);
+        m_pacman.move(Direction::UP);
     }
     if (keys[SDL_SCANCODE_DOWN])
     {
-        m_pacMan.move(Direction::DOWN);
+        m_pacman.move(Direction::DOWN);
     }
     // if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
 }
@@ -125,7 +133,7 @@ void Game::handleLogic()
     }
 
 
-    m_pacMan.tick();
+    m_pacman.tick();
 
     // Scatter test
     // std::foreach
@@ -159,7 +167,7 @@ void Game::handleDrawing()
     m_board.draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw entities
-    m_pacMan.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_pacman.draw(m_windowRenderer.get(), m_spriteTexture);
     m_blinky.draw(m_windowRenderer.get(), m_spriteTexture);
     m_clyde.draw(m_windowRenderer.get(), m_spriteTexture);
     m_pinky.draw(m_windowRenderer.get(), m_spriteTexture);

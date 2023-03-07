@@ -81,6 +81,8 @@ void Board::save(const std::string &p_filePath) const noexcept {
 bool first = true;
 
 void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
+    if(!activated()) return;
+
     SDL_Rect bg = {0, 0, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT};
     //std::cout << m_boardResources.emptyBoardSprite.name() << std::endl;
     SDL_RenderCopy(p_window_renderer, p_texture, &m_boardResources.emptyBoardSprite.rect(),

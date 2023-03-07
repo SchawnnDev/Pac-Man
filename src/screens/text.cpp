@@ -1,6 +1,17 @@
+#include <unordered_map>
+#include <iostream>
 #include "screens/text.h"
 
 using namespace pacman;
+
+template<typename K, typename V>
+void print_map(std::map<K, V> const &m)
+{
+    std::cout << "size: " << m.size() << std::endl;
+    for (auto const &pair: m) {
+        std::cout << "{" << pair.first << "}\n";
+    }
+}
 
 void Text::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
     if(!activated()) return;
@@ -8,7 +19,7 @@ void Text::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcep
 
     SDL_SetTextureColorMod( p_texture, m_color.r, m_color.g, m_color.b );
 
-    std::for_each(m_text.cbegin(), m_text.cend(), [this, &p_window_renderer, &p_texture, &pos](auto& p_char){
+    std::for_each(m_text.cbegin(), m_text.cend(), [this, &p_window_renderer, &p_texture, &pos](auto p_char){
         if (auto it = m_textResources.alphabetSprites.find(p_char); it != std::end(m_textResources.alphabetSprites)) {
             auto rect = pos.toSDLRect();
             rect.h = m_size;

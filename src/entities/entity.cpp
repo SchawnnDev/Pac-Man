@@ -16,6 +16,7 @@ void Entity::move(Direction newDirection) noexcept {
 }
 
 void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
+    if(!activated()) return;
     if (!m_currentAnimation) return;
     auto &spriteAnimation = m_currentAnimation.value();
     auto sprite = spriteAnimation.display();

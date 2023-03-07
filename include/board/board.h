@@ -13,10 +13,11 @@
 #include "sprite-resources-structs.h"
 #include "utils/constants.h"
 #include "utils/position.h"
+#include "screens/drawable.h"
 
 namespace pacman {
 
-    class Board {
+    class Board : public Drawable {
         std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
         std::string m_filePath;
         BoardResources m_boardResources;
@@ -83,7 +84,7 @@ namespace pacman {
 
         void save(const std::string &p_filePath) const noexcept;
 
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
         /**
          *
