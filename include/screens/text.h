@@ -1,14 +1,24 @@
 #pragma once
 
+#include <memory>
 #include <utility>
 #include <vector>
+
 #include <SDL_render.h>
+
 #include "sprite.h"
 #include "sprite-resources-structs.h"
 #include "utils/position.h"
 #include "drawable.h"
 
 namespace pacman {
+
+    inline int strTextSize(std::string_view p_str, int p_charSize, int p_spacing)
+    {
+        int length = (int) p_str.length();
+        return length * p_charSize + std::max(0, length - 1) * p_spacing;
+    }
+
     class Text : public Drawable {
         std::vector<Sprite> m_sprites;
         std::string m_text;
@@ -35,8 +45,14 @@ namespace pacman {
         int& size() noexcept { return m_size; }
         [[nodiscard]] Position const& position() const noexcept { return m_position; }
         Position &position() noexcept { return m_position; }
+        SDL_Color &color() noexcept { return m_color; }
+        [[nodiscard]] inline int textSize() const {
+            return strTextSize(m_text, m_size, m_spacing);
+        }
 
         void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
     };
+
+    using TextElement = std::shared_ptr<Text>;
 
 }

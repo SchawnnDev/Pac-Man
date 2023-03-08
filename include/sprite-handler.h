@@ -26,6 +26,7 @@ namespace pacman {
         GhostAnimations m_inkyAnimations;
         BoardResources m_boardResources;
         TextResources m_textResources;
+        LoadingScreenResources m_loadingScreenResources;
     public:
 
         SpriteHandler() = default;
@@ -59,6 +60,7 @@ namespace pacman {
 
         [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
 
+        [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const noexcept { return m_loadingScreenResources; }
 
         // Board
         [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }

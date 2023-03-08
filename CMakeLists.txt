@@ -42,7 +42,7 @@ add_executable(${PROJECT_NAME} ""
         include/entities/ghosts/clyde.h
         include/entities/ghosts/inky.h
         include/entities/ghosts/pinky.h
-        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/text.cpp include/screens/drawable.h src/screens/loading-screen.cpp)
+        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/text.cpp include/screens/drawable.h src/screens/loading-screen.cpp include/screens/image.h src/screens/image.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

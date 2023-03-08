@@ -49,7 +49,7 @@ Game::Game()
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
-          m_loadingScreen{m_spriteHandler.textResources()},
+          m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources()},
           m_state{GameState::LoadingScreen},
           m_level{1}
 {

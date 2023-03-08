@@ -6,6 +6,18 @@
 
 using namespace pacman;
 
+SpriteHandler::SpriteHandler(std::string_view path) noexcept
+        : m_sprites{Sprite{"nothing"}}
+        , m_textResources{m_alphabetSprites}
+{
+    importSprites(path);
+    // Nothing sprite is a utility sprite that is used in animations to display "nothing"
+
+    // Handle animation init
+    initAnimations();
+    initStructs();
+}
+
 void SpriteHandler::importSprites(std::string_view path) noexcept
 {
     std::cout << "Importing sprite positions: " << path << std::endl;
@@ -22,8 +34,6 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
 
     for (pugi::xpath_node node: tools_with_timeout)
     {
-        std::cout << "Loading sprite " << node.node().attribute("name").value()
-                  << "..." << std::endl;
         Sprite spr{node.node().attribute("name").value()};
         spr.rect().x = node.node().attribute("x").as_int();
         spr.rect().y = node.node().attribute("y").as_int();
@@ -96,18 +106,6 @@ SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
         return std::nullopt;
 }
 
-SpriteHandler::SpriteHandler(std::string_view path) noexcept
-    : m_sprites{Sprite{"nothing"}}
-    , m_textResources{m_alphabetSprites, getSprite("nothing").value()}
-{
-    importSprites(path);
-    // Nothing sprite is a utility sprite that is used in animations to display "nothing"
-
-    // Handle animation init
-    initAnimations();
-    initStructs();
-}
-
 void SpriteHandler::initStructs() noexcept
 {
     // Pacman
@@ -153,12 +151,26 @@ void SpriteHandler::initStructs() noexcept
     };
 
     // Text
-    const std::string str = "abcdefghijklmnopqrstuvwxy0123456789-/!'>@\"";
+    const std::string str = "abcdefghijklmnopqrstuvwxy0123456789-/!'>@.\"";
     std::for_each(str.cbegin(), str.cend(), [this](const char p_char){
         auto sprite = getSprite(std::string{p_char});
         if(!sprite) return;
         m_alphabetSprites.insert({p_char, sprite.value()});
     });
+
+    // Screens
+    m_loadingScreenResources = {
+            getSprite("nothing").value(),
+            getSprite("blinky_right_1").value(),
+            getSprite("pinky_right_1").value(),
+            getSprite("inky_right_1").value(),
+            getSprite("clyde_right_1").value(),
+            getSprite("point").value(),
+            getSprite("score_pts").value(),
+            getSprite("score_10").value(),
+            getSprite("score_50").value(),
+            m_spriteAnimations["bonus"]
+    };
 
 }
 

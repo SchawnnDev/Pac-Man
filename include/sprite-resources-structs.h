@@ -30,7 +30,19 @@ namespace pacman {
 
     struct TextResources final {
         std::unordered_map<char, Sprite> const& alphabetSprites;
+    };
+
+    struct LoadingScreenResources final {
         Sprite nothingSprite;
+        Sprite blinkyRight;
+        Sprite pinkyRight;
+        Sprite inkyRight;
+        Sprite clydeRight;
+        Sprite pointSprite;
+        Sprite ptsSprite;
+        Sprite score10Sprite;
+        Sprite score50Sprite;
+        SpriteAnimation bonusAnimation;
     };
 
 }

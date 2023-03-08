@@ -75,6 +75,8 @@
         <spr name="score_3000" x="177" y="187" w="16" h="7"/>
         <spr name="score_5000" x="177" y="196" w="16" h="7"/>
         <spr name="score_pts" x="178" y="205" w="15" h="5"/>
+        <spr name="score_10" x="151" y="212" w="7" h="5"/>
+        <spr name="score_50" x="162" y="212" w="7" h="5"/>
       </dir>
       <dir name="Pacman">
         <dir name="Dying">

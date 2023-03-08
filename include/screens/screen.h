@@ -10,12 +10,11 @@ namespace pacman {
 
     class Screen : public Drawable {
         int m_ticks;
-        std::vector<std::pair<SDL_Rect, SDL_Rect>> m_tiles;
-        std::vector<std::shared_ptr<Text>> m_texts;
+        std::vector<std::shared_ptr<Drawable>> m_elements;
         TextResources m_textResources;
     public:
         explicit Screen(TextResources p_textResources)
-        : m_ticks{0}, m_tiles{}, m_texts{}, m_textResources{std::move(p_textResources)} {};
+        : m_ticks{0}, m_elements{}, m_textResources{p_textResources} {};
 
         ~Screen() = default;
 
@@ -23,8 +22,10 @@ namespace pacman {
 
         int &ticks() noexcept { return m_ticks; }
 
-        inline void addText(const std::shared_ptr<Text>& p_text) {
-            m_texts.push_back(p_text);
+        [[nodiscard]] std::span<const std::shared_ptr<Drawable>> elements() const { return std::span{m_elements}; }
+
+        inline void addElement(const std::shared_ptr<Drawable>& p_element) {
+            m_elements.push_back(p_element);
         }
 
         virtual void tick() noexcept = 0;
