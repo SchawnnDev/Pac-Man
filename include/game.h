@@ -51,18 +51,11 @@ namespace pacman {
 
         // Game logic
         int m_level;
+        int m_credits;
     public:
         Game();
 
         ~Game();
-
-        void start();
-
-        void end();
-
-        void handleEvents();
-
-        void handleKeys();
 
         [[nodiscard]] GameState gameState() const { return m_state; }
 
@@ -80,9 +73,21 @@ namespace pacman {
 
         int &level() { return m_level; }
 
+        [[nodiscard]] int credits() const { return m_credits; }
+
+        void start();
+
+        void end();
+
+        void handleEvents();
+
+        void handleKeys();
+
         void handleLogic();
 
         void handleDrawing();
+
+        void updateCredits(int p_credits);
     };
 
 }

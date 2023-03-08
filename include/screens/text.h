@@ -39,6 +39,7 @@ namespace pacman {
         {}
 
         [[nodiscard]] std::string const& text() const noexcept { return m_text; }
+        std::string &text() noexcept { return m_text; }
         [[nodiscard]] int spacing() const noexcept { return m_spacing; }
         int& spacing() noexcept { return m_spacing; }
         [[nodiscard]] int size() const noexcept { return m_size; }

@@ -51,7 +51,8 @@ Game::Game()
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources()},
           m_state{GameState::LoadingScreen},
-          m_level{1}
+          m_level{1},
+          m_credits{0}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -102,6 +103,16 @@ void Game::handleKeys()
     const Uint8 *keys = SDL_GetKeyboardState(&nbk);
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
+
+    if(m_state == GameState::LoadingScreen)
+    {
+        if(keys[SDL_SCANCODE_C])
+        {
+            updateCredits(credits() + 1);
+        }
+        return;
+    }
+
     if (keys[SDL_SCANCODE_LEFT])
     {
         m_pacman.move(Direction::LEFT);
@@ -180,4 +191,9 @@ void Game::handleDrawing()
 
     SDL_RenderPresent(m_windowRenderer.get());
     SDL_UpdateWindowSurface(m_window.get());
+}
+
+void Game::updateCredits(int p_credits) {
+    m_credits = p_credits;
+    m_loadingScreen.credit()->text() = "credit  " + std::to_string(p_credits);
 }

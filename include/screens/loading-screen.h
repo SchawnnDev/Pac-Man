@@ -40,13 +40,14 @@ namespace pacman {
         ImageElement m_pointImage;
         ImageElement m_bonusImage;
 
-
     public:
 
         LoadingScreen(const LoadingScreenResources& p_loadingScreenResources, TextResources p_textResources);
 
         void tick() noexcept override;
         void reset() noexcept override;
+
+        [[nodiscard]] TextElement const& credit() { return m_credit; }
 
     };
 
