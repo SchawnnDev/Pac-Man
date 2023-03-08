@@ -16,9 +16,9 @@ namespace pacman {
 
         [[nodiscard]] inline T &value() noexcept { return *m_sharedValue; }
 
-        explicit operator T() const noexcept { return value(); }
+        operator T() const noexcept { return value(); }
 
-        explicit operator T &() noexcept { return value(); }
+        operator T &() noexcept { return value(); }
 
         T& operator =(T newValue) noexcept { value() = newValue; return value(); }
 
@@ -26,7 +26,7 @@ namespace pacman {
 
         T& operator -(T newValue) noexcept { value() -= newValue; return value(); }
 
-        bool operator<=>(const T &rhs) const noexcept {
+        std::weak_ordering operator<=>(const T &rhs) const noexcept {
             return value() <=> rhs;
         }
 

@@ -86,6 +86,8 @@ namespace pacman {
 
         void handleKeys();
 
+        void handleSpecialKeys(SDL_Event const& event);
+
         void handleLogic();
 
         void handleDrawing();

@@ -91,6 +91,9 @@ void Game::handleEvents()
             case SDL_QUIT:
                 m_state = GameState::End;
                 return;
+            case SDL_KEYDOWN:
+                handleSpecialKeys(event);
+                return;
             default:
                 break;
         }
@@ -104,14 +107,7 @@ void Game::handleKeys()
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
 
-    if(m_state == GameState::LoadingScreen)
-    {
-        if(keys[SDL_SCANCODE_C])
-        {
-            updateCredits(credits() + 1);
-        }
-        return;
-    }
+    // TODO: return if(m_state != GameState::Playing)
 
     if (keys[SDL_SCANCODE_LEFT])
     {
@@ -196,4 +192,16 @@ void Game::handleDrawing()
 void Game::updateCredits(int p_credits) {
     m_credits = p_credits;
     m_loadingScreen.credit()->text() = "credit  " + std::to_string(p_credits);
+}
+
+void Game::handleSpecialKeys(const SDL_Event &event)
+{
+    if(m_state == GameState::LoadingScreen)
+    {
+        if(event.key.keysym.sym == SDLK_c && event.key.repeat == 0)
+        {
+            updateCredits(credits() + 1);
+        }
+        return;
+    }
 }
