@@ -2,6 +2,7 @@
 
 #include "screen.h"
 #include "image.h"
+#include "utils/shared_value.h"
 
 #include <utility>
 
@@ -26,7 +27,7 @@ namespace pacman {
         TextElement m_inky;
         TextElement m_clyde;
         TextElement m_midway;
-        TextElement m_credit;
+        TextElement m_creditText;
 
         // Images
         ImageElement m_blinkyImage;
@@ -40,14 +41,17 @@ namespace pacman {
         ImageElement m_pointImage;
         ImageElement m_bonusImage;
 
+        shared_value<int> m_credit;
+        int oldCredit;
     public:
 
-        LoadingScreen(const LoadingScreenResources& p_loadingScreenResources, TextResources p_textResources);
+        LoadingScreen(const LoadingScreenResources& p_loadingScreenResources, TextResources p_textResources, shared_value<int> p_credit);
 
         void tick() noexcept override;
         void reset() noexcept override;
+        void disable() noexcept;
 
-        [[nodiscard]] TextElement const& credit() { return m_credit; }
+        [[nodiscard]] TextElement const& credit() { return m_creditText; }
 
     };
 

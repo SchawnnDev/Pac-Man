@@ -11,6 +11,7 @@
 #include "entities/ghosts/inky.h"
 #include "utils/clock.h"
 #include "screens/loading-screen.h"
+#include "utils/shared_value.h"
 
 namespace pacman {
 
@@ -24,9 +25,14 @@ namespace pacman {
     };
 
     class Game {
+        // Game logic
+        int m_level;
+        GameState m_state;
+        shared_value<int> m_credits;
+
+        // Handlers
         SpriteHandler m_spriteHandler;
         Board m_board;
-        GameState m_state;
 
         // Entities
         Pacman m_pacman;
@@ -49,9 +55,6 @@ namespace pacman {
                                                             SDL_FreeSurface};
         SDL_Texture *m_spriteTexture;
 
-        // Game logic
-        int m_level;
-        int m_credits;
     public:
         Game();
 
@@ -73,7 +76,7 @@ namespace pacman {
 
         int &level() { return m_level; }
 
-        [[nodiscard]] int credits() const { return m_credits; }
+        [[nodiscard]] shared_value<int> credits() const { return m_credits; }
 
         void start();
 

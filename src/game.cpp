@@ -49,10 +49,10 @@ Game::Game()
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
-          m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources()},
+          m_credits{0},
+          m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credits},
           m_state{GameState::LoadingScreen},
-          m_level{1},
-          m_credits{0}
+          m_level{1}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
