@@ -13,10 +13,14 @@
 
 namespace pacman {
 
-    inline int strTextSize(std::string_view p_str, int p_charSize, int p_spacing)
+    constexpr int strTextSize(int p_strLen, int p_charSize, int p_spacing)
     {
-        int length = (int) p_str.length();
-        return length * p_charSize + std::max(0, length - 1) * p_spacing;
+        return p_strLen * p_charSize + std::max(0, p_strLen - 1) * p_spacing;
+    }
+
+    constexpr int strTextSize(std::string_view p_str, int p_charSize, int p_spacing)
+    {
+        return strTextSize(p_str.length(), p_charSize, p_spacing);
     }
 
     class Text : public Drawable {
@@ -31,7 +35,7 @@ namespace pacman {
         Text(std::string p_text, Position p_position, int p_size, int p_spacing, TextResources p_textResources)
         : m_text{std::move(p_text)}
         , m_sprites{}
-        , m_textResources{std::move(p_textResources)}
+        , m_textResources{p_textResources}
         , m_size{p_size}
         , m_spacing{p_spacing}
         , m_position{p_position}

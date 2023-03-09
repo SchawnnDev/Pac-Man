@@ -121,11 +121,11 @@ namespace pacman {
     };
 
     constexpr Position getPosition(int p_x, int p_y) noexcept {
-        return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT};
+        return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
     constexpr SDL_Rect getRectPosition(int p_x, int p_y) noexcept {
-        return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT};
+        return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
     constexpr Position getCenteredPosition(int p_x, int p_y) noexcept {

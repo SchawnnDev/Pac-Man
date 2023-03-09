@@ -17,10 +17,7 @@ namespace pacman {
 
     enum class GameState {
         LoadingScreen,
-        PlayerSelect,
-        WaitingStart,
-        Idle,
-        Starting,
+        Playing,
         End
     };
 
@@ -29,6 +26,8 @@ namespace pacman {
         int m_level;
         GameState m_state;
         shared_value<int> m_credits;
+        int m_players;
+        int m_currentPlayer;
 
         // Handlers
         SpriteHandler m_spriteHandler;
@@ -93,6 +92,8 @@ namespace pacman {
         void handleDrawing();
 
         void updateCredits(int p_credits);
+
+        void startPlaying(int p_players);
     };
 
 }

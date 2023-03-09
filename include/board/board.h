@@ -97,7 +97,7 @@ namespace pacman {
 
         static constexpr bool isCase(int p_pixelX, int p_pixelY) noexcept {
             return p_pixelX % BOARD_CASE_SIZE_WIDTH == 0 &&
-                   p_pixelY % BOARD_CASE_SIZE_HEIGHT == 0;
+                   (p_pixelY - BOARD_OFFSET_Y) % BOARD_CASE_SIZE_HEIGHT == 0;
         }
 
         static constexpr Position findCase(Position p_pixelPosition) noexcept {
@@ -105,6 +105,8 @@ namespace pacman {
         }
 
         static constexpr Position findCase(int p_pixelX, int p_pixelY) noexcept {
+            p_pixelY -= BOARD_OFFSET_Y;
+
             if (p_pixelX < 0 || p_pixelX > BOARD_SIZE_WIDTH || p_pixelY < 0 ||
                 p_pixelY > BOARD_SIZE_HEIGHT)
                 return {-1, -1};

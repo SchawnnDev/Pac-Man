@@ -52,7 +52,9 @@ Game::Game()
           m_credits{0},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credits},
           m_state{GameState::LoadingScreen},
-          m_level{1}
+          m_level{1},
+          m_players{1},
+          m_currentPlayer{0}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -107,7 +109,8 @@ void Game::handleKeys()
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
 
-    // TODO: return if(m_state != GameState::Playing)
+    if(m_state != GameState::Playing)
+        return;
 
     if (keys[SDL_SCANCODE_LEFT])
     {
@@ -125,7 +128,6 @@ void Game::handleKeys()
     {
         m_pacman.move(Direction::DOWN);
     }
-    // if(keys[SDL_SCANCODE_SPACE]) { bananaDyingAnimation->start(); }
 }
 
 void Game::handleLogic()
@@ -138,7 +140,6 @@ void Game::handleLogic()
         m_loadingScreen.tick();
         return;
     }
-
 
     m_pacman.tick();
 
@@ -201,7 +202,30 @@ void Game::handleSpecialKeys(const SDL_Event &event)
         if(event.key.keysym.sym == SDLK_c && event.key.repeat == 0)
         {
             updateCredits(credits() + 1);
+            return;
         }
-        return;
+
+        if(m_credits > 0)
+        {
+            if(event.key.keysym.sym == SDLK_1 && event.key.repeat == 0)
+            {
+                startPlaying(1);
+                return;
+            }
+        }
+
     }
+}
+
+void Game::startPlaying(int p_players)
+{
+    m_players = p_players;
+    m_state = GameState::Playing;
+    m_loadingScreen.activated() = false;
+    m_board.activated() = true;
+    m_pacman.activated() = true;
+    m_blinky.activated() = true;
+    m_pinky.activated() = true;
+    m_inky.activated() = true;
+    m_clyde.activated() = true;
 }
