@@ -9,8 +9,6 @@
 namespace pacman {
 
     class LoadingScreen : public Screen {
-        const int m_charSize = 20;
-        const int m_spacing = 3;
         const int m_ghostX = WINDOW_SIZE_WIDTH / 2 - CALC(9);
         const int m_scoreY = WINDOW_SIZE_HEIGHT / 4 * 3 - 40;
 
@@ -24,7 +22,6 @@ namespace pacman {
         TextElement m_inky;
         TextElement m_clyde;
         TextElement m_midway;
-        TextElement m_creditText;
 
         // Images
         ImageElement m_blinkyImage;
@@ -38,7 +35,7 @@ namespace pacman {
         ImageElement m_pointImage;
         ImageElement m_bonusImage;
 
-        // Second screen (when credits)
+        // Second screen (when credit)
         TextElement m_startButton;
         TextElement m_players;
         TextElement m_bonusPacman;
@@ -48,16 +45,13 @@ namespace pacman {
         int oldCredit;
     public:
 
-        LoadingScreen(const LoadingScreenResources& p_resources, TextResources p_textResources, shared_value<int> p_credit);
+        LoadingScreen(const LoadingScreenResources &p_resources, TextResources p_textResources,
+                      shared_value<int> p_credit);
 
         void tick() noexcept override;
         void reset() noexcept override;
         void disable() noexcept;
-        [[nodiscard]] TextElement const& credit() { return m_creditText; }
-
-        constexpr int CALC(int p_len) {
-            return strTextSize(p_len, m_charSize, m_spacing);
-        }
+        void updateCredit() noexcept;
 
     };
 

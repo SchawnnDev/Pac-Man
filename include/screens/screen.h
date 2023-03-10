@@ -13,6 +13,8 @@ namespace pacman {
         std::vector<std::shared_ptr<Drawable>> m_elements;
         TextResources m_textResources;
     protected:
+        const int m_charSize = 20;
+        const int m_spacing = 3;
         const int m_winMiddleX = WINDOW_SIZE_WIDTH / 2;
         const int m_winMiddleY = WINDOW_SIZE_HEIGHT / 2;
     public:
@@ -25,7 +27,13 @@ namespace pacman {
 
         int &ticks() noexcept { return m_ticks; }
 
+        [[nodiscard]] constexpr int CALC(int p_len) const {
+            return strTextSize(p_len, m_charSize, m_spacing);
+        }
+
         [[nodiscard]] std::span<const std::shared_ptr<Drawable>> elements() const { return std::span{m_elements}; }
+
+        [[nodiscard]] TextResources const& textResources() const { return m_textResources; }
 
         inline void addElement(const std::shared_ptr<Drawable>& p_element) {
             m_elements.push_back(p_element);

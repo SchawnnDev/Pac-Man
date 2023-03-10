@@ -27,7 +27,7 @@ namespace pacman {
         // Game logic
         int m_level;
         GameState m_state;
-        shared_value<int> m_credits;
+        shared_value<int> m_credit;
         shared_value<int> m_highScore;
         std::array<shared_value<int>, 2> m_scores;
         int m_players;
@@ -53,11 +53,9 @@ namespace pacman {
         std::unique_ptr<SDL_Window,
                 decltype(&SDL_DestroyWindow)> m_window{nullptr, SDL_DestroyWindow};
         std::unique_ptr<SDL_Renderer,
-                decltype(&SDL_DestroyRenderer)> m_windowRenderer{nullptr,
-                                                                 SDL_DestroyRenderer};
+                decltype(&SDL_DestroyRenderer)> m_windowRenderer{nullptr, SDL_DestroyRenderer};
         std::unique_ptr<SDL_Surface,
-                decltype(&SDL_FreeSurface)> m_spriteSurface{nullptr,
-                                                            SDL_FreeSurface};
+                decltype(&SDL_FreeSurface)> m_spriteSurface{nullptr, SDL_FreeSurface};
         SDL_Texture *m_spriteTexture;
 
     public:
@@ -81,7 +79,7 @@ namespace pacman {
 
         int &level() { return m_level; }
 
-        [[nodiscard]] shared_value<int> credits() const { return m_credits; }
+        [[nodiscard]] shared_value<int> credit() const { return m_credit; }
 
         void start();
 

@@ -65,7 +65,7 @@ void HeaderScreen::reset() noexcept
     ticks() = 0;
 }
 
-void HeaderScreen::updateHighScore()
+void HeaderScreen::updateHighScore() noexcept
 {
     m_highScoreText->text() = std::to_string(m_highScore);
     // Handle new position (when text gets greater, moved from one char x size)

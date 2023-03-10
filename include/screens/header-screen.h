@@ -29,7 +29,7 @@ namespace pacman {
 
         void reset() noexcept override;
 
-        void updateHighScore();
+        void updateHighScore() noexcept;
 
     };
 

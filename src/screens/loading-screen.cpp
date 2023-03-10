@@ -4,10 +4,10 @@
 
 using namespace pacman;
 
-LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextResources p_textResources, shared_value<int> p_credit)
+LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextResources p_textResources,
+                             shared_value<int> p_credit)
         : Screen(p_textResources)
         , m_credit{std::move(p_credit)}
-        , oldCredit{0}
         , m_bonusAnimation{p_resources.bonusAnimation}
         , m_nothingSprite{p_resources.nothingSprite}
         , m_charNick{std::make_shared<Text>("character / nickname", Position{m_winMiddleX - CALC(10), 120}, m_charSize, m_spacing, p_textResources)}
@@ -20,7 +20,6 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
         , m_clyde{std::make_shared<Text>("- pokey   \"clyde\"", Position{m_ghostX, 360}, m_charSize, m_spacing, p_textResources)}
         , m_clydeImage{std::make_shared<Image>(p_resources.clydeRight, Position{m_ghostX - 72, 360 - 9}, Position{36, 36})}
         , m_midway{std::make_shared<Text>("@ 1980 midway mfg. co.",Position{m_winMiddleX - CALC(11),WINDOW_SIZE_HEIGHT -50 - 60}, m_charSize, m_spacing, p_textResources)}
-        , m_creditText{std::make_shared<Text>("credit  0", Position{25, WINDOW_SIZE_HEIGHT - 25}, m_charSize, m_spacing, p_textResources)}
         //
         , m_pointImage{std::make_shared<Image>(p_resources.pointSprite, Position{m_winMiddleX - 102, m_scoreY + 8}, Position{5, 5})}
         , m_bonusImage{std::make_shared<Image>(m_bonusAnimation.display().value_or(p_resources.nothingSprite), Position{m_winMiddleX - 110, m_scoreY + 40}, Position{20, 20})}
@@ -43,7 +42,6 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
     m_startButton->color() = {255, 184, 81};
     m_bonusPacman->color() = {255, 184, 174};
     m_bonusPacmanPtsImage->color() = {255, 184, 174};
-    addElement(m_creditText);
     addElement(m_blinkyImage);
     addElement(m_blinky);
     addElement(m_pinkyImage);
@@ -70,28 +68,6 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
 
 void LoadingScreen::tick() noexcept {
     if(!activated()) return;
-
-    // changing state
-    if(m_credit != oldCredit)
-    {
-
-        if(m_credit > 0)
-        {
-            disable();
-            m_charNick->activated() = false;
-            m_startButton->activated() = true;
-            m_players->activated() = true;
-            m_bonusPacman->activated() = true;
-            m_bonusPacmanPtsImage->activated() = true;
-            m_midway->activated() = true;
-            m_players->text() = m_credit == 1 ? "1 player only" : "1 or 2 players";
-        } else {
-            reset();
-        }
-
-    }
-
-    oldCredit = m_credit;
 
     if(m_credit != 0)
         return;
@@ -126,7 +102,6 @@ void LoadingScreen::tick() noexcept {
 
 void LoadingScreen::reset() noexcept {
     ticks() = 0;
-    m_creditText->activated() = true;
     m_charNick->activated() = true;
     m_startButton->activated() = false;
     m_players->activated() = false;
@@ -152,3 +127,21 @@ void LoadingScreen::disable() noexcept {
     m_pointImage->activated() = false;
     m_bonusImage->activated() = false;
 }
+
+void LoadingScreen::updateCredit() noexcept
+{
+    if(m_credit > 0)
+    {
+        disable();
+        m_charNick->activated() = false;
+        m_startButton->activated() = true;
+        m_players->activated() = true;
+        m_bonusPacman->activated() = true;
+        m_bonusPacmanPtsImage->activated() = true;
+        m_midway->activated() = true;
+        m_players->text() = m_credit == 1 ? "1 player only" : "1 or 2 players";
+    } else {
+        reset();
+    }
+}
+

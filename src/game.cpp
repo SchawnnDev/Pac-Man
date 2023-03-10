@@ -8,7 +8,7 @@ Game::Game()
         : m_level{1},
           m_players{1},
           m_currentPlayer{-1},
-          m_credits{0},
+          m_credit{0},
           m_highScore{0},
           m_scores{shared_value{0}, shared_value{0}},
           m_state{GameState::LoadingScreen},
@@ -19,9 +19,10 @@ Game::Game()
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
-          m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credits},
+          m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(),
+                          m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources()}
+          m_footerScreen{m_spriteHandler.textResources(), m_credit}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -207,11 +208,11 @@ void Game::handleSpecialKeys(const SDL_Event &event)
     {
         if(event.key.keysym.sym == SDLK_c && event.key.repeat == 0)
         {
-            updateCredits(credits() + 1);
+            updateCredits(credit() + 1);
             return;
         }
 
-        if(m_credits > 0)
+        if(m_credit > 0)
         {
             if(event.key.keysym.sym == SDLK_1 && event.key.repeat == 0)
             {
@@ -237,6 +238,7 @@ void Game::startPlaying(int p_players)
     m_players = p_players;
     m_currentPlayer = 0;
     m_state = GameState::Playing;
+    m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
     m_board.activated() = true;
     m_pacman.activated() = true;
@@ -247,8 +249,9 @@ void Game::startPlaying(int p_players)
 }
 
 void Game::updateCredits(int p_credits) {
-    m_credits = p_credits;
-    m_loadingScreen.credit()->text() = "credit  " + std::to_string(p_credits);
+    m_credit = p_credits;
+    m_loadingScreen.updateCredit();
+    m_footerScreen.updateCredit();
 }
 
 void Game::updateHighScore(int p_highScore)
