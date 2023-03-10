@@ -10,10 +10,6 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
         , oldCredit{0}
         , m_bonusAnimation{p_resources.bonusAnimation}
         , m_nothingSprite{p_resources.nothingSprite}
-        , m_oneUp{std::make_shared<Text>("1up", Position{25, 5}, m_charSize, m_spacing, p_textResources)}
-        , m_highScore{std::make_shared<Text>("high score", Position{m_winMiddleX - CALC(5), 5}, m_charSize, m_spacing, p_textResources)}
-        , m_twoUp{std::make_shared<Text>("2up", Position{WINDOW_SIZE_WIDTH - m_oneUp->textSize() - 25, 5}, m_charSize, m_spacing, p_textResources)}
-        , m_score{std::make_shared<Text>("00", Position{25 + CALC(2), 29}, m_charSize,m_spacing, p_textResources)}
         , m_charNick{std::make_shared<Text>("character / nickname", Position{m_winMiddleX - CALC(10), 120}, m_charSize, m_spacing, p_textResources)}
         , m_blinky{std::make_shared<Text>("- shadow  \"blinky\"", Position{m_ghostX, 180}, m_charSize, m_spacing, p_textResources)}
         , m_blinkyImage{std::make_shared<Image>(p_resources.blinkyRight, Position{m_ghostX - 72, 180 - 9}, Position{36, 36})}
@@ -63,10 +59,6 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
     addElement(m_score50Image);
     addElement(m_score50PtsImage);
     addElement(m_midway);
-    addElement(m_oneUp);
-    addElement(m_twoUp);
-    addElement(m_highScore);
-    addElement(m_score);
     addElement(m_charNick);
     addElement(m_startButton);
     addElement(m_players);
@@ -135,10 +127,6 @@ void LoadingScreen::tick() noexcept {
 void LoadingScreen::reset() noexcept {
     ticks() = 0;
     m_creditText->activated() = true;
-    m_oneUp->activated() = true;
-    m_twoUp->activated() = true;
-    m_highScore->activated() = true;
-    m_score->activated() = true;
     m_charNick->activated() = true;
     m_startButton->activated() = false;
     m_players->activated() = false;

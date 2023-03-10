@@ -12,6 +12,8 @@
 #include "utils/clock.h"
 #include "screens/loading-screen.h"
 #include "utils/shared_value.h"
+#include "screens/header-screen.h"
+#include "screens/footer-screen.h"
 
 namespace pacman {
 
@@ -26,8 +28,10 @@ namespace pacman {
         int m_level;
         GameState m_state;
         shared_value<int> m_credits;
+        shared_value<int> m_highScore;
+        std::array<shared_value<int>, 2> m_scores;
         int m_players;
-        int m_currentPlayer;
+        shared_value<int> m_currentPlayer;
 
         // Handlers
         SpriteHandler m_spriteHandler;
@@ -42,6 +46,8 @@ namespace pacman {
 
         // Screens
         LoadingScreen m_loadingScreen;
+        HeaderScreen m_headerScreen;
+        FooterScreen m_footerScreen;
 
         // SDL
         std::unique_ptr<SDL_Window,

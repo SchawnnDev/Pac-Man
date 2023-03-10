@@ -4,57 +4,24 @@
 
 using namespace pacman;
 
-void Game::start()
-{
-    if (m_state != GameState::LoadingScreen)
-        return;
-
-    // Init
-    Clock clock{};
-    m_board.activated() = false;
-    m_pacman.activated() = false;
-    m_blinky.activated() = false;
-    m_pinky.activated() = false;
-    m_inky.activated() = false;
-    m_clyde.activated() = false;
-
-    // Main loop
-    while (m_state != GameState::End)
-    {
-        clock.begin_frame();
-
-        handleEvents();
-        handleKeys();
-        handleLogic();
-        handleDrawing();
-
-        clock.end_frame();
-
-        const auto ms_per_frame = (1000.0 / FRAMERATE);
-        auto wait_ms = (int)(ms_per_frame - std::min(clock.last_delta(), ms_per_frame));
-        SDL_Delay(wait_ms);
-    }
-}
-
-void Game::end()
-{
-    m_state = GameState::End;
-}
-
 Game::Game()
-        : m_spriteHandler{"./assets/pacman.sprites"},
+        : m_level{1},
+          m_players{1},
+          m_currentPlayer{-1},
+          m_credits{0},
+          m_highScore{0},
+          m_scores{shared_value{0}, shared_value{0}},
+          m_state{GameState::LoadingScreen},
+          m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
           m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
           m_blinky{m_board, m_pacman, m_spriteHandler.blinkyAnimations()},
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
-          m_credits{0},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credits},
-          m_state{GameState::LoadingScreen},
-          m_level{1},
-          m_players{1},
-          m_currentPlayer{0}
+          m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
+          m_footerScreen{m_spriteHandler.textResources()}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -81,6 +48,44 @@ Game::Game()
 Game::~Game()
 {
     SDL_Quit();
+}
+
+void Game::start()
+{
+    if (m_state != GameState::LoadingScreen)
+        return;
+
+    // Init
+    Clock clock{};
+    m_board.activated() = false;
+    m_pacman.activated() = false;
+    m_blinky.activated() = false;
+    m_pinky.activated() = false;
+    m_inky.activated() = false;
+    m_clyde.activated() = false;
+    m_headerScreen.activated() = true;
+
+    // Main loop
+    while (m_state != GameState::End)
+    {
+        clock.begin_frame();
+
+        handleEvents();
+        handleKeys();
+        handleLogic();
+        handleDrawing();
+
+        clock.end_frame();
+
+        const auto ms_per_frame = (1000.0 / FRAMERATE);
+        auto wait_ms = (int)(ms_per_frame - std::min(clock.last_delta(), ms_per_frame));
+        SDL_Delay(wait_ms);
+    }
+}
+
+void Game::end()
+{
+    m_state = GameState::End;
 }
 
 void Game::handleEvents()
@@ -132,6 +137,8 @@ void Game::handleKeys()
 
 void Game::handleLogic()
 {
+    m_headerScreen.tick();
+    m_footerScreen.tick();
 
     if(m_state == GameState::LoadingScreen)
     {
@@ -182,7 +189,9 @@ void Game::handleDrawing()
     m_inky.draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw screens
+    m_headerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
     m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_footerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
@@ -220,6 +229,7 @@ void Game::handleSpecialKeys(const SDL_Event &event)
 void Game::startPlaying(int p_players)
 {
     m_players = p_players;
+    m_currentPlayer = 0;
     m_state = GameState::Playing;
     m_loadingScreen.activated() = false;
     m_board.activated() = true;

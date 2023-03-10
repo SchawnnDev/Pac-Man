@@ -12,6 +12,9 @@ namespace pacman {
         int m_ticks;
         std::vector<std::shared_ptr<Drawable>> m_elements;
         TextResources m_textResources;
+    protected:
+        const int m_winMiddleX = WINDOW_SIZE_WIDTH / 2;
+        const int m_winMiddleY = WINDOW_SIZE_HEIGHT / 2;
     public:
         explicit Screen(TextResources p_textResources)
         : m_ticks{0}, m_elements{}, m_textResources{p_textResources} {};

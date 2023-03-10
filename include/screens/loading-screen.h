@@ -13,17 +13,11 @@ namespace pacman {
         const int m_spacing = 3;
         const int m_ghostX = WINDOW_SIZE_WIDTH / 2 - CALC(9);
         const int m_scoreY = WINDOW_SIZE_HEIGHT / 4 * 3 - 40;
-        const int m_winMiddleX = WINDOW_SIZE_WIDTH / 2;
-        const int m_winMiddleY = WINDOW_SIZE_HEIGHT / 2;
 
         SpriteAnimation m_bonusAnimation;
         Sprite m_nothingSprite;
 
         // Texts
-        TextElement m_oneUp;
-        TextElement m_highScore;
-        TextElement m_twoUp;
-        TextElement m_score;
         TextElement m_charNick;
         TextElement m_blinky;
         TextElement m_pinky;
