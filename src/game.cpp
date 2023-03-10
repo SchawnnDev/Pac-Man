@@ -199,10 +199,7 @@ void Game::handleDrawing()
     SDL_UpdateWindowSurface(m_window.get());
 }
 
-void Game::updateCredits(int p_credits) {
-    m_credits = p_credits;
-    m_loadingScreen.credit()->text() = "credit  " + std::to_string(p_credits);
-}
+
 
 void Game::handleSpecialKeys(const SDL_Event &event)
 {
@@ -224,6 +221,15 @@ void Game::handleSpecialKeys(const SDL_Event &event)
         }
 
     }
+
+    if(m_state == GameState::Playing) {
+        if(event.key.keysym.sym == SDLK_b && event.key.repeat == 0)
+        {
+            updateHighScore(m_highScore + 10);
+            return;
+        }
+
+    }
 }
 
 void Game::startPlaying(int p_players)
@@ -238,4 +244,15 @@ void Game::startPlaying(int p_players)
     m_pinky.activated() = true;
     m_inky.activated() = true;
     m_clyde.activated() = true;
+}
+
+void Game::updateCredits(int p_credits) {
+    m_credits = p_credits;
+    m_loadingScreen.credit()->text() = "credit  " + std::to_string(p_credits);
+}
+
+void Game::updateHighScore(int p_highScore)
+{
+    m_highScore = p_highScore;
+    m_headerScreen.updateHighScore();
 }

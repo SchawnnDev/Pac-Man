@@ -99,6 +99,8 @@ namespace pacman {
 
         void updateCredits(int p_credits);
 
+        void updateHighScore(int p_highScore);
+
         void startPlaying(int p_players);
     };
 
