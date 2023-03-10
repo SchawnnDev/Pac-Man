@@ -17,9 +17,18 @@
 
 namespace pacman {
 
+    // Global state
     enum class GameState {
         LoadingScreen,
         Playing,
+        GameOver,
+        End
+    };
+    // All in global state or new level state?
+    enum class LevelState {
+        PlayerDisplay,
+        Ready,
+        Running,
         End
     };
 
