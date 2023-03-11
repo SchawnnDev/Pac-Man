@@ -15,6 +15,7 @@
 #include "screens/header-screen.h"
 #include "screens/footer-screen.h"
 #include "screens/game-screen.h"
+#include "level.h"
 
 namespace pacman {
 
@@ -25,19 +26,14 @@ namespace pacman {
         GameOver,
         End
     };
-    // All in global state or new level state?
-    enum class LevelState {
-        PlayerDisplay,
-        Ready,
-        Running,
-        End
-    };
+
 
     class Game {
         // Game logic
+        int64_t m_ticks;
         int m_level;
-        GameState m_state;
-        LevelState m_levelState;
+        shared_value<GameState> m_state;
+        shared_value<LevelState> m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
         std::array<shared_value<int>, 2> m_scores;
@@ -75,43 +71,51 @@ namespace pacman {
 
         ~Game();
 
-        [[nodiscard]] GameState gameState() const { return m_state; }
+        [[nodiscard]] GameState gameState() const noexcept { return m_state; }
 
-        GameState &gameState() { return m_state; }
+        GameState &gameState() noexcept { return m_state; }
 
-        [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
+        [[nodiscard]] Pacman const &pacman() const noexcept { return m_pacman; }
 
-        Pacman &pacman() { return m_pacman; }
+        Pacman &pacman() noexcept { return m_pacman; }
 
-        [[nodiscard]] Board const &board() const { return m_board; }
+        [[nodiscard]] Board const &board() const noexcept { return m_board; }
 
-        Board &board() { return m_board; }
+        Board &board() noexcept { return m_board; }
 
-        [[nodiscard]] int level() const { return m_level; }
+        [[nodiscard]] int level() const noexcept { return m_level; }
 
-        int &level() { return m_level; }
+        int &level() noexcept { return m_level; }
 
-        [[nodiscard]] shared_value<int> credit() const { return m_credit; }
+        [[nodiscard]] shared_value<int> credit() const noexcept { return m_credit; }
 
-        void start();
+        void start() noexcept;
 
-        void end();
+        void end() noexcept;
 
-        void handleEvents();
+        void handleEvents() noexcept;
 
-        void handleKeys();
+        void handleKeys() noexcept;
 
-        void handleSpecialKeys(SDL_Event const& event);
+        void handleSpecialKeys(SDL_Event const& event) noexcept;
 
-        void handleLogic();
+        void handleLogic() noexcept;
 
-        void handleDrawing();
+        void handleDrawing() noexcept;
 
-        void updateCredits(int p_credits);
+        void updateCredits(int p_credits) noexcept;
 
-        void updateHighScore(int p_highScore);
+        void updateHighScore(int p_highScore) noexcept;
 
-        void startPlaying(int p_players);
+        void startPlaying(int p_players) noexcept;
+
+        void startLevel() noexcept;
+
+        void endLevel() noexcept;
+
+        void startScatter() noexcept;
+
+        void startChase() noexcept;
     };
 
 }

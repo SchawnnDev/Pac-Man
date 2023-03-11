@@ -3,8 +3,24 @@
 using namespace pacman;
 
 void Inky::tick() noexcept {
-    if(freezed()) return;
+    if(freezed() || !activated()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
+
+    switch(ghostMode())
+    {
+        case GhostMode::Home:
+            break;
+        case GhostMode::Scatter:
+            handleScatterMode();
+            break;
+        case GhostMode::Chase:
+            handleChaseTarget();
+            break;
+        case GhostMode::Frightened:
+            break;
+        case GhostMode::Eaten:
+            break;
+    }
 
     // handle path finding & movements
     handleMovement();
@@ -42,4 +58,10 @@ void Inky::handleHomeMode() noexcept {}
 
 void Inky::startHomeMode() noexcept {
 
+}
+
+void Inky::reset() noexcept
+{
+    position() = getPosition(10, 10);
+    ghostMode() = GhostMode::Home;
 }

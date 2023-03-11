@@ -3,8 +3,24 @@
 using namespace pacman;
 
 void Blinky::tick() noexcept {
-    if(freezed()) return;
+    if(freezed() || !activated()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
+
+    switch(ghostMode())
+    {
+        case GhostMode::Home:
+            break;
+        case GhostMode::Scatter:
+            handleScatterMode();
+            break;
+        case GhostMode::Chase:
+            handleChaseTarget();
+            break;
+        case GhostMode::Frightened:
+            break;
+        case GhostMode::Eaten:
+            break;
+    }
 
     // handle path finding & movements
     handleMovement();
@@ -30,4 +46,10 @@ void Blinky::handleHomeMode() noexcept {}
 
 void Blinky::startHomeMode() noexcept {
 
+}
+
+void Blinky::reset() noexcept
+{
+    position() = getPosition(10, 10);
+    ghostMode() = GhostMode::Home;
 }

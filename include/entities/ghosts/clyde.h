@@ -18,6 +18,8 @@ namespace pacman {
 
         void tick() noexcept override;
 
+        void reset() noexcept override;
+
         void startScatterMode() noexcept override;
 
         void startChaseMode() noexcept override;

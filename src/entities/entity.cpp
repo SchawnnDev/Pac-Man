@@ -3,7 +3,7 @@
 using namespace pacman;
 
 void Entity::move(Direction newDirection) noexcept {
-    if(m_freeze) return;
+    if(m_freeze || !activated()) return;
     // If entity walks in the same direction, check if
     // Only be able to change position if the entity is one middle of case
     if (!canMoveTo(newDirection) || !Board::isCase(m_position)

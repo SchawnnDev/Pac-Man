@@ -41,6 +41,8 @@ namespace pacman {
 
         virtual void changeAnimation() noexcept = 0;
 
+        virtual void reset() noexcept = 0;
+
         // wow, modern (uses cpp move semantics)
         [[nodiscard]] virtual EntityType entityType() const noexcept = 0;
 

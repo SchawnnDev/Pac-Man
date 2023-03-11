@@ -2,7 +2,6 @@
 
 #include "screen.h"
 #include "utils/shared_value.h"
-#include "game.h"
 
 namespace pacman {
 
