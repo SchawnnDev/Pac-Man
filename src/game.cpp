@@ -12,6 +12,7 @@ Game::Game()
           m_highScore{0},
           m_scores{shared_value{0}, shared_value{0}},
           m_state{GameState::LoadingScreen},
+          m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
           m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
@@ -22,7 +23,8 @@ Game::Game()
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(),
                           m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit}
+          m_footerScreen{m_spriteHandler.textResources(), m_credit},
+          m_gameScreen{m_spriteHandler.textResources()}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -42,7 +44,7 @@ Game::Game()
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
 
-    SDL_SetColorKey(m_spriteSurface.get(), true,  SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
+    SDL_SetColorKey(m_spriteSurface.get(), true, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
 
 }
 
@@ -65,6 +67,7 @@ void Game::start()
     m_inky.activated() = false;
     m_clyde.activated() = false;
     m_headerScreen.activated() = true;
+    m_gameScreen.activated() = false;
 
     // Main loop
     while (m_state != GameState::End)
@@ -115,7 +118,7 @@ void Game::handleKeys()
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
 
-    if(m_state != GameState::Playing)
+    if(m_state != GameState::Playing || m_levelState != LevelState::Running)
         return;
 
     if (keys[SDL_SCANCODE_LEFT])
@@ -147,6 +150,11 @@ void Game::handleLogic()
         m_loadingScreen.activated() = true;
         m_loadingScreen.tick();
         return;
+    }
+
+    if(m_state == GameState::Playing)
+    {
+        m_gameScreen.tick();
     }
 
     m_pacman.tick();
@@ -193,6 +201,8 @@ void Game::handleDrawing()
     m_headerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
     m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture);
     m_footerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_gameScreen.draw(m_windowRenderer.get(), m_spriteTexture);
+
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
@@ -238,6 +248,7 @@ void Game::startPlaying(int p_players)
     m_players = p_players;
     m_currentPlayer = 0;
     m_state = GameState::Playing;
+    m_levelState = LevelState::PlayerDisplay;
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
     m_board.activated() = true;

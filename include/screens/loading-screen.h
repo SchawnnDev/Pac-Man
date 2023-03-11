@@ -42,7 +42,6 @@ namespace pacman {
         ImageElement m_bonusPacmanPtsImage;
 
         shared_value<int> m_credit;
-        int oldCredit;
     public:
 
         LoadingScreen(const LoadingScreenResources &p_resources, TextResources p_textResources,

@@ -14,6 +14,7 @@
 #include "utils/shared_value.h"
 #include "screens/header-screen.h"
 #include "screens/footer-screen.h"
+#include "screens/game-screen.h"
 
 namespace pacman {
 
@@ -36,6 +37,7 @@ namespace pacman {
         // Game logic
         int m_level;
         GameState m_state;
+        LevelState m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
         std::array<shared_value<int>, 2> m_scores;
@@ -57,6 +59,7 @@ namespace pacman {
         LoadingScreen m_loadingScreen;
         HeaderScreen m_headerScreen;
         FooterScreen m_footerScreen;
+        GameScreen m_gameScreen;
 
         // SDL
         std::unique_ptr<SDL_Window,
