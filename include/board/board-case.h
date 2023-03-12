@@ -62,7 +62,8 @@ namespace pacman {
                    || p_boardCaseType == BoardCaseType::BasicPath
                    || p_boardCaseType == BoardCaseType::Bonus
                    || p_boardCaseType == BoardCaseType::DoorLeft
-                   || p_boardCaseType == BoardCaseType::DoorRight;
+                   || p_boardCaseType == BoardCaseType::DoorRight
+                   || p_boardCaseType == BoardCaseType::GhostHome;
         }
 
     };

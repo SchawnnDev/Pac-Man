@@ -6,13 +6,15 @@ using namespace pacman;
 
 GameScreen::GameScreen(TextResources p_textResources, shared_value<LevelState> const& p_levelState)
     : Screen(p_textResources)
-        , m_player{std::make_shared<Text>("player one", Position{m_winMiddleX - CALC(5), m_winMiddleY - 80}, m_charSize, m_spacing, p_textResources)}
-        , m_ready{std::make_shared<Text>("ready!", Position{m_winMiddleX - CALC(3), m_winMiddleY + 80}, m_charSize, m_spacing, p_textResources)}
+        , m_player{std::make_shared<Text>("player one", Position{m_winMiddleX - CALC(5), m_winMiddleY - 90}, m_charSize, m_spacing, p_textResources)}
+        , m_ready{std::make_shared<Text>("ready!", Position{m_winMiddleX - CALC(3), m_winMiddleY + 70}, m_charSize, m_spacing, p_textResources)}
         , m_levelState{p_levelState}
 {
+    m_player->color() = {0,255,255};
+    m_ready->color() = {240,188,60};
     addElement(m_player);
     addElement(m_ready);
-    reset();
+    GameScreen::reset();
 }
 
 void GameScreen::tick() noexcept

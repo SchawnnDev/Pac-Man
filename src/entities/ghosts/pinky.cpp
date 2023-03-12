@@ -9,7 +9,8 @@ void Pinky::tick() noexcept {
     switch(ghostMode())
     {
         case GhostMode::Home:
-            break;
+            handleHomeMode();
+            return;
         case GhostMode::Scatter:
             handleScatterMode();
             break;
@@ -38,8 +39,6 @@ void Pinky::startChaseMode() noexcept {
 }
 
 void Pinky::handleChaseTarget() noexcept {
-    if (ghostMode() != GhostMode::Chase) return;
-
     auto position = Board::findCase(pacman().position());
     // move 4 cases in the front of pacman
     position.moveAt(pacman().direction(), 4);
@@ -52,16 +51,11 @@ void Pinky::handleChaseTarget() noexcept {
     target() = position;
 }
 
-void Pinky::handleHomeMode() noexcept {}
-
-void Pinky::startHomeMode() noexcept {
-    if(ghostMode() == GhostMode::Home) return;
-    direction() = Direction::UP;
-    position() = {10, 13};
-}
-
 void Pinky::reset() noexcept
 {
-    position() = getPosition(10, 10);
+    position() = getPosition(10, 12);
     ghostMode() = GhostMode::Home;
+    direction() = Direction::DOWN;
+    target() = {10, 14};
+    Ghost::changeAnimation();
 }

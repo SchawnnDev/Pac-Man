@@ -147,42 +147,47 @@ void Game::handleKeys() noexcept
 void Game::handleLogic() noexcept
 {
 
-    if(m_levelState == LevelState::PlayerDisplay && m_ticks == 180)
+    if(m_state == GameState::Playing)
     {
-        m_levelState = LevelState::Ready;
-        m_gameScreen.updateState();
+        if(m_levelState == LevelState::PlayerDisplay && m_ticks == 180)
+        {
+            m_levelState = LevelState::Ready;
+            m_gameScreen.updateState();
 
-        // Activate all entities but freeze them
-        m_pacman.activated() = true;
-        m_blinky.activated() = true;
-        m_pinky.activated() = true;
-        m_inky.activated() = true;
-        m_clyde.activated() = true;
+            // Activate all entities but freeze them
+            m_pacman.activated() = true;
+            m_blinky.activated() = true;
+            m_pinky.activated() = true;
+            m_inky.activated() = true;
+            m_clyde.activated() = true;
 
-        m_pacman.freeze();
-        m_blinky.freeze();
-        m_pinky.freeze();
-        m_inky.freeze();
-        m_clyde.freeze();
+            m_pacman.freeze();
+            m_blinky.freeze();
+            m_pinky.freeze();
+            m_inky.freeze();
+            m_clyde.freeze();
+        }
+
+        if(m_levelState == LevelState::Ready && m_ticks == 360)
+        {
+            m_levelState = LevelState::Scatter;
+            m_gameScreen.updateState();
+
+            // Unfreeze all entities
+            m_pacman.unfreeze();
+            m_blinky.unfreeze();
+            m_pinky.unfreeze();
+            m_inky.unfreeze();
+            m_clyde.unfreeze();
+
+            m_blinky.startScatterMode();
+            m_clyde.startHomeMode();
+            m_pinky.startHomeMode();
+            m_inky.startHomeMode();
+        }
+
     }
 
-    if(m_levelState == LevelState::Ready && m_ticks == 360)
-    {
-        m_levelState = LevelState::Scatter;
-        m_gameScreen.updateState();
-
-        // Unfreeze all entities
-        m_pacman.unfreeze();
-        m_blinky.unfreeze();
-        m_pinky.unfreeze();
-        m_inky.unfreeze();
-        m_clyde.unfreeze();
-
-        m_blinky.startScatterMode();
-        m_clyde.startHomeMode();
-        m_pinky.startHomeMode();
-        m_inky.startHomeMode();
-    }
 
     m_headerScreen.tick();
     m_footerScreen.tick();

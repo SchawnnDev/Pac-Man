@@ -9,7 +9,8 @@ void Clyde::tick() noexcept {
     switch(ghostMode())
     {
         case GhostMode::Home:
-            break;
+            handleHomeMode();
+            return;
         case GhostMode::Scatter:
             handleScatterMode();
             break;
@@ -38,8 +39,6 @@ void Clyde::startChaseMode() noexcept {
 }
 
 void Clyde::handleChaseTarget() noexcept {
-    if (ghostMode() != GhostMode::Chase) return;
-
     auto currentPosition = Board::findCase(position());
     auto position = Board::findCase(pacman().position());
 
@@ -53,14 +52,10 @@ void Clyde::handleChaseTarget() noexcept {
 
 }
 
-void Clyde::handleHomeMode() noexcept {}
-
-void Clyde::startHomeMode() noexcept {
-
-}
-
 void Clyde::reset() noexcept
 {
-    position() = getPosition(10, 10);
+    position() = getPosition(11, 13);
     ghostMode() = GhostMode::Home;
+    direction() = Direction::UP;
+    Ghost::changeAnimation();
 }

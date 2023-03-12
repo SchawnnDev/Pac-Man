@@ -28,6 +28,17 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
     auto rightDirection = getDirectionByAngle(direction(), -90);
     auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
 
+    // Specific home mode can also go in backward direction
+    if(ghostMode() == GhostMode::Home)
+    {
+        auto backDirection = getOpposite(direction());
+        auto backCase = board().getBoardCaseAtPixels(position(), backDirection);
+
+        if (backCase && !(backDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
+            pairs.emplace_back(backDirection, backCase);
+        }
+
+    }
 
     if (frontCase && !(direction() == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
         pairs.emplace_back(direction(), frontCase);
@@ -146,4 +157,31 @@ void Ghost::changeAnimation() noexcept {
             currentAnimation() = m_ghostAnimations.rightAnimation;
             break;
     }
+}
+
+void Ghost::handleHomeMode() noexcept {
+    // Home mode: ghost going up & down
+    if(Board::isCase(position())) {
+
+        auto const &nextCase = board().getBoardCaseAtPixels(position(), direction());
+
+        if (!nextCase) return; // should not be null
+
+        if (!BoardCase::isPracticable(nextCase.value())) {
+            if (direction() == Direction::DOWN) {
+                direction() = Direction::UP;
+            } else if (direction() == Direction::UP) {
+                direction() = Direction::DOWN;
+            }
+
+            Ghost::changeAnimation();
+        }
+    }
+
+    position().moveAt(direction(), speed());
+}
+
+void Ghost::startHomeMode() noexcept {
+    if(ghostMode() == GhostMode::Home) return;
+    reset();
 }

@@ -46,10 +46,6 @@ namespace pacman {
 
         virtual void startChaseMode() noexcept = 0;
 
-        virtual void startHomeMode() noexcept = 0;
-
-        virtual void handleHomeMode() noexcept = 0;
-
         virtual void handleChaseTarget() noexcept = 0;
 
         void startFrightenedMode() noexcept;
@@ -57,6 +53,10 @@ namespace pacman {
         void startEatenMode() noexcept;
 
         void handleScatterMode() noexcept;
+
+        void handleHomeMode() noexcept;
+
+        void startHomeMode() noexcept;
 
         std::optional<BoardCase> handlePathFinding() noexcept;
 

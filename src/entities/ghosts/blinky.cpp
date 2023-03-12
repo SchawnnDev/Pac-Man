@@ -42,14 +42,10 @@ void Blinky::handleChaseTarget() noexcept {
     target() = Board::findCase(pacman().position());
 }
 
-void Blinky::handleHomeMode() noexcept {}
-
-void Blinky::startHomeMode() noexcept {
-
-}
-
 void Blinky::reset() noexcept
 {
     position() = getPosition(10, 10);
-    ghostMode() = GhostMode::Home;
+    direction() = Direction::LEFT;
+    startScatterMode();
+    Ghost::changeAnimation();
 }

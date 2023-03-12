@@ -24,10 +24,6 @@ namespace pacman {
 
         void startChaseMode() noexcept override;
 
-        void startHomeMode() noexcept override;
-
-        void handleHomeMode() noexcept override;
-
         void handleChaseTarget() noexcept override;
 
     };

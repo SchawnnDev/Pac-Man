@@ -9,7 +9,8 @@ void Inky::tick() noexcept {
     switch(ghostMode())
     {
         case GhostMode::Home:
-            break;
+            handleHomeMode();
+            return;
         case GhostMode::Scatter:
             handleScatterMode();
             break;
@@ -38,8 +39,6 @@ void Inky::startChaseMode() noexcept {
 }
 
 void Inky::handleChaseTarget() noexcept {
-    if (ghostMode() != GhostMode::Chase) return;
-
     auto position = Board::findCase(pacman().position());
     // move 2 cases in the front of pacman
     position.moveAt(pacman().direction(), 2);
@@ -54,14 +53,11 @@ void Inky::handleChaseTarget() noexcept {
     target() = Board::findCase(m_blinky.position()).rotateVec(position, 180);
 }
 
-void Inky::handleHomeMode() noexcept {}
-
-void Inky::startHomeMode() noexcept {
-
-}
-
 void Inky::reset() noexcept
 {
-    position() = getPosition(10, 10);
+    position() = getPosition(9, 13);
     ghostMode() = GhostMode::Home;
+    direction() = Direction::UP;
+    target() = {9, 11};
+    Ghost::changeAnimation();
 }

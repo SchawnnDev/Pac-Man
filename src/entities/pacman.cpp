@@ -13,7 +13,7 @@ Pacman::Pacman(const Board &p_board, PacmanAnimations p_pacmanAnimations)
 
 void Pacman::tick() noexcept
 {
-    if (freezed()) return;
+    if (freezed() || !activated()) return;
 
     if (m_state == PacmanState::DYING)
     {

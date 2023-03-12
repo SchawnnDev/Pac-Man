@@ -72,8 +72,6 @@ void LoadingScreen::tick() noexcept {
     if(m_credit != 0)
         return;
 
-    ticks()++;
-
     auto found = false;
     auto els = elements();
     const auto size = els.size() - 4; // 3 > reserved
@@ -98,6 +96,7 @@ void LoadingScreen::tick() noexcept {
     }
 
     m_bonusImage->sprite() = m_bonusAnimation.display().value_or(m_nothingSprite);
+    ticks()++;
 }
 
 void LoadingScreen::reset() noexcept {
