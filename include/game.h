@@ -101,6 +101,8 @@ namespace pacman {
 
         void handleLogic() noexcept;
 
+        void handleTicks() noexcept;
+
         void handleDrawing() noexcept;
 
         void updateCredits(int p_credits) noexcept;
@@ -116,6 +118,7 @@ namespace pacman {
         void startScatter() noexcept;
 
         void startChase() noexcept;
+
     };
 
 }

@@ -77,6 +77,7 @@ void Game::start() noexcept
         handleEvents();
         handleKeys();
         handleLogic();
+        handleTicks();
         handleDrawing();
 
         m_ticks++;
@@ -186,9 +187,22 @@ void Game::handleLogic() noexcept
             m_inky.startHomeMode();
         }
 
+        if(m_levelState == LevelState::Scatter)
+        {
+            if ( m_ticks == 360*2) {
+                m_pinky.startScatterMode();
+            } else if(m_ticks == 360*2+60) {
+                m_clyde.startScatterMode();
+            } else if(m_ticks == 360*2+120) {
+                m_inky.startScatterMode();
+            }
+        }
+
     }
 
+}
 
+void Game::handleTicks() noexcept {
     m_headerScreen.tick();
     m_footerScreen.tick();
     m_loadingScreen.tick();
@@ -219,7 +233,6 @@ void Game::handleDrawing() noexcept
     m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture);
     m_footerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
     m_gameScreen.draw(m_windowRenderer.get(), m_spriteTexture);
-
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
@@ -285,8 +298,7 @@ void Game::startLevel() noexcept
 {
     if(m_state != GameState::Playing) return;
 
-    if(m_players > 1)
-        m_currentPlayer = !m_currentPlayer;
+    m_currentPlayer = m_players > 1 && m_currentPlayer == 0 ? 1 : 0;
     m_levelState = LevelState::PlayerDisplay;
     m_gameScreen.updateState();
     m_pacman.reset();

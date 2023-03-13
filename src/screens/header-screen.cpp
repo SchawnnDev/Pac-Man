@@ -21,7 +21,7 @@ HeaderScreen::HeaderScreen(TextResources p_textResources, shared_value<int> p_hi
     addElement(m_highScoreTitle);
     addElement(m_score);
     addElement(m_highScoreText);
-    reset();
+    HeaderScreen::reset();
 }
 
 void HeaderScreen::tick() noexcept

@@ -22,7 +22,6 @@ namespace pacman {
         Board m_board;
         std::optional<SpriteAnimation> m_currentAnimation;
         Direction m_direction;
-        Direction m_lastDirection;
         Position m_position;
         std::optional<BoardCase> m_currentCase;
         int m_speed; // speed in pixel per tick
@@ -33,7 +32,7 @@ namespace pacman {
 
         Entity(Position p_position, int p_speed, Direction p_direction, const Board &p_board)
                 : m_position{p_position}, m_direction{p_direction}, m_speed{p_speed}, m_board{p_board},
-                  m_lastDirection{p_direction}, m_currentCase{std::nullopt}, m_freeze{false} {}
+                  m_currentCase{std::nullopt}, m_freeze{false} {}
 
         virtual ~Entity() = default;
 
@@ -58,10 +57,6 @@ namespace pacman {
 
         Direction &direction() noexcept { return m_direction; };
 
-        [[nodiscard]] Direction lastDirection() const noexcept { return m_lastDirection; };
-
-        Direction &lastDirection() noexcept { return m_lastDirection; };
-
         [[nodiscard]] Position position() const noexcept { return m_position; };
 
         Position &position() noexcept { return m_position; };
@@ -82,7 +77,7 @@ namespace pacman {
 
         [[nodiscard]] bool canMoveTo(Direction p_direction) const noexcept;
 
-        bool isGhost() const noexcept;
+        [[nodiscard]] bool isGhost() const noexcept;
 
         void freeze() noexcept;
 

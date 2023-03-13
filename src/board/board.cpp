@@ -13,6 +13,7 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
         , m_boardResources{std::move(p_boardResources)}
         , m_leftDoorIndex{0}
         , m_rightDoorIndex{0}
+        , m_homeDoorIndex{0}
         {
     for (int x = 0; x < BOARD_SIZE_X; ++x)
         for (int y = 0; y < BOARD_SIZE_Y; ++y)
@@ -48,6 +49,9 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
                 break;
             case BoardCaseType::DoorRight:
                 m_rightDoorIndex = getGridIndex(x, y);
+                break;
+            case BoardCaseType::GhostHomeDoor:
+                m_homeDoorIndex = getGridIndex(x, y);
                 break;
             default:
                 break;

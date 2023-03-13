@@ -18,24 +18,31 @@ void Ghost::handleScatterMode() noexcept{
 
 std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
     if(!currentCase()) return std::nullopt;
-    auto& actualCase = currentCase();
+    auto const& actualCase = currentCase();
     auto pairs = std::vector<DirectionBoardCasePair>{};
 
     // Ghost is on a tile, and he must choose a direction
-    auto frontCase = board().getBoardCaseAtPixels(position(), direction());
+    auto const& frontCase = board().getBoardCaseAtPixels(position(), direction());
     auto leftDirection = getDirectionByAngle(direction(), 90);
-    auto leftCase = board().getBoardCaseAtPixels(position(), leftDirection);
+    auto const& leftCase = board().getBoardCaseAtPixels(position(), leftDirection);
     auto rightDirection = getDirectionByAngle(direction(), -90);
-    auto rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
+    auto const& rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
+    auto destination = target();
 
-    // Specific home mode can also go in backward direction
-    if(ghostMode() == GhostMode::Home)
+    // If the ghost is in on a home case he also can go in opposite direction
+    if(actualCase->type() == BoardCaseType::GhostHome)
     {
-        auto backDirection = getOpposite(direction());
-        auto backCase = board().getBoardCaseAtPixels(position(), backDirection);
+        // Change target to get out of the home
+        if(ghostMode() != GhostMode::Home)
+        {
+            destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
+        }
 
-        if (backCase && !(backDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
-            pairs.emplace_back(backDirection, backCase);
+        auto oppositeDirection = getOpposite(direction());
+        auto const& oppositeCase = board().getBoardCaseAtPixels(position(), oppositeDirection);
+
+        if (oppositeCase && !(oppositeDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
+            pairs.emplace_back(oppositeDirection, oppositeCase);
         }
 
     }
@@ -52,11 +59,20 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
         pairs.emplace_back(rightDirection, rightCase);
     }
 
-    auto foundCase = pacman::getClosestBoardCase(target(), pairs);
+    auto homeDoorPracticable = false;
+
+    if (ghostMode() != GhostMode::Home && actualCase->type() == BoardCaseType::GhostHome) {
+        homeDoorPracticable = true;
+    } else if (ghostMode() == GhostMode::Eaten && Board::getGridIndex(actualCase->position()) == board().homeDoorIndex()) {
+        homeDoorPracticable = true;
+    }
+
+    auto const& foundCase = getClosestBoardCase(destination, pairs, homeDoorPracticable);
 
     // foundCase should not be null
     if (foundCase.second) {
-        move(foundCase.first);
+        direction() = foundCase.first;
+        changeAnimation();
     }
 
     return foundCase.second;
@@ -70,13 +86,13 @@ void Ghost::handleMovement() noexcept {
     if (Board::isCase(position())) { // actualCase cannot be null
 
         if (direction() == Direction::RIGHT && actualCase->type() == BoardCaseType::DoorRight) {
-            auto& boardCase = board().grid()[board().leftDoorIndex()];
+            auto const& boardCase = board().grid()[board().leftDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
             return;
         }
 
         if (direction() == Direction::LEFT && actualCase->type() == BoardCaseType::DoorLeft) {
-            auto& boardCase = board().grid()[board().rightDoorIndex()];
+            auto const& boardCase = board().grid()[board().rightDoorIndex()];
             position() = getPosition(boardCase.x(), boardCase.y());
             return;
         }
@@ -86,13 +102,20 @@ void Ghost::handleMovement() noexcept {
 
         // TODO: convert to fct
         // TODO: review this (should be 40%)
-        if (newCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
+
+        if(newCase->type() == BoardCaseType::GhostHome || newCase->type() == BoardCaseType::GhostHomeDoor)
+        {
+            currentSpeed /= 2;
+        } else if (newCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
             currentSpeed /= 2;
         }
 
     } else {
 
-        if (actualCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
+        if(actualCase->type() == BoardCaseType::GhostHome || actualCase->type() == BoardCaseType::GhostHomeDoor)
+        {
+            currentSpeed /= 2;
+        } else if (actualCase->flags() & CASE_FLAG_TUNNEL_SLOW_DOWN) {
             currentSpeed /= 2;
         }
 
@@ -178,7 +201,7 @@ void Ghost::handleHomeMode() noexcept {
         }
     }
 
-    position().moveAt(direction(), speed());
+    position().moveAt(direction(), speed() / 2); //TODO: MAYBE HANDLE SPEED IN ONE FCT
 }
 
 void Ghost::startHomeMode() noexcept {

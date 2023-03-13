@@ -10,7 +10,6 @@ void Entity::move(Direction newDirection) noexcept {
                                     && getOpposite(direction()) != newDirection)
         return;
 
-    lastDirection() = direction();
     direction() = newDirection;
     changeAnimation();
 }

@@ -91,6 +91,7 @@ void LoadingScreen::tick() noexcept {
                 ticks() = FRAMERATE * 1000;
             } else if (ticks() > FRAMERATE * 1005) {
                 reset();
+                return;
             }
         }
     }

@@ -2,13 +2,21 @@
 
 using namespace pacman;
 
-DirectionBoardCasePair pacman::getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases) noexcept {
+DirectionBoardCasePair
+pacman::getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases,
+                            bool p_acceptHomeDoor) noexcept {
     DirectionBoardCasePair result{Direction::DOWN, std::nullopt};
     int distanceTo = -1;
 
     for (const DirectionBoardCasePair &pair: p_boardCases) {
         auto& boardCase = pair.second;
-        if (!boardCase || !BoardCase::isPracticable(boardCase.value())) continue;
+        if (!boardCase) continue;
+
+        auto isHomeDoorPracticable = boardCase->type() == BoardCaseType::GhostHomeDoor && p_acceptHomeDoor;
+
+        if (!BoardCase::isPracticable(boardCase.value()) && !isHomeDoorPracticable) {
+            continue;
+        }
 
         auto distance = boardCase.value().position().distanceTo(p_target);
 

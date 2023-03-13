@@ -24,6 +24,7 @@ namespace pacman {
 
         size_t m_leftDoorIndex;
         size_t m_rightDoorIndex;
+        size_t m_homeDoorIndex;
     public:
 
         Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept;
@@ -39,6 +40,8 @@ namespace pacman {
 
         [[nodiscard]] size_t rightDoorIndex() const { return m_rightDoorIndex; }
 
+        [[nodiscard]] size_t homeDoorIndex() const { return m_homeDoorIndex; }
+
         static constexpr bool checkGridCoordinates(Position p_position) noexcept {
             return checkGridCoordinates(p_position.x(), p_position.y());
         }
@@ -49,6 +52,10 @@ namespace pacman {
 
         static constexpr size_t getGridIndex(int p_x, int p_y) noexcept {
             return BOARD_SIZE_X * p_y + p_x;
+        }
+
+        static constexpr size_t getGridIndex(Position p_position) noexcept {
+            return getGridIndex(p_position.x(), p_position.y());
         }
 
         [[nodiscard]] inline BoardCase const &getCase(Position p_position) const noexcept {
