@@ -1,5 +1,5 @@
 #include <iostream>
-#include "sprite-animation.h"
+#include "sprites/sprite-animation.h"
 
 using namespace pacman;
 

@@ -9,8 +9,8 @@
 #include <SDL.h>
 
 #include "board-case.h"
-#include "sprite.h"
-#include "sprite-resources-structs.h"
+#include "sprites/sprite.h"
+#include "sprites/sprite-resources-structs.h"
 #include "utils/constants.h"
 #include "utils/position.h"
 #include "screens/drawable.h"

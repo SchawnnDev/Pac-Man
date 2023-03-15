@@ -3,13 +3,13 @@
 #include <SDL_render.h>
 #include <utility>
 #include <vector>
-#include "sprite-resources-structs.h"
+#include "sprites/sprite-resources-structs.h"
 #include "text.h"
 namespace pacman {
 
     class Screen : public Drawable {
         int m_ticks;
-        std::vector<std::shared_ptr<Drawable>> m_elements;
+        std::vector<DrawablePtr> m_elements;
         TextResources m_textResources;
     protected:
         const int m_charSize = 20;
@@ -30,12 +30,17 @@ namespace pacman {
             return strTextSize(p_len, m_charSize, m_spacing);
         }
 
-        [[nodiscard]] std::span<const std::shared_ptr<Drawable>> elements() const { return std::span{m_elements}; }
+        [[nodiscard]] std::span<const DrawablePtr> elements() const { return std::span{m_elements}; }
 
         [[nodiscard]] TextResources const& textResources() const { return m_textResources; }
 
-        inline void addElement(const std::shared_ptr<Drawable>& p_element) {
+        inline void addElement(const DrawablePtr& p_element) {
             m_elements.push_back(p_element);
+        }
+
+        inline void addElements(std::span<const DrawablePtr> p_elements)
+        {
+            m_elements.insert(m_elements.end(), p_elements.begin(), p_elements.end());
         }
 
         virtual void tick() noexcept = 0;

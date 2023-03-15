@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ghost.h"
-#include "sprite-resources-structs.h"
+#include "sprites/sprite-resources-structs.h"
 
 namespace pacman {
 

@@ -27,6 +27,7 @@ namespace pacman {
         BoardResources m_boardResources;
         TextResources m_textResources;
         LoadingScreenResources m_loadingScreenResources;
+        FooterScreenResources m_footerScreenResources;
     public:
 
         SpriteHandler() = default;
@@ -61,6 +62,8 @@ namespace pacman {
         [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
 
         [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const noexcept { return m_loadingScreenResources; }
+
+        [[nodiscard]] FooterScreenResources const &footerScreenResources() const noexcept { return m_footerScreenResources; }
 
         // Board
         [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }

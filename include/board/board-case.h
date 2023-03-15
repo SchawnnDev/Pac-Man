@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sprite-animation.h"
+#include "sprites/sprite-animation.h"
 #include "utils/position.h"
 
 namespace pacman {

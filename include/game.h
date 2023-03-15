@@ -5,7 +5,7 @@
 #include "entities/entity.h"
 #include "entities/pacman.h"
 #include "entities/ghosts/blinky.h"
-#include "sprite-handler.h"
+#include "sprites/sprite-handler.h"
 #include "entities/ghosts/clyde.h"
 #include "entities/ghosts/pinky.h"
 #include "entities/ghosts/inky.h"
@@ -16,17 +16,9 @@
 #include "screens/footer-screen.h"
 #include "screens/game-screen.h"
 #include "level.h"
+#include "game-state.h"
 
 namespace pacman {
-
-    // Global state
-    enum class GameState {
-        LoadingScreen,
-        Playing,
-        GameOver,
-        End
-    };
-
 
     class Game {
         // Game logic

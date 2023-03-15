@@ -2,8 +2,8 @@
 
 #include <SDL_rect.h>
 #include <SDL.h>
-#include "sprite.h"
-#include "sprite-animation.h"
+#include "sprites/sprite.h"
+#include "sprites/sprite-animation.h"
 #include "utils/position.h"
 #include "board/board.h"
 

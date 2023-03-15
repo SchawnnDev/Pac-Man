@@ -1,4 +1,4 @@
-#include "../include/sprite.h"
+#include "sprites/sprite.h"
 
 using namespace pacman;
 

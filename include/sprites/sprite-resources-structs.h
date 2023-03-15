@@ -45,4 +45,8 @@ namespace pacman {
         SpriteAnimation bonusAnimation;
     };
 
+    struct FooterScreenResources final {
+        Sprite lifeSprite;
+    };
+
 }

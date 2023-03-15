@@ -1,8 +1,8 @@
 #include <SDL.h>
 
 #include <iostream>
-#include "../include/sprite-animation.h"
-#include "../include/sprite-handler.h"
+#include "sprites/sprite-animation.h"
+#include "sprites/sprite-handler.h"
 #include "../include/utils/constants.h"
 #include "../include/board/board.h"
 

@@ -6,8 +6,8 @@
 
 #include <SDL_render.h>
 
-#include "sprite.h"
-#include "sprite-resources-structs.h"
+#include "sprites/sprite.h"
+#include "sprites/sprite-resources-structs.h"
 #include "utils/position.h"
 #include "drawable.h"
 

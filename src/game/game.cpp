@@ -23,7 +23,7 @@ Game::Game()
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit},
+          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_level, {}, m_spriteHandler.footerResources()},
           m_gameScreen{m_spriteHandler.textResources(), m_levelState}
 {
 

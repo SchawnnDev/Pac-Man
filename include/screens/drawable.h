@@ -22,4 +22,6 @@ namespace pacman {
 
     };
 
+    using DrawablePtr = std::shared_ptr<Drawable>;
+
 }

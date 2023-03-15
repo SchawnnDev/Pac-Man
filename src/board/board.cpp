@@ -4,7 +4,7 @@
 #include "pugixml.hpp"
 
 #include "board/board.h"
-#include "sprite-handler.h"
+#include "sprites/sprite-handler.h"
 
 using namespace pacman;
 

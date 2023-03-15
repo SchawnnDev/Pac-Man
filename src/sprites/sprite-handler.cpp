@@ -2,7 +2,7 @@
 
 #include "pugixml.hpp"
 
-#include "sprite-handler.h"
+#include "sprites/sprite-handler.h"
 
 using namespace pacman;
 
@@ -108,6 +108,7 @@ SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
 
 void SpriteHandler::initStructs() noexcept
 {
+    auto nothing = Sprite{"nothing"};
     // Pacman
     m_pacmanAnimations = {
             m_spriteAnimations["pacman-up"],
@@ -146,8 +147,8 @@ void SpriteHandler::initStructs() noexcept
     // Board
     m_boardResources = {
             m_spriteAnimations["bonus"],
-            getSprite("point").value(),
-            getSprite("board_empty").value()
+            getSprite("point").value_or(nothing),
+            getSprite("board_empty").value_or(nothing)
     };
 
     // Text
@@ -155,21 +156,25 @@ void SpriteHandler::initStructs() noexcept
     std::for_each(str.cbegin(), str.cend(), [this](const char p_char){
         auto sprite = getSprite(std::string{p_char});
         if(!sprite) return;
-        m_alphabetSprites.insert({p_char, sprite.value()});
+        m_alphabetSprites.insert({p_char, sprite.value_or(Sprite{"nothing"})});
     });
 
     // Screens
     m_loadingScreenResources = {
-            getSprite("nothing").value(),
-            getSprite("blinky_right_1").value(),
-            getSprite("pinky_right_1").value(),
-            getSprite("inky_right_1").value(),
-            getSprite("clyde_right_1").value(),
-            getSprite("point").value(),
-            getSprite("score_pts").value(),
-            getSprite("score_10").value(),
-            getSprite("score_50").value(),
+            getSprite("nothing").value_or(nothing),
+            getSprite("blinky_right_1").value_or(nothing),
+            getSprite("pinky_right_1").value_or(nothing),
+            getSprite("inky_right_1").value_or(nothing),
+            getSprite("clyde_right_1").value_or(nothing),
+            getSprite("point").value_or(nothing),
+            getSprite("score_pts").value_or(nothing),
+            getSprite("score_10").value_or(nothing),
+            getSprite("score_50").value_or(nothing),
             m_spriteAnimations["bonus"]
+    };
+
+    m_footerScreenResources = {
+        getSprite("pacman_life").value_or(nothing)
     };
 
 }

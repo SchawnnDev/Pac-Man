@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "drawable.h"
-#include "sprite.h"
+#include "sprites/sprite.h"
 #include "utils/position.h"
 
 namespace pacman {

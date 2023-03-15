@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "entity.h"
-#include "sprite-resources-structs.h"
+#include "sprites/sprite-resources-structs.h"
 
 namespace pacman {
 

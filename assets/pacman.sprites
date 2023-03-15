@@ -100,6 +100,7 @@
         <spr name="pacman_up_big_open" x="93" y="95" w="14" h="9"/>
         <spr name="pacman_down_little_open" x="110" y="91" w="14" h="13"/>
         <spr name="pacman_down_big_open" x="127" y="95" w="14" h="9"/>
+        <spr name="pacman_life" x="169" y="76" w="10" h="12"/>
       </dir>
       <dir name="Alphabet">
         <spr name="0" x="4" y="53" w="7" h="7"/>
