@@ -1,4 +1,4 @@
-#include "screens/image.h"
+#include "screens/elements/image.h"
 
 using namespace pacman;
 

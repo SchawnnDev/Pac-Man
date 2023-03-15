@@ -23,12 +23,13 @@ namespace pacman {
     class Game {
         // Game logic
         int64_t m_ticks;
-        int m_level;
+        shared_value<int> m_level;
         shared_value<GameState> m_state;
         shared_value<LevelState> m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
         std::array<shared_value<int>, 2> m_scores;
+        std::array<shared_value<int>, 2> m_lives;
         int m_players;
         shared_value<int> m_currentPlayer;
 

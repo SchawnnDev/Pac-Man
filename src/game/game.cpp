@@ -12,6 +12,7 @@ Game::Game()
           m_credit{0},
           m_highScore{0},
           m_scores{shared_value{0}, shared_value{0}},
+          m_lives{shared_value{3}, shared_value{3}},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
@@ -23,7 +24,7 @@ Game::Game()
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_level, {}, m_spriteHandler.footerResources()},
+          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_level, m_lives, m_spriteHandler.footerScreenResources()},
           m_gameScreen{m_spriteHandler.textResources(), m_levelState}
 {
 

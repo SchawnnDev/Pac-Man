@@ -1,7 +1,7 @@
 #pragma once
 
 #include "screen.h"
-#include "image.h"
+#include "screens/elements/image.h"
 #include "utils/shared_value.h"
 
 #include <utility>

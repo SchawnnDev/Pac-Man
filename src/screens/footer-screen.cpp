@@ -20,12 +20,12 @@ FooterScreen::FooterScreen(TextResources p_textResources, shared_value<int> p_cr
     addElement(m_creditText);
 
     for (int i = 0; i < 3; ++i) {
-        m_livesImages[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{25 + 25 * i, BOARD_SIZE_Y - 100}, Position{20,20});
+        m_livesImages[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{25 + 32 * i, WINDOW_SIZE_HEIGHT - 100}, Position{32,32});
         addElement(m_livesImages[i]);
     }
 
     for (int i = 0; i < 7; ++i) {
-        m_levels[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{WINDOW_SIZE_WIDTH - (25 + 50 * i), BOARD_SIZE_Y - 100}, Position{20,20});
+        m_levels[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{WINDOW_SIZE_WIDTH - (25 + 50 * i), WINDOW_SIZE_HEIGHT - 100}, Position{32,32});
         addElement(m_levels[i]);
     }
 
@@ -42,6 +42,11 @@ void FooterScreen::tick() noexcept
 void FooterScreen::reset() noexcept
 {
     m_creditText->activated() = true;
+
+    for (auto &livesImage: m_livesImages)
+        livesImage->activated() = false;
+    for (auto &level: m_levels)
+        level->activated() = false;
 }
 
 void FooterScreen::updateCredit() noexcept
@@ -52,4 +57,26 @@ void FooterScreen::updateCredit() noexcept
 void FooterScreen::updateState() noexcept
 {
     m_creditText->activated() = m_gameState == GameState::LoadingScreen;
+
+    updateLives();
+    updateLevels();
+
+}
+
+void FooterScreen::updateLives() noexcept
+{
+    auto const playing = m_gameState == GameState::Playing;
+    auto const lives = m_lives[m_currentPlayer];
+
+    for (int i = 0; i < m_livesImages.size(); ++i)
+        m_livesImages[i]->activated() = playing && i < lives;
+}
+
+void FooterScreen::updateLevels() noexcept
+{
+    auto const playing = m_gameState == GameState::Playing;
+
+/*    for (int i = 0; i < m_level && i < 7; ++i)
+        m_livesImages[i]->activated() = playing && i < lives;*/
+// todo: handle fruits
 }

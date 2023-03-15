@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 #include "sprites/sprite-resources-structs.h"
-#include "text.h"
+#include "screens/elements/text.h"
 namespace pacman {
 
     class Screen : public Drawable {

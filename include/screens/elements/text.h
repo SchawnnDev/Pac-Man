@@ -9,7 +9,7 @@
 #include "sprites/sprite.h"
 #include "sprites/sprite-resources-structs.h"
 #include "utils/position.h"
-#include "drawable.h"
+#include "screens/drawable.h"
 
 namespace pacman {
 

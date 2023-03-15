@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "drawable.h"
+#include "screens/drawable.h"
 #include "sprites/sprite.h"
 #include "utils/position.h"
 

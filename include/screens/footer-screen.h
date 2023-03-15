@@ -2,7 +2,7 @@
 
 #include "screen.h"
 #include "utils/shared_value.h"
-#include "image.h"
+#include "screens/elements/image.h"
 #include "game-state.h"
 
 namespace pacman {
@@ -19,6 +19,7 @@ namespace pacman {
         shared_value<GameState> m_gameState;
         shared_value<int> m_level;
         std::array<shared_value<int>, 2> m_lives;
+        shared_value<int> m_currentPlayer;
     public:
 
         FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
@@ -33,6 +34,10 @@ namespace pacman {
         void updateCredit() noexcept;
 
         void updateState() noexcept;
+
+        void updateLives() noexcept;
+
+        void updateLevels() noexcept;
 
     };
 

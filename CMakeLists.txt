@@ -37,12 +37,12 @@ add_executable(${PROJECT_NAME} ""
         src/utils/position.cpp
         src/game/game.cpp
         include/utils/utils.h
-        include/screens/text.h
+        include/screens/elements/text.h
         src/entities/ghosts/clyde.cpp
         include/entities/ghosts/clyde.h
         include/entities/ghosts/inky.h
         include/entities/ghosts/pinky.h
-        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/text.cpp include/screens/drawable.h src/screens/loading-screen.cpp include/screens/image.h src/screens/image.cpp include/utils/shared_value.h include/screens/header-screen.h include/screens/footer-screen.h src/screens/footer-screen.cpp src/screens/header-screen.cpp include/screens/game-screen.h src/screens/game-screen.cpp include/level.h include/game-state.h)
+        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/elements/text.cpp include/screens/drawable.h src/screens/loading-screen.cpp include/screens/elements/image.h src/screens/elements/image.cpp include/utils/shared_value.h include/screens/header-screen.h include/screens/footer-screen.h src/screens/footer-screen.cpp src/screens/header-screen.cpp include/screens/game-screen.h src/screens/game-screen.cpp include/level.h include/game-state.h)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20
