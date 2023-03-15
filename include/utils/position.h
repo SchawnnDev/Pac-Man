@@ -46,6 +46,10 @@ namespace pacman {
             return !(rhs == *this);
         }
 
+        [[nodiscard]] constexpr Position add(Position position) const noexcept {
+            return {m_x + position.x(), m_y + position.y()};
+        }
+
         [[nodiscard]] constexpr Position subtract(Position position) const noexcept {
             return {m_x - position.x(), m_y - position.y()};
         }

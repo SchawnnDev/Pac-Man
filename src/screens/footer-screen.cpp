@@ -19,13 +19,16 @@ FooterScreen::FooterScreen(TextResources p_textResources, shared_value<int> p_cr
 {
     addElement(m_creditText);
 
+    auto const lifeSize = Position{BOARD_CASE_SIZE_WIDTH, BOARD_CASE_SIZE_HEIGHT};
+    auto const lifePosition = Position{2 * lifeSize.x(), WINDOW_SIZE_HEIGHT - 46};
     for (int i = 0; i < 3; ++i) {
-        m_livesImages[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{25 + 32 * i, WINDOW_SIZE_HEIGHT - 100}, Position{32,32});
+        m_livesImages[i] = std::make_shared<Image>(p_footerResources.lifeSprite, lifePosition.add({i*(32+16),0}), lifeSize);
         addElement(m_livesImages[i]);
     }
-
+    auto const levelSize = Position{BOARD_CASE_SIZE_WIDTH, BOARD_CASE_SIZE_HEIGHT};
+    auto const levelsPosition = Position{WINDOW_SIZE_WIDTH - (2 * levelSize.x()), WINDOW_SIZE_HEIGHT - 42};
     for (int i = 0; i < 7; ++i) {
-        m_levels[i] = std::make_shared<Image>(p_footerResources.lifeSprite, Position{WINDOW_SIZE_WIDTH - (25 + 50 * i), WINDOW_SIZE_HEIGHT - 100}, Position{32,32});
+        m_levels[i] = std::make_shared<Image>(p_footerResources.lifeSprite, levelsPosition.subtract({42, 0}), levelSize);
         addElement(m_levels[i]);
     }
 
