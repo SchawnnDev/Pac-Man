@@ -60,7 +60,16 @@
         <spr name="board_white" x="541" y="4" w="166" h="214"/>
         <spr name="board_normal" x="201" y="4" w="166" h="214"/>
       </dir>
-      <dir name="Fruits"/>
+      <dir name="Fruits">
+        <spr name="fruit_cherry" x="290" y="258" w="12" h="12"/>
+        <spr name="fruit_raspberry" x="307" y="258" w="11" h="12"/>
+        <spr name="fruit_orange" x="322" y="258" w="12" h="12"/>
+        <spr name="fruit_apple" x="338" y="258" w="12" h="12"/>
+        <spr name="fruit_medal" x="355" y="256" w="11" h="14"/>
+        <spr name="fruit_helmet" x="371" y="258" w="11" h="13"/>
+        <spr name="fruit_bell" x="387" y="257" w="12" h="13"/>
+        <spr name="fruit_key" x="403" y="257" w="11" h="13"/>
+      </dir>
       <dir name="Scores">
         <spr name="score_100" x="180" y="133" w="13" h="7"/>
         <spr name="score_200" x="155" y="176" w="14" h="7"/>
@@ -152,9 +161,6 @@
         <spr name="pacman" x="4" y="4" w="180" h="46"/>
         <spr name="namco" x="28" y="78" w="60" h="8"/>
       </dir>
-      <spr name="test1" x="338" y="238" w="12" h="12"/>
-      <spr name="test2" x="371" y="239" w="11" h="11"/>
-      <spr name="test3" x="355" y="14" w="2" h="2"/>
     </dir>
   </definitions>
 </img>

@@ -13,17 +13,19 @@ namespace pacman {
         TextElement m_creditText;
 
         std::array<ImageElement, 3> m_livesImages;
-        std::array<ImageElement, 7> m_levels;
+        std::array<ImageElement, FRUITS_DISPLAYED> m_fruits;
 
         shared_value<int> m_credit;
         shared_value<GameState> m_gameState;
-        shared_value<int> m_level;
+        std::array<shared_value<int>, 2> m_levels;
         std::array<shared_value<int>, 2> m_lives;
         shared_value<int> m_currentPlayer;
+        FooterScreenResources const& m_footerResources;
     public:
 
         FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
-                     shared_value <GameState> p_gameState, shared_value<int> p_level,
+                     shared_value <GameState> p_gameState,
+                     std::array<shared_value<int>, 2> const &p_levels,
                      std::array<shared_value<int>, 2> const &p_lives,
                      const FooterScreenResources& p_footerResources);
 

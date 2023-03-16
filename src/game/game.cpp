@@ -6,7 +6,7 @@ using namespace pacman;
 
 Game::Game()
         : m_ticks{0},
-          m_level{1},
+          m_levels{shared_value{1}, shared_value{1}},
           m_players{1},
           m_currentPlayer{-1},
           m_credit{0},
@@ -24,7 +24,7 @@ Game::Game()
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_level, m_lives, m_spriteHandler.footerScreenResources()},
+          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_levels, m_lives, m_spriteHandler.footerScreenResources()},
           m_gameScreen{m_spriteHandler.textResources(), m_levelState}
 {
 
@@ -168,6 +168,14 @@ void Game::handleLogic() noexcept
             m_pinky.freeze();
             m_inky.freeze();
             m_clyde.freeze();
+
+            if(m_levels[m_currentPlayer] == 1) {
+                // 3 lives to 2 -> one is played for the first round
+                m_lives[0] -= 1;
+                m_lives[1] -= 1;
+                m_footerScreen.updateLives();
+            }
+
         }
 
         if(m_levelState == LevelState::Ready && m_ticks == 360)

@@ -46,6 +46,7 @@ namespace pacman {
     };
 
     struct FooterScreenResources final {
+        std::array<Sprite, 8> const& fruitsSprites;
         Sprite lifeSprite;
     };
 

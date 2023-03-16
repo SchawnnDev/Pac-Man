@@ -23,11 +23,11 @@ namespace pacman {
     class Game {
         // Game logic
         int64_t m_ticks;
-        shared_value<int> m_level;
         shared_value<GameState> m_state;
         shared_value<LevelState> m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
+        std::array<shared_value<int>, 2> m_levels;
         std::array<shared_value<int>, 2> m_scores;
         std::array<shared_value<int>, 2> m_lives;
         int m_players;
@@ -75,10 +75,6 @@ namespace pacman {
         [[nodiscard]] Board const &board() const noexcept { return m_board; }
 
         Board &board() noexcept { return m_board; }
-
-        [[nodiscard]] int level() const noexcept { return m_level; }
-
-        int &level() noexcept { return m_level; }
 
         [[nodiscard]] shared_value<int> credit() const noexcept { return m_credit; }
 

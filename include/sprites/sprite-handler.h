@@ -18,6 +18,7 @@ namespace pacman {
         std::vector<Sprite> m_sprites;
         std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
         std::unordered_map<char, Sprite> m_alphabetSprites;
+        std::array<Sprite, 8> m_fruitsSprites;
         // structs
         PacmanAnimations m_pacmanAnimations;
         GhostAnimations m_blinkyAnimations;

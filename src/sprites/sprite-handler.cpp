@@ -9,6 +9,7 @@ using namespace pacman;
 SpriteHandler::SpriteHandler(std::string_view path) noexcept
         : m_sprites{Sprite{"nothing"}}
         , m_textResources{m_alphabetSprites}
+        , m_footerScreenResources{m_fruitsSprites}
 {
     importSprites(path);
     // Nothing sprite is a utility sprite that is used in animations to display "nothing"
@@ -173,10 +174,11 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["bonus"]
     };
 
-    m_footerScreenResources = {
-        getSprite("pacman_life").value_or(nothing)
-    };
-
+    m_footerScreenResources.lifeSprite = getSprite("pacman_life").value_or(nothing);
+    std::array<std::string, 8> const fruitNames = {"fruit_cherry", "fruit_raspberry", "fruit_orange", "fruit_apple",
+                                                   "fruit_medal", "fruit_helmet", "fruit_bell", "fruit_key"};
+    for (int i = 0; i < fruitNames.size(); ++i)
+        m_fruitsSprites[i] = getSprite(fruitNames[i]).value_or(nothing);
 }
 
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
