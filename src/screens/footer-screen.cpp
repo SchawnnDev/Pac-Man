@@ -7,14 +7,12 @@ using namespace pacman;
 
 FooterScreen::FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
                            shared_value<GameState> p_gameState,
-                           std::array<shared_value<int>, 2> const &p_levels,
-                           std::array<shared_value<int>, 2> const &p_lives,
+                           PlayerPtr p_currentPlayer,
                            const FooterScreenResources& p_footerResources)
     : Screen(p_textResources)
         , m_credit{std::move(p_credit)}
         , m_gameState{std::move(p_gameState)}
-        , m_levels{p_levels}
-        , m_lives{p_lives}
+        , m_currentPlayer{std::move(p_currentPlayer)}
         , m_creditText{std::make_shared<Text>("credit  0", Position{25, WINDOW_SIZE_HEIGHT - 25}, m_charSize, m_spacing, p_textResources)}
         , m_fruits{}
         , m_livesImages{}
@@ -71,7 +69,7 @@ void FooterScreen::updateState() noexcept
 void FooterScreen::updateLives() noexcept
 {
     auto const playing = m_gameState == GameState::Playing;
-    auto const lives = m_lives[m_currentPlayer];
+    auto const lives = m_currentPlayer->lives();
 
     for (int i = 0; i < m_livesImages.size(); ++i)
         m_livesImages[i]->activated() = playing && i < lives;
@@ -79,7 +77,7 @@ void FooterScreen::updateLives() noexcept
 
 void FooterScreen::updateLevels() noexcept
 {
-    auto const fruits = Fruit::getFruitsByLevel(m_levels[m_currentPlayer]);
+    auto const fruits = Fruit::getFruitsByLevel(m_currentPlayer->level());
     for (int i = 0; i < FRUITS_DISPLAYED; ++i)
     {
         auto const fruit = fruits[i];

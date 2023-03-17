@@ -3,10 +3,9 @@
 
 using namespace pacman;
 
-SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
-                                 bool p_stopAfterLastSprite,
+SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites, bool p_stopAfterLastSprite,
                                  int p_ticksPerSprite,
-                                 bool p_activated)
+                                 bool p_activated, bool p_singleSprite)
         : m_sprites{p_sprites}
         , m_freeze{false}
         , m_stopAfterLastSprite{p_stopAfterLastSprite}
@@ -15,6 +14,7 @@ SpriteAnimation::SpriteAnimation(std::vector<Sprite> &&p_sprites,
         , m_activated{p_activated}
         , m_spriteCount{static_cast<int>(p_sprites.size())}
         , m_currentSprite{0}
+        , m_singleSprite{p_singleSprite}
 {}
 
 std::optional<Sprite> SpriteAnimation::display() {
@@ -28,27 +28,31 @@ std::optional<Sprite> SpriteAnimation::display() {
         return sprite;
     }
 
-    if(m_ticks >= m_ticksPerSprite)
+    if(!m_singleSprite)
     {
 
-        if (m_currentSprite >= m_spriteCount - 1)
+        if(m_ticks >= m_ticksPerSprite)
         {
-            if(m_stopAfterLastSprite)
+
+            if (m_currentSprite >= m_spriteCount - 1)
             {
-                stop();
-                return std::nullopt;
+                if(m_stopAfterLastSprite)
+                {
+                    stop();
+                    return std::nullopt;
+                }
+
+                m_currentSprite = 0;
+            } else {
+                m_currentSprite++;
             }
 
-            m_currentSprite = 0;
-        } else {
-            m_currentSprite++;
+            m_ticks = 0;
+
         }
 
-        m_ticks = 0;
-
+        m_ticks++;
     }
-
-    m_ticks++;
 
     auto sprite = sprites()[m_currentSprite];
     if(sprite.isNothing()) return std::nullopt;

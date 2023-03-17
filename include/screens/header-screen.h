@@ -2,6 +2,7 @@
 
 #include "screen.h"
 #include "utils/shared_value.h"
+#include "game/player.h"
 
 namespace pacman {
 
@@ -11,8 +12,7 @@ namespace pacman {
         const int m_spacing = 3;
 
         shared_value<int> m_highScore;
-        shared_value<int> m_currentPlayer;
-        std::array<shared_value<int>, 2> m_scores;
+        PlayerPtr m_currentPlayer;
 
         TextElement m_oneUp;
         TextElement m_highScoreTitle;
@@ -23,7 +23,7 @@ namespace pacman {
     public:
 
         explicit HeaderScreen(TextResources p_textResources, shared_value<int> p_highScore,
-                              shared_value<int> p_currentPlayer, std::array<shared_value<int>, 2> p_scores);
+                              PlayerPtr p_currentPlayer);
 
         void tick() noexcept override;
 
@@ -31,6 +31,7 @@ namespace pacman {
 
         void updateHighScore() noexcept;
 
+        void updateScore() noexcept;
     };
 
 }

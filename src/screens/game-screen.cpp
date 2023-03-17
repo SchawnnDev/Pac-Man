@@ -1,6 +1,6 @@
 #include "screens/game-screen.h"
 #include "utils/shared_value.h"
-#include "level.h"
+#include "game/level.h"
 
 using namespace pacman;
 

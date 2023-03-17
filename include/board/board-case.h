@@ -2,6 +2,7 @@
 
 #include "sprites/sprite-animation.h"
 #include "utils/position.h"
+#include "screens/drawable.h"
 
 namespace pacman {
 
@@ -17,7 +18,7 @@ namespace pacman {
         Nothing
     };
 
-    class BoardCase {
+    class BoardCase : public Drawable {
         int m_x;
         int m_y;
         BoardCaseType m_type;
@@ -53,11 +54,13 @@ namespace pacman {
 
         [[nodiscard]] Position position() const noexcept { return {m_x, m_y}; }
 
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;
+
         static inline bool isPracticable(BoardCase p_boardCase) noexcept {
             return isTypePracticable(p_boardCase.type());
         }
 
-        static inline bool isTypePracticable(BoardCaseType p_boardCaseType) noexcept {
+        static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType) noexcept {
             return p_boardCaseType == BoardCaseType::PointPath
                    || p_boardCaseType == BoardCaseType::BasicPath
                    || p_boardCaseType == BoardCaseType::Bonus

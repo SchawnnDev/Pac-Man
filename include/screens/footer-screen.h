@@ -3,7 +3,8 @@
 #include "screen.h"
 #include "utils/shared_value.h"
 #include "screens/elements/image.h"
-#include "game-state.h"
+#include "game/game-state.h"
+#include "game/player.h"
 
 namespace pacman {
 
@@ -17,16 +18,13 @@ namespace pacman {
 
         shared_value<int> m_credit;
         shared_value<GameState> m_gameState;
-        std::array<shared_value<int>, 2> m_levels;
-        std::array<shared_value<int>, 2> m_lives;
-        shared_value<int> m_currentPlayer;
+        PlayerPtr m_currentPlayer;
         FooterScreenResources const& m_footerResources;
     public:
 
         FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
                      shared_value <GameState> p_gameState,
-                     std::array<shared_value<int>, 2> const &p_levels,
-                     std::array<shared_value<int>, 2> const &p_lives,
+                     PlayerPtr p_currentPlayer,
                      const FooterScreenResources& p_footerResources);
 
         void tick() noexcept override;

@@ -14,16 +14,20 @@ namespace pacman {
         bool m_activated;
         bool m_freeze;
         bool m_stopAfterLastSprite;
+        bool m_singleSprite;
         int m_ticksPerSprite;
         int m_ticks;
         int m_spriteCount;
         int m_currentSprite;
     public:
-        SpriteAnimation() : m_activated{false}, m_freeze{false}, m_stopAfterLastSprite{false}, m_ticks{0},
-                            m_currentSprite{0}, m_spriteCount{0}, m_ticksPerSprite{0} {}
+
+        SpriteAnimation() : m_activated{true}, m_freeze{false}, m_stopAfterLastSprite{false}, m_singleSprite{false},
+                            m_ticks{0}, m_currentSprite{0}, m_spriteCount{0}, m_ticksPerSprite{0}
+        {}
+
 
         explicit SpriteAnimation(std::vector<Sprite> &&p_sprites, bool p_stopAfterLastSprite = false,
-                                 int p_ticksPerSprite = 1, bool p_activated = true);
+                                 int p_ticksPerSprite = 1, bool p_activated = true, bool p_singleSprite = false);
 
         ~SpriteAnimation() = default;
 
@@ -48,9 +52,9 @@ namespace pacman {
 
         bool &freeze() { return m_freeze; }
 
-        // int const &changeTicks() const { return m_changeTicks; };
+        [[nodiscard]] bool singleSprite() const { return m_singleSprite; }
 
-        // int &changeTicks() { return m_changeTicks; };
+        bool &singleSprite() { return m_singleSprite; }
     };
 
 }

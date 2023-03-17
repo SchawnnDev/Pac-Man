@@ -62,6 +62,10 @@ namespace pacman {
             return getCase(p_position.x(), p_position.y());
         }
 
+        [[nodiscard]] inline BoardCase &getCase(Position p_position) noexcept {
+            return getCase(p_position.x(), p_position.y());
+        }
+
         [[nodiscard]] inline BoardCase const &getCase(int p_x, int p_y) const noexcept {
             return m_grid[getGridIndex(p_x, p_y)];
         }
@@ -85,9 +89,9 @@ namespace pacman {
         }
 
         [[nodiscard]] std::optional<BoardCase>
-        getBoardCaseAtPixels(Position p_position, Direction p_direction) const noexcept;
+        getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept;
 
-        [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position) const noexcept;
+        [[nodiscard]] BoardCase& getBoardCaseAtPixels(Position p_position);
 
         void save(const std::string &p_filePath) const noexcept;
 

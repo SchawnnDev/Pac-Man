@@ -44,6 +44,10 @@ Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boar
             case BoardCaseType::Bonus:
                 boardCase.animation() = m_boardResources.bonusAnimation;
                 break;
+            case BoardCaseType::PointPath:
+                boardCase.animation() = SpriteAnimation{{m_boardResources.pointSprite}};
+                boardCase.animation()->singleSprite() = true;
+                break;
             case BoardCaseType::DoorLeft:
                 m_leftDoorIndex = getGridIndex(x, y);
                 break;
@@ -88,69 +92,20 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
     if(!activated()) return;
 
     SDL_Rect bg = {0, BOARD_OFFSET_Y, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT};
-    //std::cout << m_boardResources.emptyBoardSprite.name() << std::endl;
     SDL_RenderCopy(p_window_renderer, p_texture, &m_boardResources.emptyBoardSprite.rect(),
                    &bg); // Copie du sprite grâce au SDL_Renderer
 
     // 10 14
     for (int x = 0; x < BOARD_SIZE_X; ++x) {
         for (int y = 0; y < BOARD_SIZE_Y; ++y) {
-            auto &_case = getCase(x, y);
-            auto caseType = _case.type();
-            auto centered = getRectCenteredPosition(x, y);
-
-            switch (caseType) {
-                case BoardCaseType::PointPath: {
-                    //  if (first)
-                    //    std::cout << "(" << x << "," << y << ") -> " << "("
-                    //             << centered.x << "," << centered.y << ")\n";
-                    auto pointSprite = m_boardResources.pointSprite;
-                    centered.x -= pointSprite.rect().w * 2;
-                    centered.y -= pointSprite.rect().h * 2;
-                    centered.w = pointSprite.rect().w * 4;
-                    centered.h = pointSprite.rect().h * 4;
-                    //   SDL_SetRenderDrawColor(p_window_renderer, 127, 0, 255, 255);
-                    // SDL_RenderFillRect(p_window_renderer, &centered);
-                    SDL_RenderCopy(p_window_renderer, p_texture,
-                                   &pointSprite.rect(),
-                                   &centered); // Copie du sprite grâce au SDL_Renderer
-                    break;
-                }
-                case BoardCaseType::Bonus: {
-                    if (!_case.animation().has_value()) break;
-                    auto &spriteAnimation = _case.animation().value();
-                    auto found = spriteAnimation.display();
-                    if (!found) break;
-                    auto sprite = found.value();
-                    centered.x -= sprite.rect().w * 2;
-                    centered.y -= sprite.rect().h * 2;
-                    centered.w = sprite.rect().w * 4;
-                    centered.h = sprite.rect().h * 4;
-                    SDL_RenderCopy(p_window_renderer, p_texture,
-                                   &sprite.rect(), &centered);
-                    break;
-                }
-                case BoardCaseType::BasicPath:
-                    break;
-                case BoardCaseType::Wall:
-                    break;
-                case BoardCaseType::GhostHome:
-                    break;
-                case BoardCaseType::Nothing:
-                    break;
-                case BoardCaseType::DoorLeft:
-                    break;
-                case BoardCaseType::DoorRight:
-                    break;
-            }
-
+            getCase(x, y).draw(p_window_renderer, p_texture);
         }
     }
 
     if (first) first = false;
 }
 
-std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direction p_direction) const noexcept {
+std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept {
     auto caseFound = Board::findCase(p_position);
     if (caseFound.x() == -1 || caseFound.y() == -1) return std::nullopt;
     auto nextCasePos = caseFound.getPositionAt(p_direction, 1);
@@ -158,8 +113,8 @@ std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direct
     return getCase(nextCasePos);
 }
 
-std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position) const noexcept {
+BoardCase& Board::getBoardCaseAtPixels(Position p_position) {
     auto caseFound = Board::findCase(p_position);
-    if (caseFound.x() == -1 || caseFound.y() == -1) return std::nullopt;
+    if (caseFound.x() == -1 || caseFound.y() == -1) throw;
     return getCase(caseFound);
 }

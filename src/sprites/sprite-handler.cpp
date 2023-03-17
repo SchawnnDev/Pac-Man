@@ -7,12 +7,12 @@
 using namespace pacman;
 
 SpriteHandler::SpriteHandler(std::string_view path) noexcept
+        // Nothing sprite is a utility sprite that is used in animations to display "nothing"
         : m_sprites{Sprite{"nothing"}}
         , m_textResources{m_alphabetSprites}
         , m_footerScreenResources{m_fruitsSprites}
 {
     importSprites(path);
-    // Nothing sprite is a utility sprite that is used in animations to display "nothing"
 
     // Handle animation init
     initAnimations();
@@ -68,19 +68,16 @@ void SpriteHandler::initAnimations() noexcept
             getSprites("full_pacman", "pacman_down_little_open", "pacman_down_big_open"),
             false, 2};
     m_spriteAnimations["pacman-up"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_up_little_open", "pacman_up_big_open"), false,
-            2};
+            getSprites("full_pacman", "pacman_up_little_open", "pacman_up_big_open"), false, 2};
     m_spriteAnimations["pacman-left"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_left_little_open", "pacman_left_big_open"),
-            false, 2};
+            getSprites("full_pacman", "pacman_left_little_open", "pacman_left_big_open"), false, 2};
     m_spriteAnimations["pacman-right"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_right_little_open", "pacman_right_big_open"),
-            false, 2};
+            getSprites("full_pacman", "pacman_right_little_open", "pacman_right_big_open"), false, 2};
     m_spriteAnimations["pacman-dying"] = SpriteAnimation{
             getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
-                       "pacman_dying_10"), true, 6, false};
+                       "pacman_dying_10"), true, 6};
 
     // Ghosts
     initGhostAnimations("blinky");
@@ -89,9 +86,7 @@ void SpriteHandler::initAnimations() noexcept
     initGhostAnimations("pinky");
 
     // Board
-    m_spriteAnimations["bonus"] = SpriteAnimation{
-            getSprites("bonus", "nothing"), false, 15
-    };
+    m_spriteAnimations["bonus"] = SpriteAnimation{getSprites("bonus", "nothing"), false, 15};
 
     std::cout << "Successfully created " << m_spriteAnimations.size()
               << " sprite animations!" << std::endl;
@@ -183,16 +178,8 @@ void SpriteHandler::initStructs() noexcept
 
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
 {
-    m_spriteAnimations[name + "-down"] = SpriteAnimation{
-            getSprites(name + "_down_1", name + "_down_2"),
-            false, 3};
-    m_spriteAnimations[name + "-up"] = SpriteAnimation{
-            getSprites(name + "_up_1", name + "_up_2"), false,
-            3};
-    m_spriteAnimations[name + "-left"] = SpriteAnimation{
-            getSprites(name + "_left_1", name + "_left_2"),
-            false, 3};
-    m_spriteAnimations[name + "-right"] = SpriteAnimation{
-            getSprites(name + "_right_1", name + "_right_2"),
-            false, 3};
+    m_spriteAnimations[name + "-down"] = SpriteAnimation{getSprites(name + "_down_1", name + "_down_2"), false, 3};
+    m_spriteAnimations[name + "-up"] = SpriteAnimation{getSprites(name + "_up_1", name + "_up_2"), false, 3};
+    m_spriteAnimations[name + "-left"] = SpriteAnimation{getSprites(name + "_left_1", name + "_left_2"), false, 3};
+    m_spriteAnimations[name + "-right"] = SpriteAnimation{getSprites(name + "_right_1", name + "_right_2"), false, 3};
 }

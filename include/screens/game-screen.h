@@ -1,7 +1,7 @@
 #pragma once
 
 #include "screen.h"
-#include "level.h"
+#include "game/level.h"
 #include "utils/shared_value.h"
 
 namespace pacman {

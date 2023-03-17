@@ -17,6 +17,7 @@
 #include "screens/game-screen.h"
 #include "level.h"
 #include "game-state.h"
+#include "player.h"
 
 namespace pacman {
 
@@ -27,11 +28,9 @@ namespace pacman {
         shared_value<LevelState> m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
-        std::array<shared_value<int>, 2> m_levels;
-        std::array<shared_value<int>, 2> m_scores;
-        std::array<shared_value<int>, 2> m_lives;
-        int m_players;
-        shared_value<int> m_currentPlayer;
+        std::array<PlayerPtr, 2> m_players;
+        int m_playerCount;
+        PlayerPtr m_currentPlayer;
 
         // Handlers
         SpriteHandler m_spriteHandler;
@@ -95,6 +94,8 @@ namespace pacman {
         void handleDrawing() noexcept;
 
         void updateCredits(int p_credits) noexcept;
+
+        void updateScore(int p_scoreToAdd) noexcept;
 
         void updateHighScore(int p_highScore) noexcept;
 

@@ -1,18 +1,16 @@
 #include <iostream>
 
-#include "game.h"
+#include "game/game.h"
 
 using namespace pacman;
 
 Game::Game()
         : m_ticks{0},
-          m_levels{shared_value{1}, shared_value{1}},
-          m_players{1},
-          m_currentPlayer{-1},
+          m_playerCount{1},
+          m_players{std::make_shared<Player>(-1), std::make_shared<Player>(2)},
+          m_currentPlayer{m_players[0]},
           m_credit{0},
           m_highScore{0},
-          m_scores{shared_value{0}, shared_value{0}},
-          m_lives{shared_value{3}, shared_value{3}},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
@@ -23,8 +21,8 @@ Game::Game()
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
-          m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer, m_scores},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_levels, m_lives, m_spriteHandler.footerScreenResources()},
+          m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer},
+          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_currentPlayer, m_spriteHandler.footerScreenResources()},
           m_gameScreen{m_spriteHandler.textResources(), m_levelState}
 {
 
@@ -169,10 +167,10 @@ void Game::handleLogic() noexcept
             m_inky.freeze();
             m_clyde.freeze();
 
-            if(m_levels[m_currentPlayer] == 1) {
+            if(m_currentPlayer->id() == 1) {
                 // 3 lives to 2 -> one is played for the first round
-                m_lives[0] -= 1;
-                m_lives[1] -= 1;
+                m_players[0]->lives() -= 1;
+                m_players[1]->lives() -= 1;
                 m_footerScreen.updateLives();
             }
 
@@ -198,7 +196,7 @@ void Game::handleLogic() noexcept
 
         if(m_levelState == LevelState::Scatter)
         {
-            if ( m_ticks == 360*2) {
+            if (m_ticks == 360*2) {
                 m_pinky.startScatterMode();
             } else if(m_ticks == 360*2+60) {
                 m_clyde.startScatterMode();
@@ -287,8 +285,9 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
 
 void Game::startPlaying(int p_players) noexcept
 {
-    m_players = p_players;
+    m_playerCount = p_players;
     m_state = GameState::Playing;
+    m_players[0]->id() = 1; // Reset player id to 1
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
     m_gameScreen.activated() = true;
@@ -312,7 +311,7 @@ void Game::startLevel() noexcept
 {
     if(m_state != GameState::Playing) return;
 
-    m_currentPlayer = m_players > 1 && m_currentPlayer == 0 ? 1 : 0;
+    m_currentPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
     m_levelState = LevelState::PlayerDisplay;
     m_gameScreen.updateState();
     m_pacman.reset();
@@ -352,16 +351,39 @@ void Game::startChase() noexcept
 
 void Game::checkCollisions() noexcept
 {
+    if(m_state != GameState::Playing || !isLevelPlaying(m_levelState)) return;
 
     auto const pacmanPosition = m_pacman.position();
     // Check points eating
     if(Board::isCase(pacmanPosition))
     {
-        auto fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
-        if(fCase) {
-            auto& animation = fCase.value().animation();
-            if(animation) animation->activated() = false;
-        }
+        try {
+            auto& fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
+
+            if(fCase.activated()) {
+                fCase.activated() = false;
+
+                if(fCase.type() == BoardCaseType::PointPath) {
+                    updateScore(10);
+                } else if(fCase.type() == BoardCaseType::Bonus) {
+                    updateScore(50);
+                }
+
+            }
+
+        } catch (...){ }
     }
 
+}
+
+void Game::updateScore(int p_scoreToAdd) noexcept
+{
+    auto& score = m_currentPlayer->score();
+    score += p_scoreToAdd;
+    m_headerScreen.updateScore();
+
+    if(score > *m_highScore)
+    {
+        updateHighScore(score);
+    }
 }
