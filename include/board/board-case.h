@@ -41,7 +41,7 @@ namespace pacman {
         constexpr int &y() noexcept { return m_y; }
 
         [[nodiscard]] constexpr uint8_t flags() const { return m_flags; }
-        constexpr uint8_t &flags() { return m_flags; }
+        constexpr uint8_t& flags() { return m_flags; }
 
         [[nodiscard]] BoardCaseType type() const noexcept { return m_type; }
 

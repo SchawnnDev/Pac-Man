@@ -11,4 +11,8 @@ namespace pacman {
         End
     };
 
+    static constexpr bool isLevelPlaying(LevelState p_levelState) {
+        return p_levelState == LevelState::Chase || p_levelState == LevelState::Scatter;
+    }
+
 }

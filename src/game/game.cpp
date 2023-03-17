@@ -207,6 +207,11 @@ void Game::handleLogic() noexcept
             }
         }
 
+        if(isLevelPlaying(m_levelState))
+        {
+            checkCollisions();
+        }
+
     }
 
 }
@@ -343,4 +348,20 @@ void Game::startChase() noexcept
     m_pinky.startChaseMode();
     m_inky.startChaseMode();
     m_clyde.startChaseMode();
+}
+
+void Game::checkCollisions() noexcept
+{
+
+    auto const pacmanPosition = m_pacman.position();
+    // Check points eating
+    if(Board::isCase(pacmanPosition))
+    {
+        auto fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
+        if(fCase) {
+            auto& animation = fCase.value().animation();
+            if(animation) animation->activated() = false;
+        }
+    }
+
 }

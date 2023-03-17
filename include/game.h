@@ -108,6 +108,8 @@ namespace pacman {
 
         void startChase() noexcept;
 
+        void checkCollisions() noexcept;
+
     };
 
 }
