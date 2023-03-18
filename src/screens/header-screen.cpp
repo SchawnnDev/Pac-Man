@@ -4,10 +4,10 @@
 
 using namespace pacman;
 
-HeaderScreen::HeaderScreen(TextResources p_textResources, shared_value<int> p_highScore, PlayerPtr p_currentPlayer)
+HeaderScreen::HeaderScreen(TextResources p_textResources, shared_value<int> p_highScore, PlayerPtr&p_currentPlayer)
         : Screen(p_textResources)
         , m_highScore{std::move(p_highScore)}
-        , m_currentPlayer{std::move(p_currentPlayer)}
+        , m_currentPlayer{p_currentPlayer}
         , m_oneUp{std::make_shared<Text>("1up", Position{25 + strTextSize(2, m_charSize, m_spacing), 5}, m_charSize, m_spacing, p_textResources)}
         , m_highScoreTitle{std::make_shared<Text>("high score", Position{m_winMiddleX - strTextSize(5, m_charSize, m_spacing), 5}, m_charSize, m_spacing, p_textResources)}
         , m_twoUp{std::make_shared<Text>("2up", Position{WINDOW_SIZE_WIDTH - m_oneUp->textSize() - 25, 5}, m_charSize, m_spacing, p_textResources)}

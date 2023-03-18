@@ -12,7 +12,7 @@ namespace pacman {
         const int m_spacing = 3;
 
         shared_value<int> m_highScore;
-        PlayerPtr m_currentPlayer;
+        PlayerPtr& m_currentPlayer;
 
         TextElement m_oneUp;
         TextElement m_highScoreTitle;
@@ -22,8 +22,8 @@ namespace pacman {
 
     public:
 
-        explicit HeaderScreen(TextResources p_textResources, shared_value<int> p_highScore,
-                              PlayerPtr p_currentPlayer);
+        HeaderScreen(TextResources p_textResources, shared_value<int> p_highScore,
+                     PlayerPtr &p_currentPlayer);
 
         void tick() noexcept override;
 

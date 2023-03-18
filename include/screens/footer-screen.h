@@ -18,13 +18,13 @@ namespace pacman {
 
         shared_value<int> m_credit;
         shared_value<GameState> m_gameState;
-        PlayerPtr m_currentPlayer;
+        PlayerPtr& m_currentPlayer;
         FooterScreenResources const& m_footerResources;
     public:
 
         FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
                      shared_value <GameState> p_gameState,
-                     PlayerPtr p_currentPlayer,
+                     PlayerPtr &p_currentPlayer,
                      const FooterScreenResources& p_footerResources);
 
         void tick() noexcept override;

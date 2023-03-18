@@ -7,12 +7,12 @@ using namespace pacman;
 
 FooterScreen::FooterScreen(TextResources p_textResources, shared_value<int> p_credit,
                            shared_value<GameState> p_gameState,
-                           PlayerPtr p_currentPlayer,
-                           const FooterScreenResources& p_footerResources)
+                           PlayerPtr& p_currentPlayer,
+                           FooterScreenResources const& p_footerResources)
     : Screen(p_textResources)
         , m_credit{std::move(p_credit)}
         , m_gameState{std::move(p_gameState)}
-        , m_currentPlayer{std::move(p_currentPlayer)}
+        , m_currentPlayer{p_currentPlayer}
         , m_creditText{std::make_shared<Text>("credit  0", Position{25, WINDOW_SIZE_HEIGHT - 25}, m_charSize, m_spacing, p_textResources)}
         , m_fruits{}
         , m_livesImages{}

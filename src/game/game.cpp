@@ -44,7 +44,6 @@ Game::Game()
                                                    m_spriteSurface.get());
 
     SDL_SetColorKey(m_spriteSurface.get(), true, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
-
 }
 
 Game::~Game()
@@ -67,6 +66,8 @@ void Game::start() noexcept
     m_clyde.activated() = false;
     m_headerScreen.activated() = true;
     m_gameScreen.activated() = false;
+
+    m_players[1]->level() = 4;
 
     // Main loop
     while (m_state != GameState::End)
@@ -276,7 +277,10 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
     if(m_state == GameState::Playing) {
         if(event.key.keysym.sym == SDLK_b && event.key.repeat == 0)
         {
-            updateHighScore(m_highScore + 10);
+            m_currentPlayer = m_players[m_currentPlayer->id() == 1 ? 1 : 0];
+            m_footerScreen.updateLives();
+            m_footerScreen.updateLevels();
+            updateHighScore(m_highScore + 1000);
             return;
         }
 
@@ -287,6 +291,8 @@ void Game::startPlaying(int p_players) noexcept
 {
     m_playerCount = p_players;
     m_state = GameState::Playing;
+    if(p_players > 1) // player changes with startLevel fct
+        m_currentPlayer = m_players[1];
     m_players[0]->id() = 1; // Reset player id to 1
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;

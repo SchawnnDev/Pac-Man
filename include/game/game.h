@@ -29,8 +29,8 @@ namespace pacman {
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
         std::array<PlayerPtr, 2> m_players;
-        int m_playerCount;
         PlayerPtr m_currentPlayer;
+        int m_playerCount;
 
         // Handlers
         SpriteHandler m_spriteHandler;
