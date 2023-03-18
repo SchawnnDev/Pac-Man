@@ -33,11 +33,6 @@ void Pinky::startScatterMode() noexcept {
     target() = {2, -3};
 }
 
-void Pinky::startChaseMode() noexcept {
-    if (ghostMode() == GhostMode::Chase) return;
-    ghostMode() = GhostMode::Chase;
-}
-
 void Pinky::handleChaseTarget() noexcept {
     auto position = Board::findCase(pacman().position());
     // move 4 cases in the front of pacman

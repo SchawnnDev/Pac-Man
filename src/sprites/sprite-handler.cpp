@@ -78,6 +78,14 @@ void SpriteHandler::initAnimations() noexcept
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
                        "pacman_dying_10"), true, 6};
+    m_spriteAnimations["ghost-frightened"] = SpriteAnimation{getSprites("ghost_frightened_1", "ghost_frightened_2"), false, 3};
+    m_spriteAnimations["ghost-frightened-end"] = SpriteAnimation{getSprites("ghost_frightened_1", "ghost_frightened_2", "ghost_frightened_end_1", "ghost_frightened_end_2"), false, 3};
+    m_spriteAnimations["ghost-eyes-right"] = SpriteAnimation{getSprites("ghost_eyes_right"), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-left"] = SpriteAnimation{getSprites("ghost_eyes_left"), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-up"] = SpriteAnimation{getSprites("ghost_eyes_up"), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-down"] = SpriteAnimation{getSprites("ghost_eyes_down"), false, 0, true, true};
+
+
 
     // Ghosts
     initGhostAnimations("blinky");
@@ -111,7 +119,7 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["pacman-down"],
             m_spriteAnimations["pacman-left"],
             m_spriteAnimations["pacman-right"],
-            m_spriteAnimations["pacman-dying"],
+            m_spriteAnimations["pacman-dying"]
     };
 
     // Ghosts
@@ -120,24 +128,48 @@ void SpriteHandler::initStructs() noexcept
             m_spriteAnimations["blinky-down"],
             m_spriteAnimations["blinky-left"],
             m_spriteAnimations["blinky-right"],
+            m_spriteAnimations["ghost-frightened"],
+            m_spriteAnimations["ghost-frightened-end"],
+            m_spriteAnimations["ghost-eyes-up"],
+            m_spriteAnimations["ghost-eyes-down"],
+            m_spriteAnimations["ghost-eyes-left"],
+            m_spriteAnimations["ghost-eyes-right"]
     };
     m_pinkyAnimations = {
             m_spriteAnimations["pinky-up"],
             m_spriteAnimations["pinky-down"],
             m_spriteAnimations["pinky-left"],
             m_spriteAnimations["pinky-right"],
+            m_spriteAnimations["ghost-frightened"],
+            m_spriteAnimations["ghost-frightened-end"],
+            m_spriteAnimations["ghost-eyes-up"],
+            m_spriteAnimations["ghost-eyes-down"],
+            m_spriteAnimations["ghost-eyes-left"],
+            m_spriteAnimations["ghost-eyes-right"]
     };
     m_inkyAnimations = {
             m_spriteAnimations["inky-up"],
             m_spriteAnimations["inky-down"],
             m_spriteAnimations["inky-left"],
             m_spriteAnimations["inky-right"],
+            m_spriteAnimations["ghost-frightened"],
+            m_spriteAnimations["ghost-frightened-end"],
+            m_spriteAnimations["ghost-eyes-up"],
+            m_spriteAnimations["ghost-eyes-down"],
+            m_spriteAnimations["ghost-eyes-left"],
+            m_spriteAnimations["ghost-eyes-right"]
     };
     m_clydeAnimations = {
             m_spriteAnimations["clyde-up"],
             m_spriteAnimations["clyde-down"],
             m_spriteAnimations["clyde-left"],
             m_spriteAnimations["clyde-right"],
+            m_spriteAnimations["ghost-frightened"],
+            m_spriteAnimations["ghost-frightened-end"],
+            m_spriteAnimations["ghost-eyes-up"],
+            m_spriteAnimations["ghost-eyes-down"],
+            m_spriteAnimations["ghost-eyes-left"],
+            m_spriteAnimations["ghost-eyes-right"]
     };
 
     // Board

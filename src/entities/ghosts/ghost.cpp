@@ -1,62 +1,80 @@
 #include "entities/ghosts/ghost.h"
+#include "utils/random.h"
 
 using namespace pacman;
 
 Ghost::~Ghost() = default;
 
 void Ghost::startEatenMode() noexcept {
-
+    if(m_ghostMode == GhostMode::Eaten) return;
+    m_ghostMode = GhostMode::Eaten;
+    turnAround(); // turn 180 degrees
 }
 
-void Ghost::startFrightenedMode() noexcept{
+void Ghost::startFrightenedMode() noexcept {
+    if(m_ghostMode == GhostMode::Frightened) return;
+    m_ghostMode = GhostMode::Frightened;
+    turnAround(); // turn 180 degrees
+}
 
+void Ghost::startChaseMode() noexcept
+{
+    if (ghostMode() == GhostMode::Chase) return;
+    ghostMode() = GhostMode::Chase;
+    turnAround();
 }
 
 void Ghost::handleScatterMode() noexcept{
 
 }
 
-std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
-    if(!currentCase()) return std::nullopt;
-    auto const& actualCase = currentCase();
+auto Ghost::getPossibleDirections(bool withOpposite, bool noUp) noexcept {
     auto pairs = std::vector<DirectionBoardCasePair>{};
-
+    auto const& actualCase = currentCase();
     // Ghost is on a tile, and he must choose a direction
-    auto const& frontCase = board().getBoardCaseAtPixels(position(), direction());
+    auto frontDirection = direction();
+    auto const& frontCase = board().getBoardCaseAtPixels(position(), frontDirection);
     auto leftDirection = getDirectionByAngle(direction(), 90);
     auto const& leftCase = board().getBoardCaseAtPixels(position(), leftDirection);
     auto rightDirection = getDirectionByAngle(direction(), -90);
     auto const& rightCase = board().getBoardCaseAtPixels(position(), rightDirection);
+    auto oppositeDirection = getOpposite(direction());
+    auto const& oppositeCase = board().getBoardCaseAtPixels(position(), oppositeDirection);
+
+    if(withOpposite) {
+        pairs.emplace_back(oppositeDirection, oppositeCase);
+    }
+    pairs.emplace_back(frontDirection, frontCase);
+    pairs.emplace_back(leftDirection, leftCase);
+    pairs.emplace_back(rightDirection, rightCase);
+
+    auto const flagNoUp = actualCase->flags() & CASE_FLAG_NO_UP;
+
+    pairs.erase(
+            std::remove_if(pairs.begin(), pairs.end(),
+                           [&noUp, &flagNoUp](auto const &p) { return noUp && p.first == Direction::UP && flagNoUp; }
+            ), pairs.end()
+    );
+
+    return pairs;
+}
+
+std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
+    if(!currentCase()) return std::nullopt;
+    auto const& actualCase = currentCase();
+    auto pairs = getPossibleDirections(actualCase->type() == BoardCaseType::GhostHome, m_ghostMode != GhostMode::Frightened);
+
+    if(m_ghostMode == GhostMode::Frightened) {
+        auto r = *select_randomly(pairs.begin(), pairs.end());
+        return r.second;
+    }
+
     auto destination = target();
 
-    // If the ghost is in on a home case he also can go in opposite direction
-    if(actualCase->type() == BoardCaseType::GhostHome)
+    // Change target to get out of the home
+    if(actualCase->type() == BoardCaseType::GhostHome && ghostMode() != GhostMode::Home)
     {
-        // Change target to get out of the home
-        if(ghostMode() != GhostMode::Home)
-        {
-            destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
-        }
-
-        auto oppositeDirection = getOpposite(direction());
-        auto const& oppositeCase = board().getBoardCaseAtPixels(position(), oppositeDirection);
-
-        if (oppositeCase && !(oppositeDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
-            pairs.emplace_back(oppositeDirection, oppositeCase);
-        }
-
-    }
-
-    if (frontCase && !(direction() == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
-        pairs.emplace_back(direction(), frontCase);
-    }
-
-    if (leftCase && !(leftDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
-        pairs.emplace_back(leftDirection, leftCase);
-    }
-
-    if (rightCase && !(rightDirection == Direction::UP && actualCase->flags() & CASE_FLAG_NO_UP)) {
-        pairs.emplace_back(rightDirection, rightCase);
+        destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
     }
 
     auto homeDoorPracticable = false;
@@ -67,15 +85,16 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
         homeDoorPracticable = true;
     }
 
-    auto const& foundCase = getClosestBoardCase(destination, pairs, homeDoorPracticable);
+    auto const &foundCase = getClosestBoardCase(destination, pairs, homeDoorPracticable);
 
     // foundCase should not be null
-    if (foundCase.second) {
+    if (foundCase.second)
+    {
         direction() = foundCase.first;
         changeAnimation();
     }
-
     return foundCase.second;
+
 }
 
 void Ghost::handleMovement() noexcept {
@@ -121,65 +140,37 @@ void Ghost::handleMovement() noexcept {
 
     }
 
-/*
-    auto next = Board::findCase(position().getPositionAt(direction(), currentSpeed));
-*/
-
     position().moveAt(direction(), currentSpeed);
-
-/*    if(next == actualCase->position())
-        return;
-
-    next.toPixels();
-
-    switch (direction()) {
-        case Direction::UP:
-
-            if (position().y() < next.y()) {
-                position().y() = next.y();
-            }
-
-            break;
-        case Direction::DOWN:
-
-            if (position().y() > next.y()) {
-                position().y() = next.y();
-            }
-
-            break;
-        case Direction::LEFT:
-
-            if (position().x() < next.x()) {
-                position().x() = next.x();
-            }
-
-            break;
-        case Direction::RIGHT:
-            if (position().x() > next.x()) {
-                position().x() = next.x();
-            }
-            break;
-    }*/
 
 }
 
 void Ghost::changeAnimation() noexcept {
     currentAnimation()->freeze() = false;
 
+    if(m_ghostMode == GhostMode::Frightened)
+    {
+        currentAnimation() = m_ghostAnimations.frightenedAnimation;
+        // TODO: impl End frightened animation
+        return;
+    }
+
+    auto const eaten = m_ghostMode == GhostMode::Eaten;
+
     switch (direction()) {
         case Direction::UP:
-            currentAnimation() = m_ghostAnimations.upAnimation;
+            currentAnimation() = eaten ? m_ghostAnimations.eyesUpAnimation : m_ghostAnimations.upAnimation;
             break;
         case Direction::DOWN:
-            currentAnimation() = m_ghostAnimations.downAnimation;
+            currentAnimation() = eaten ? m_ghostAnimations.eyesDownAnimation : m_ghostAnimations.downAnimation;
             break;
         case Direction::LEFT:
-            currentAnimation() = m_ghostAnimations.leftAnimation;
+            currentAnimation() = eaten ? m_ghostAnimations.eyesLeftAnimation : m_ghostAnimations.leftAnimation;
             break;
         case Direction::RIGHT:
-            currentAnimation() = m_ghostAnimations.rightAnimation;
+            currentAnimation() = eaten ? m_ghostAnimations.eyesRightAnimation : m_ghostAnimations.rightAnimation;
             break;
     }
+
 }
 
 void Ghost::handleHomeMode() noexcept {
@@ -207,4 +198,30 @@ void Ghost::handleHomeMode() noexcept {
 void Ghost::startHomeMode() noexcept {
     if(ghostMode() == GhostMode::Home) return;
     reset();
+}
+
+void Ghost::turnAround() noexcept
+{
+    auto const opposite = getOpposite(direction());
+
+    if(Board::isCase(position())) {
+
+        auto const &nextCase = board().getBoardCaseAtPixels(position(), opposite);
+
+        if (!nextCase) return; // should not be null
+
+        if (!BoardCase::isPracticable(nextCase.value())) {
+            // todo:
+        }
+
+    } else {
+        direction() = opposite;
+        changeAnimation();
+    }
+
+}
+
+void Ghost::handleEatenMode() noexcept
+{
+
 }

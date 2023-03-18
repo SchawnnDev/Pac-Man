@@ -23,6 +23,26 @@ namespace pacman {
     protected:
         [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
 
+        virtual void handleChaseTarget() noexcept = 0;
+
+        void handleScatterMode() noexcept;
+
+        void handleHomeMode() noexcept;
+
+        void handleEatenMode() noexcept;
+
+        void startHomeMode() noexcept;
+
+        void handleMovement() noexcept;
+
+        void changeAnimation() noexcept override;
+
+        std::optional<BoardCase> handlePathFinding() noexcept;
+
+        void turnAround() noexcept;
+
+        auto getPossibleDirections(bool withOpposite = false, bool noUp = true) noexcept;
+
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode,
               GhostAnimations const &p_ghostAnimations)
@@ -44,25 +64,11 @@ namespace pacman {
 
         virtual void startScatterMode() noexcept = 0;
 
-        virtual void startChaseMode() noexcept = 0;
-
-        virtual void handleChaseTarget() noexcept = 0;
+        void startChaseMode() noexcept;
 
         void startFrightenedMode() noexcept;
 
         void startEatenMode() noexcept;
-
-        void handleScatterMode() noexcept;
-
-        void handleHomeMode() noexcept;
-
-        void startHomeMode() noexcept;
-
-        std::optional<BoardCase> handlePathFinding() noexcept;
-
-        void handleMovement() noexcept;
-
-        void changeAnimation() noexcept override;
 
     };
 

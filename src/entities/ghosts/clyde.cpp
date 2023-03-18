@@ -33,11 +33,6 @@ void Clyde::startScatterMode() noexcept {
     target() = {0, BOARD_SIZE_Y + 1};
 }
 
-void Clyde::startChaseMode() noexcept {
-    if (ghostMode() == GhostMode::Chase) return;
-    ghostMode() = GhostMode::Chase;
-}
-
 void Clyde::handleChaseTarget() noexcept {
     auto currentPosition = Board::findCase(position());
     auto position = Board::findCase(pacman().position());

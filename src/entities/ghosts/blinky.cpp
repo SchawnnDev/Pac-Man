@@ -32,11 +32,6 @@ void Blinky::startScatterMode() noexcept {
     target() = {BOARD_SIZE_X - 3, -3};
 }
 
-void Blinky::startChaseMode() noexcept {
-    if (ghostMode() == GhostMode::Chase) return;
-    ghostMode() = GhostMode::Chase;
-}
-
 void Blinky::handleChaseTarget() noexcept {
     if (ghostMode() != GhostMode::Chase) return;
     target() = Board::findCase(pacman().position());

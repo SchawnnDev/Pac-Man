@@ -20,6 +20,11 @@ namespace pacman {
         SpriteAnimation leftAnimation;
         SpriteAnimation rightAnimation;
         SpriteAnimation frightenedAnimation;
+        SpriteAnimation frightenedEndAnimation;
+        SpriteAnimation eyesUpAnimation;
+        SpriteAnimation eyesDownAnimation;
+        SpriteAnimation eyesLeftAnimation;
+        SpriteAnimation eyesRightAnimation;
     };
 
     struct BoardResources final {

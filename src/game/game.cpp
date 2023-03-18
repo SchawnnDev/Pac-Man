@@ -67,8 +67,6 @@ void Game::start() noexcept
     m_headerScreen.activated() = true;
     m_gameScreen.activated() = false;
 
-    m_players[1]->level() = 4;
-
     // Main loop
     while (m_state != GameState::End)
     {
@@ -354,6 +352,15 @@ void Game::startChase() noexcept
     m_inky.startChaseMode();
     m_clyde.startChaseMode();
 }
+
+void Game::startFrightened() noexcept
+{
+    m_blinky.startFrightenedMode();
+    m_pinky.startFrightenedMode();
+    m_inky.startFrightenedMode();
+    m_clyde.startFrightenedMode();
+}
+
 
 void Game::checkCollisions() noexcept
 {

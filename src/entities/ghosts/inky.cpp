@@ -20,6 +20,7 @@ void Inky::tick() noexcept {
         case GhostMode::Frightened:
             break;
         case GhostMode::Eaten:
+            handleEatenMode();
             break;
     }
 
@@ -31,11 +32,7 @@ void Inky::startScatterMode() noexcept {
     if (ghostMode() == GhostMode::Scatter) return;
     ghostMode() = GhostMode::Scatter;
     target() = {BOARD_SIZE_X - 1, BOARD_SIZE_Y + 1};
-}
-
-void Inky::startChaseMode() noexcept {
-    if (ghostMode() == GhostMode::Chase) return;
-    ghostMode() = GhostMode::Chase;
+    turnAround();
 }
 
 void Inky::handleChaseTarget() noexcept {
