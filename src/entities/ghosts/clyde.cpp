@@ -17,8 +17,6 @@ void Clyde::tick() noexcept {
         case GhostMode::Chase:
             handleChaseTarget();
             break;
-        case GhostMode::Frightened:
-            break;
         case GhostMode::Eaten:
             break;
     }

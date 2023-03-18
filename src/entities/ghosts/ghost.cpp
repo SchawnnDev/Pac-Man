@@ -8,12 +8,13 @@ Ghost::~Ghost() = default;
 void Ghost::startEatenMode() noexcept {
     if(m_ghostMode == GhostMode::Eaten) return;
     m_ghostMode = GhostMode::Eaten;
+    m_frightened = false;
     turnAround(); // turn 180 degrees
 }
 
 void Ghost::startFrightenedMode() noexcept {
-    if(m_ghostMode == GhostMode::Frightened) return;
-    m_ghostMode = GhostMode::Frightened;
+    if(m_frightened) return;
+    m_frightened = true;
     turnAround(); // turn 180 degrees
 }
 
@@ -24,14 +25,48 @@ void Ghost::startChaseMode() noexcept
     turnAround();
 }
 
-void Ghost::handleScatterMode() noexcept{
+void Ghost::startHomeMode() noexcept {
+    if(ghostMode() == GhostMode::Home) return;
+    reset();
+}
+
+
+void Ghost::handleEatenMode() noexcept
+{
 
 }
 
-auto Ghost::getPossibleDirections(bool withOpposite, bool noUp) noexcept {
+void Ghost::handleHomeMode() noexcept {
+    // Home mode: ghost going up & down
+    if(Board::isCase(position())) {
+
+        auto const &nextCase = board().getBoardCaseAtPixels(position(), direction());
+
+        if (!nextCase) return; // should not be null
+
+        if (!BoardCase::isPracticable(nextCase.value())) {
+            if (direction() == Direction::DOWN) {
+                direction() = Direction::UP;
+            } else if (direction() == Direction::UP) {
+                direction() = Direction::DOWN;
+            }
+
+            Ghost::changeAnimation();
+        }
+    }
+
+    position().moveAt(direction(), speed() / 2); //TODO: MAYBE HANDLE SPEED IN ONE FCT
+}
+
+
+void Ghost::handleScatterMode() noexcept {
+
+}
+
+auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool checkPracticable) noexcept {
+    // Ghost is on a tile, and he must choose a direction
     auto pairs = std::vector<DirectionBoardCasePair>{};
     auto const& actualCase = currentCase();
-    // Ghost is on a tile, and he must choose a direction
     auto frontDirection = direction();
     auto const& frontCase = board().getBoardCaseAtPixels(position(), frontDirection);
     auto leftDirection = getDirectionByAngle(direction(), 90);
@@ -48,12 +83,13 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp) noexcept {
     pairs.emplace_back(leftDirection, leftCase);
     pairs.emplace_back(rightDirection, rightCase);
 
-    auto const flagNoUp = actualCase->flags() & CASE_FLAG_NO_UP;
+    bool const flagNoUp = actualCase->flags() & CASE_FLAG_NO_UP;
 
     pairs.erase(
-            std::remove_if(pairs.begin(), pairs.end(),
-                           [&noUp, &flagNoUp](auto const &p) { return noUp && p.first == Direction::UP && flagNoUp; }
-            ), pairs.end()
+            std::remove_if(pairs.begin(), pairs.end(), [&noUp, &flagNoUp, &checkPracticable](auto const &p) {
+                return (noUp && p.first == Direction::UP && flagNoUp)
+                       || !p.second || (checkPracticable && !BoardCase::isPracticable(p.second.value()));
+            }), pairs.end()
     );
 
     return pairs;
@@ -62,25 +98,30 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp) noexcept {
 std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
     if(!currentCase()) return std::nullopt;
     auto const& actualCase = currentCase();
-    auto pairs = getPossibleDirections(actualCase->type() == BoardCaseType::GhostHome, m_ghostMode != GhostMode::Frightened);
+    auto caseIsHome =actualCase->type() == BoardCaseType::GhostHome;
+    auto pairs = getPossibleDirections(caseIsHome, !m_frightened, !caseIsHome && m_frightened);
 
-    if(m_ghostMode == GhostMode::Frightened) {
+    if(ghostMode() != GhostMode::Home && !caseIsHome && m_frightened) {
+        if(pairs.empty()) return std::nullopt;
         auto r = *select_randomly(pairs.begin(), pairs.end());
+
+        // foundCase should not be null
+        if (r.second)
+        {
+            direction() = r.first;
+            changeAnimation();
+        }
+
         return r.second;
     }
 
     auto destination = target();
-
-    // Change target to get out of the home
-    if(actualCase->type() == BoardCaseType::GhostHome && ghostMode() != GhostMode::Home)
-    {
-        destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
-    }
-
     auto homeDoorPracticable = false;
 
-    if (ghostMode() != GhostMode::Home && actualCase->type() == BoardCaseType::GhostHome) {
+    if (ghostMode() != GhostMode::Home && caseIsHome) {
         homeDoorPracticable = true;
+        // Change target to get out of the home
+        destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
     } else if (ghostMode() == GhostMode::Eaten && Board::getGridIndex(actualCase->position()) == board().homeDoorIndex()) {
         homeDoorPracticable = true;
     }
@@ -147,10 +188,10 @@ void Ghost::handleMovement() noexcept {
 void Ghost::changeAnimation() noexcept {
     currentAnimation()->freeze() = false;
 
-    if(m_ghostMode == GhostMode::Frightened)
+    if(m_frightened)
     {
         currentAnimation() = m_ghostAnimations.frightenedAnimation;
-        // TODO: impl End frightened animation
+        // TODO: impl end frightened animation
         return;
     }
 
@@ -173,33 +214,6 @@ void Ghost::changeAnimation() noexcept {
 
 }
 
-void Ghost::handleHomeMode() noexcept {
-    // Home mode: ghost going up & down
-    if(Board::isCase(position())) {
-
-        auto const &nextCase = board().getBoardCaseAtPixels(position(), direction());
-
-        if (!nextCase) return; // should not be null
-
-        if (!BoardCase::isPracticable(nextCase.value())) {
-            if (direction() == Direction::DOWN) {
-                direction() = Direction::UP;
-            } else if (direction() == Direction::UP) {
-                direction() = Direction::DOWN;
-            }
-
-            Ghost::changeAnimation();
-        }
-    }
-
-    position().moveAt(direction(), speed() / 2); //TODO: MAYBE HANDLE SPEED IN ONE FCT
-}
-
-void Ghost::startHomeMode() noexcept {
-    if(ghostMode() == GhostMode::Home) return;
-    reset();
-}
-
 void Ghost::turnAround() noexcept
 {
     auto const opposite = getOpposite(direction());
@@ -214,14 +228,10 @@ void Ghost::turnAround() noexcept
             // todo:
         }
 
+        changeAnimation();
     } else {
         direction() = opposite;
         changeAnimation();
     }
-
-}
-
-void Ghost::handleEatenMode() noexcept
-{
 
 }

@@ -23,8 +23,6 @@ namespace pacman {
 
         void startScatterMode() noexcept override;
 
-        void startChaseMode() noexcept override;
-
         void handleChaseTarget() noexcept override;
 
     };

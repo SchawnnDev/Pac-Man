@@ -48,10 +48,10 @@
         <spr name="ghost_frightened_2" x="21" y="196" w="14" h="14"/>
         <spr name="ghost_frightened_end_1" x="38" y="196" w="14" h="14"/>
         <spr name="ghost_frightened_end_2" x="55" y="196" w="14" h="14"/>
-        <spr name="ghost_eyes_right" x="74" y="202" w="10" h="5"/>
-        <spr name="ghost_eyes_left" x="92" y="202" w="10" h="5"/>
-        <spr name="ghost_eyes_up" x="108" y="203" w="10" h="4"/>
-        <spr name="ghost_eyes_down" x="125" y="202" w="10" h="4"/>
+        <spr name="ghost_eyes_right" x="72" y="197" w="14" h="14"/>
+        <spr name="ghost_eyes_left" x="90" y="197" w="14" h="14"/>
+        <spr name="ghost_eyes_up" x="106" y="197" w="14" h="14"/>
+        <spr name="ghost_eyes_down" x="123" y="197" w="14" h="14"/>
       </dir>
       <dir name="Boards">
         <spr name="point" x="4" y="81" w="2" h="2"/>

@@ -10,7 +10,6 @@ namespace pacman {
         Home, // At start of pacman, ghosts are at home
         Scatter,
         Chase,
-        Frightened,
         Eaten
     };
 
@@ -19,7 +18,9 @@ namespace pacman {
         Position m_target;
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
+        bool m_frightened;
         int m_dotsCounter;
+        int m_ticks;
     protected:
         [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
 
@@ -31,8 +32,6 @@ namespace pacman {
 
         void handleEatenMode() noexcept;
 
-        void startHomeMode() noexcept;
-
         void handleMovement() noexcept;
 
         void changeAnimation() noexcept override;
@@ -41,13 +40,14 @@ namespace pacman {
 
         void turnAround() noexcept;
 
-        auto getPossibleDirections(bool withOpposite = false, bool noUp = true) noexcept;
+        auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool checkPracticable = false) noexcept;
 
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode,
               GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(p_ghostMode), m_target{},
-                  m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman}, m_dotsCounter{0} {
+                  m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman}, m_dotsCounter{0}, m_ticks{0},
+                  m_frightened{false} {
             currentAnimation() = m_ghostAnimations.leftAnimation;
         }
 
@@ -62,9 +62,17 @@ namespace pacman {
         [[nodiscard]] int dotsCounter() const { return m_dotsCounter; }
         int& dotsCounter() { return m_dotsCounter; }
 
+        [[nodiscard]] int ticks() const { return m_dotsCounter; }
+        int& ticks() { return m_dotsCounter; }
+
+        [[nodiscard]] bool frightened() const { return m_frightened; }
+        bool& frightened() { return m_frightened; }
+
         virtual void startScatterMode() noexcept = 0;
 
         void startChaseMode() noexcept;
+
+        void startHomeMode() noexcept;
 
         void startFrightenedMode() noexcept;
 

@@ -275,13 +275,17 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
     if(m_state == GameState::Playing) {
         if(event.key.keysym.sym == SDLK_b && event.key.repeat == 0)
         {
-            m_currentPlayer = m_players[m_currentPlayer->id() == 1 ? 1 : 0];
-            m_footerScreen.updateLives();
-            m_footerScreen.updateLevels();
             updateHighScore(m_highScore + 1000);
             return;
         }
 
+        if(event.key.keysym.sym == SDLK_SPACE && event.key.repeat==0)
+        {
+            std::cout << "pacman distance with blinky: " << m_pacman.position().distanceTo(m_blinky.position()) << std::endl;
+            std::cout << "pacman distance with pinky: " << m_pacman.position().distanceTo(m_pinky.position()) << std::endl;
+            std::cout << "pacman distance with clyde: " << m_pacman.position().distanceTo(m_clyde.position()) << std::endl;
+            std::cout << "pacman distance with inky: " << m_pacman.position().distanceTo(m_inky.position()) << std::endl;
+        }
     }
 }
 
@@ -364,8 +368,6 @@ void Game::startFrightened() noexcept
 
 void Game::checkCollisions() noexcept
 {
-    if(m_state != GameState::Playing || !isLevelPlaying(m_levelState)) return;
-
     auto const pacmanPosition = m_pacman.position();
     // Check points eating
     if(Board::isCase(pacmanPosition))
@@ -380,11 +382,70 @@ void Game::checkCollisions() noexcept
                     updateScore(10);
                 } else if(fCase.type() == BoardCaseType::Bonus) {
                     updateScore(50);
+                    startFrightened();
                 }
 
             }
 
         } catch (...){ }
+    }
+
+//   auto centeredPacmanPos = pacmanPosition.add({16,16});
+
+    if(m_pacman.direction() == Direction::DOWN) {
+
+        auto first = m_blinky.position().add({0,16});
+        auto sec = m_blinky.position().add({32,32});
+        int m_x1 = pacmanPosition.x();
+        int m_y1 = pacmanPosition.y();
+        int m_x2 = m_x1 + 32;
+        int m_y2 = m_x1 + 32;
+        auto collides = (m_x1 < first.x()) && (m_x2 > sec.x()) && (m_y1 < first.y()) && (m_y2 > sec.y());
+
+        if(collides) {
+            std::cout << "colide with blinky" << std::endl;
+            if(m_blinky.frightened())
+            {
+                m_blinky.startEatenMode();
+            } else {
+                // Die
+            }
+        }
+    }
+
+    if(pacmanPosition == m_pinky.position())
+    {
+        std::cout << "colide with pinky" << std::endl;
+        if(m_pinky.frightened())
+        {
+            m_pinky.startEatenMode();
+        } else {
+            // Die
+        }
+    }
+
+    if(pacmanPosition == m_clyde.position())
+    {
+        std::cout << "colide with clyde" << std::endl;
+        if(m_clyde.frightened())
+        {
+            m_clyde.startEatenMode();
+        } else {
+            // Die
+        }
+    }
+
+
+
+    if(pacmanPosition.add({BOARD_CASE_SIZE_WIDTH /2, BOARD_CASE_SIZE_HEIGHT /2}) == m_inky.position())
+    {
+        std::cout << "colide with inky" << std::endl;
+        if(m_inky.frightened())
+        {
+            m_inky.startEatenMode();
+        } else {
+            // Die
+        }
     }
 
 }
