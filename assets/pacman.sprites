@@ -71,18 +71,18 @@
         <spr name="fruit_key" x="403" y="257" w="11" h="13"/>
       </dir>
       <dir name="Scores">
-        <spr name="score_100" x="180" y="133" w="13" h="7"/>
-        <spr name="score_200" x="155" y="176" w="14" h="7"/>
-        <spr name="score_300" x="179" y="142" w="14" h="7"/>
-        <spr name="score_400" x="155" y="185" w="14" h="7"/>
-        <spr name="score_500" x="179" y="151" w="14" h="7"/>
-        <spr name="score_700" x="179" y="160" w="14" h="7"/>
-        <spr name="score_800" x="155" y="194" w="14" h="7"/>
-        <spr name="score_1000" x="177" y="169" w="16" h="7"/>
-        <spr name="score_1600" x="154" y="203" w="15" h="7"/>
-        <spr name="score_2000" x="177" y="178" w="16" h="7"/>
-        <spr name="score_3000" x="177" y="187" w="16" h="7"/>
-        <spr name="score_5000" x="177" y="196" w="16" h="7"/>
+        <spr name="score_100" x="180" y="132" w="13" h="9"/>
+        <spr name="score_200" x="155" y="175" w="14" h="9"/>
+        <spr name="score_300" x="179" y="141" w="14" h="9"/>
+        <spr name="score_400" x="155" y="184" w="14" h="9"/>
+        <spr name="score_500" x="179" y="150" w="14" h="9"/>
+        <spr name="score_700" x="179" y="159" w="14" h="9"/>
+        <spr name="score_800" x="155" y="193" w="14" h="9"/>
+        <spr name="score_1000" x="177" y="168" w="16" h="9"/>
+        <spr name="score_1600" x="154" y="202" w="15" h="9"/>
+        <spr name="score_2000" x="177" y="177" w="16" h="9"/>
+        <spr name="score_3000" x="177" y="186" w="16" h="9"/>
+        <spr name="score_5000" x="177" y="195" w="16" h="9"/>
         <spr name="score_pts" x="178" y="205" w="15" h="5"/>
         <spr name="score_10" x="151" y="212" w="7" h="5"/>
         <spr name="score_50" x="162" y="212" w="7" h="5"/>

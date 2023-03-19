@@ -18,6 +18,7 @@ namespace pacman {
         std::vector<Sprite> m_sprites;
         std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
         std::unordered_map<char, Sprite> m_alphabetSprites;
+        std::unordered_map<int, Sprite> m_scoresSprites;
         std::array<Sprite, 8> m_fruitsSprites;
         // structs
         PacmanAnimations m_pacmanAnimations;
@@ -68,6 +69,8 @@ namespace pacman {
 
         // Board
         [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }
+
+        [[nodiscard]] std::unordered_map<int, Sprite> const& scoreSprites() const { return m_scoresSprites; }
 
         template<typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)

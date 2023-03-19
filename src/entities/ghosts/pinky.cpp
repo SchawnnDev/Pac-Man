@@ -18,6 +18,7 @@ void Pinky::tick() noexcept {
             handleChaseTarget();
             break;
         case GhostMode::Eaten:
+            handleEatenMode();
             break;
     }
 

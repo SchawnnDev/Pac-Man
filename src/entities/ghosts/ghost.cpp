@@ -10,10 +10,11 @@ void Ghost::startEatenMode() noexcept {
     m_ghostMode = GhostMode::Eaten;
     m_frightened = false;
     turnAround(); // turn 180 degrees
+    target() = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
 }
 
 void Ghost::startFrightenedMode() noexcept {
-    if(m_frightened) return;
+    if(m_frightened || m_ghostMode == GhostMode::Eaten) return;
     m_frightened = true;
     turnAround(); // turn 180 degrees
 }
@@ -33,6 +34,13 @@ void Ghost::startHomeMode() noexcept {
 
 void Ghost::handleEatenMode() noexcept
 {
+    if(ghostMode() != GhostMode::Eaten) return;
+    auto const& currCase = currentCase();
+
+    if(Board::isCase(position()) && currCase && currCase->type() == BoardCaseType::GhostHome)
+    {
+        startScatterMode();
+    }
 
 }
 
@@ -98,7 +106,7 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool checkPracti
 std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
     if(!currentCase()) return std::nullopt;
     auto const& actualCase = currentCase();
-    auto caseIsHome =actualCase->type() == BoardCaseType::GhostHome;
+    auto caseIsHome = actualCase->type() == BoardCaseType::GhostHome;
     auto pairs = getPossibleDirections(caseIsHome, !m_frightened, !caseIsHome && m_frightened);
 
     if(ghostMode() != GhostMode::Home && !caseIsHome && m_frightened) {
@@ -122,7 +130,7 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
         homeDoorPracticable = true;
         // Change target to get out of the home
         destination = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
-    } else if (ghostMode() == GhostMode::Eaten && Board::getGridIndex(actualCase->position()) == board().homeDoorIndex()) {
+    } else if (ghostMode() == GhostMode::Eaten) {
         homeDoorPracticable = true;
     }
 

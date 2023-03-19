@@ -31,6 +31,7 @@ namespace pacman {
         std::array<PlayerPtr, 2> m_players;
         PlayerPtr m_currentPlayer;
         int m_playerCount;
+        int m_freezeTimeout;
 
         // Handlers
         SpriteHandler m_spriteHandler;
@@ -112,6 +113,8 @@ namespace pacman {
         void startFrightened() noexcept;
 
         void checkCollisions() noexcept;
+
+        void freezeDisplayScore(Entity& p_which, int p_score) noexcept;
 
     };
 

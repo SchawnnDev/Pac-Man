@@ -17,6 +17,7 @@ void Blinky::tick() noexcept {
             handleChaseTarget();
             break;
         case GhostMode::Eaten:
+            handleEatenMode();
             break;
     }
 

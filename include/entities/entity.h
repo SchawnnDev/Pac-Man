@@ -83,6 +83,10 @@ namespace pacman {
 
         void unfreeze() noexcept;
 
+        [[nodiscard]] bool checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept;
+
+        [[nodiscard]] bool checkCollision(Entity const& p_with) const noexcept;
+
     };
 
 }

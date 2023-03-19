@@ -56,3 +56,44 @@ bool Entity::isGhost() const noexcept {
            || type == EntityType::Pinky
            || type == EntityType::Inky;
 }
+
+bool Entity::checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept
+{
+    int m_x1 = m_position.x();
+    int m_y1 = m_position.y();
+    int m_x2 = m_x1 + 32;
+    int m_y2 = m_y1 + 32;
+    return (m_x1 < p_bottomRight.x()) && (m_x2 > p_topLeft.x()) && (m_y1 < p_bottomRight.y()) && (m_y2 > p_topLeft.y());
+}
+
+bool Entity::checkCollision(const Entity &p_with) const noexcept
+{
+    if(!activated() || !p_with.activated()) return false;
+    Position first{};
+    Position sec{};
+    auto const position = p_with.position();
+    int const halfX = BOARD_CASE_SIZE_WIDTH / 2;
+    int const halfY = BOARD_CASE_SIZE_HEIGHT / 2;
+
+    switch (m_direction)
+    {
+        case Direction::UP:
+            first = position.add({0, halfY});
+            sec = position.add({BOARD_CASE_SIZE_WIDTH, BOARD_CASE_SIZE_HEIGHT});
+            break;
+        case Direction::DOWN:
+            first = position;
+            sec = position.add({BOARD_CASE_SIZE_WIDTH, BOARD_CASE_SIZE_HEIGHT});
+            break;
+        case Direction::LEFT:
+            first = position;
+            sec = position.add({halfX, BOARD_CASE_SIZE_HEIGHT});
+            break;
+        case Direction::RIGHT:
+            first = position.add({halfX, 0});
+            sec = position.add({BOARD_CASE_SIZE_WIDTH, BOARD_CASE_SIZE_HEIGHT});
+            break;
+    }
+
+    return checkCollision(first, sec);
+}

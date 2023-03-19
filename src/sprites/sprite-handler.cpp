@@ -206,6 +206,12 @@ void SpriteHandler::initStructs() noexcept
                                                    "fruit_medal", "fruit_helmet", "fruit_bell", "fruit_key"};
     for (int i = 0; i < fruitNames.size(); ++i)
         m_fruitsSprites[i] = getSprite(fruitNames[i]).value_or(nothing);
+
+    //
+    std::array<int, 14> const scores = {10, 50, 100, 200, 300, 400, 500, 700, 800, 1000, 1600, 2000, 3000, 5000};
+    for (int score: scores)
+        m_scoresSprites[score] = getSprite(std::string{"score_" + std::to_string(score)}).value_or(nothing);
+
 }
 
 void SpriteHandler::initGhostAnimations(const std::string& name) noexcept

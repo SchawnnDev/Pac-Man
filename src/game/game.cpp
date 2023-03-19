@@ -43,6 +43,7 @@ Game::Game()
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
 
+    SDL_SetTextureBlendMode(m_spriteTexture, SDL_BLENDMODE_BLEND);
     SDL_SetColorKey(m_spriteSurface.get(), true, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
 }
 
@@ -207,6 +208,17 @@ void Game::handleLogic() noexcept
         if(isLevelPlaying(m_levelState))
         {
             checkCollisions();
+        }
+
+        if(m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
+
+            m_pacman.unfreeze();
+            m_blinky.unfreeze();
+            m_pinky.unfreeze();
+            m_clyde.unfreeze();
+            m_inky.unfreeze();
+
+            m_freezeTimeout = -1;
         }
 
     }
@@ -390,59 +402,51 @@ void Game::checkCollisions() noexcept
         } catch (...){ }
     }
 
-//   auto centeredPacmanPos = pacmanPosition.add({16,16});
-
-    if(m_pacman.direction() == Direction::DOWN) {
-
-        auto first = m_blinky.position().add({0,16});
-        auto sec = m_blinky.position().add({32,32});
-        int m_x1 = pacmanPosition.x();
-        int m_y1 = pacmanPosition.y();
-        int m_x2 = m_x1 + 32;
-        int m_y2 = m_x1 + 32;
-        auto collides = (m_x1 < first.x()) && (m_x2 > sec.x()) && (m_y1 < first.y()) && (m_y2 > sec.y());
-
-        if(collides) {
-            std::cout << "colide with blinky" << std::endl;
-            if(m_blinky.frightened())
-            {
-                m_blinky.startEatenMode();
-            } else {
-                // Die
-            }
+    if (m_pacman.checkCollision(m_blinky))
+    {
+        if (m_blinky.frightened())
+        {
+            m_blinky.startEatenMode();
+            freezeDisplayScore(m_blinky, 200);
+            return;
+        } else
+        {
+            // Die
         }
     }
 
-    if(pacmanPosition == m_pinky.position())
+    if(m_pacman.checkCollision(m_pinky))
     {
-        std::cout << "colide with pinky" << std::endl;
         if(m_pinky.frightened())
         {
             m_pinky.startEatenMode();
+            freezeDisplayScore(m_pinky, 200);
+            return;
         } else {
             // Die
         }
     }
 
-    if(pacmanPosition == m_clyde.position())
+    if(m_pacman.checkCollision(m_clyde))
     {
-        std::cout << "colide with clyde" << std::endl;
         if(m_clyde.frightened())
         {
             m_clyde.startEatenMode();
+            freezeDisplayScore(m_clyde, 200);
+            return;
         } else {
             // Die
         }
     }
 
 
-
-    if(pacmanPosition.add({BOARD_CASE_SIZE_WIDTH /2, BOARD_CASE_SIZE_HEIGHT /2}) == m_inky.position())
+    if(m_pacman.checkCollision(m_inky))
     {
-        std::cout << "colide with inky" << std::endl;
         if(m_inky.frightened())
         {
             m_inky.startEatenMode();
+            freezeDisplayScore(m_inky, 200);
+            return;
         } else {
             // Die
         }
@@ -460,4 +464,22 @@ void Game::updateScore(int p_scoreToAdd) noexcept
     {
         updateHighScore(score);
     }
+}
+
+void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
+{
+    m_pacman.freeze();
+    m_blinky.freeze();
+    m_pinky.freeze();
+    m_clyde.freeze();
+    m_inky.freeze();
+
+    if (auto it = m_spriteHandler.scoreSprites().find(p_score); it != std::end(
+            m_spriteHandler.scoreSprites()))
+    {
+        p_which.currentAnimation() = SpriteAnimation{{it->second}, false, 1, true, true};
+    }
+
+    m_freezeTimeout = m_ticks + FRAMERATE * 2;
+    updateScore(p_score);
 }
