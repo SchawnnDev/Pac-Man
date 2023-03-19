@@ -11,6 +11,7 @@ Game::Game()
           m_currentPlayer{m_players[0]},
           m_credit{0},
           m_highScore{0},
+          m_freezeTimeout{-1},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
@@ -38,13 +39,16 @@ Game::Game()
                                     WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN));
     m_windowRenderer.reset(SDL_CreateRenderer(m_window.get(), -1,
                                               SDL_RENDERER_ACCELERATED));
+    SDL_SetRenderDrawBlendMode(m_windowRenderer.get(), SDL_BLENDMODE_BLEND);
 
     m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
+
+    SDL_SetColorKey(m_spriteSurface.get(), SDL_TRUE, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
+    SDL_SetTextureBlendMode(m_spriteTexture, SDL_BLENDMODE_BLEND);
+
     m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
                                                    m_spriteSurface.get());
 
-    SDL_SetTextureBlendMode(m_spriteTexture, SDL_BLENDMODE_BLEND);
-    SDL_SetColorKey(m_spriteSurface.get(), true, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
 }
 
 Game::~Game()
@@ -211,7 +215,7 @@ void Game::handleLogic() noexcept
         }
 
         if(m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
-
+            m_pacman.activated() = true;
             m_pacman.unfreeze();
             m_blinky.unfreeze();
             m_pinky.unfreeze();
@@ -469,6 +473,7 @@ void Game::updateScore(int p_scoreToAdd) noexcept
 void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
 {
     m_pacman.freeze();
+    m_pacman.activated() = false;
     m_blinky.freeze();
     m_pinky.freeze();
     m_clyde.freeze();
