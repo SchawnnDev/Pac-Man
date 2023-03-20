@@ -49,6 +49,14 @@ void Entity::unfreeze() noexcept {
     }
 }
 
+void Entity::freezeMovement() noexcept {
+    m_freeze = true;
+}
+
+void Entity::unfreezeMovement() noexcept {
+    m_freeze = false;
+}
+
 bool Entity::isGhost() const noexcept {
     const auto type = entityType();
     return type == EntityType::Blinky

@@ -127,7 +127,7 @@ void Game::handleKeys() noexcept
         return;
 
     // Check level states
-    if (m_levelState != LevelState::Scatter && m_levelState != LevelState::Chase)
+    if (!isLevelPlaying(m_levelState) || m_pacman.state() != PacmanState::LIVING)
         return;
 
     if (keys[SDL_SCANCODE_LEFT])
@@ -209,20 +209,39 @@ void Game::handleLogic() noexcept
             }
         }
 
-        if(isLevelPlaying(m_levelState))
+        if (isLevelPlaying(m_levelState))
         {
-            checkCollisions();
-        }
+            if (m_pacman.state() == PacmanState::LIVING)
+            {
+                checkCollisions();
 
-        if(m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
-            m_pacman.activated() = true;
-            m_pacman.unfreeze();
-            m_blinky.unfreeze();
-            m_pinky.unfreeze();
-            m_clyde.unfreeze();
-            m_inky.unfreeze();
+                if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
+                {
+                    m_pacman.activated() = true;
+                    m_pacman.unfreeze();
+                    m_blinky.unfreeze();
+                    m_pinky.unfreeze();
+                    m_clyde.unfreeze();
+                    m_inky.unfreeze();
 
-            m_freezeTimeout = -1;
+                    m_freezeTimeout = -1;
+                }
+            } else if (m_pacman.state() == PacmanState::DYING)
+            {
+                if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
+                {
+                    m_blinky.activated() = false;
+                    m_pinky.activated() = false;
+                    m_clyde.activated() = false;
+                    m_inky.activated() = false;
+                    m_pacman.die();
+                    m_freezeTimeout = -1;
+                } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated())
+                {
+                    startLevel();
+                }
+            }
+
         }
 
     }
@@ -269,40 +288,30 @@ void Game::handleDrawing() noexcept
 
 void Game::handleSpecialKeys(const SDL_Event &event) noexcept
 {
-    if(m_state == GameState::LoadingScreen)
+    if (m_state != GameState::LoadingScreen || event.key.repeat != 0)
+        return;
+
+    if(event.key.keysym.sym == SDLK_c)
     {
-        if(event.key.keysym.sym == SDLK_c && event.key.repeat == 0)
-        {
-            updateCredits(credit() + 1);
-            return;
-        }
-
-        if(m_credit > 0)
-        {
-            if(event.key.keysym.sym == SDLK_1 && event.key.repeat == 0)
-            {
-                startPlaying(1);
-                return;
-            }
-        }
-
+        updateCredits(credit() + 1);
+        return;
     }
 
-    if(m_state == GameState::Playing) {
-        if(event.key.keysym.sym == SDLK_b && event.key.repeat == 0)
-        {
-            updateHighScore(m_highScore + 1000);
-            return;
-        }
+    if (m_credit == 0)
+        return;
 
-        if(event.key.keysym.sym == SDLK_SPACE && event.key.repeat==0)
-        {
-            std::cout << "pacman distance with blinky: " << m_pacman.position().distanceTo(m_blinky.position()) << std::endl;
-            std::cout << "pacman distance with pinky: " << m_pacman.position().distanceTo(m_pinky.position()) << std::endl;
-            std::cout << "pacman distance with clyde: " << m_pacman.position().distanceTo(m_clyde.position()) << std::endl;
-            std::cout << "pacman distance with inky: " << m_pacman.position().distanceTo(m_inky.position()) << std::endl;
-        }
+    switch (event.key.keysym.sym)
+    {
+        case SDLK_1:
+            startPlaying(1);
+            break;
+        case SDLK_2:
+            startPlaying(2);
+            break;
+        default:
+            break;
     }
+
 }
 
 void Game::startPlaying(int p_players) noexcept
@@ -344,6 +353,7 @@ void Game::startLevel() noexcept
     m_inky.reset();
     m_clyde.reset();
     m_ticks = 0;
+    m_freezeTimeout = -1;
 }
 
 void Game::endLevel() noexcept
@@ -384,6 +394,8 @@ void Game::startFrightened() noexcept
 
 void Game::checkCollisions() noexcept
 {
+    if(m_pacman.freezed() || !m_pacman.activated()) return;
+
     auto const pacmanPosition = m_pacman.position();
     // Check points eating
     if(Board::isCase(pacmanPosition))
@@ -412,11 +424,11 @@ void Game::checkCollisions() noexcept
         {
             m_blinky.startEatenMode();
             freezeDisplayScore(m_blinky, 200);
-            return;
-        } else
+        } else if(m_blinky.ghostMode() != GhostMode::Eaten) {
         {
-            // Die
+            performPacmanDying();
         }
+        return;
     }
 
     if(m_pacman.checkCollision(m_pinky))
@@ -425,10 +437,10 @@ void Game::checkCollisions() noexcept
         {
             m_pinky.startEatenMode();
             freezeDisplayScore(m_pinky, 200);
-            return;
-        } else {
-            // Die
+        } else if(m_pinky.ghostMode() != GhostMode::Eaten) {
+            performPacmanDying();
         }
+        return;
     }
 
     if(m_pacman.checkCollision(m_clyde))
@@ -437,10 +449,10 @@ void Game::checkCollisions() noexcept
         {
             m_clyde.startEatenMode();
             freezeDisplayScore(m_clyde, 200);
-            return;
-        } else {
-            // Die
+        } else if(m_clyde.ghostMode() != GhostMode::Eaten) {
+            performPacmanDying();
         }
+        return;
     }
 
 
@@ -450,10 +462,10 @@ void Game::checkCollisions() noexcept
         {
             m_inky.startEatenMode();
             freezeDisplayScore(m_inky, 200);
-            return;
-        } else {
-            // Die
+        } else if(m_inky.ghostMode() != GhostMode::Eaten) {
+            performPacmanDying();
         }
+        return;
     }
 
 }
@@ -485,6 +497,17 @@ void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
         p_which.currentAnimation() = SpriteAnimation{{it->second}, false, 1, true, true};
     }
 
-    m_freezeTimeout = m_ticks + FRAMERATE * 2;
+    m_freezeTimeout = m_ticks + FRAMERATE * 1.5;
     updateScore(p_score);
+}
+
+void Game::performPacmanDying() noexcept
+{
+    m_pacman.freeze();
+    m_blinky.freezeMovement();
+    m_pinky.freezeMovement();
+    m_clyde.freezeMovement();
+    m_inky.freezeMovement();
+    m_pacman.state() = PacmanState::DYING;
+    m_freezeTimeout = m_ticks + FRAMERATE;
 }

@@ -79,4 +79,11 @@ void Pacman::reset() noexcept
     speed() = 4;
 }
 
+void Pacman::die() noexcept
+{
+    currentAnimation() = m_animations.dyingAnimation;
+    currentAnimation()->reset();
+    currentAnimation()->start();
+}
+
 Pacman::~Pacman() = default;

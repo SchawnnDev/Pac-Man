@@ -116,6 +116,8 @@ namespace pacman {
 
         void freezeDisplayScore(Entity& p_which, int p_score) noexcept;
 
+        void performPacmanDying() noexcept;
+
     };
 
 }

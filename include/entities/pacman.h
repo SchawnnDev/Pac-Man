@@ -28,6 +28,12 @@ namespace pacman {
         void reset() noexcept override;
 
         [[nodiscard]] inline EntityType entityType() const noexcept override { return EntityType::Pacman; };
+
+        [[nodiscard]] PacmanState state() const noexcept { return m_state; }
+
+        PacmanState &state() noexcept { return m_state; }
+
+        void die() noexcept;
     };
 
 }
