@@ -40,6 +40,7 @@ void Blinky::reset() noexcept
 {
     position() = getPosition(10, 10);
     direction() = Direction::LEFT;
+    frightened() = false;
     startScatterMode();
     Ghost::changeAnimation();
 }

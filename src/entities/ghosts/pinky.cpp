@@ -51,5 +51,6 @@ void Pinky::reset() noexcept
     ghostMode() = GhostMode::Home;
     direction() = Direction::DOWN;
     target() = {10, 14};
+    frightened() = false;
     Ghost::changeAnimation();
 }

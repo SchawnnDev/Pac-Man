@@ -424,7 +424,7 @@ void Game::checkCollisions() noexcept
         {
             m_blinky.startEatenMode();
             freezeDisplayScore(m_blinky, 200);
-        } else if(m_blinky.ghostMode() != GhostMode::Eaten) {
+        } else if(m_blinky.ghostMode() != GhostMode::Eaten)
         {
             performPacmanDying();
         }

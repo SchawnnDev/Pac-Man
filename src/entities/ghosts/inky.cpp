@@ -54,5 +54,6 @@ void Inky::reset() noexcept
     ghostMode() = GhostMode::Home;
     direction() = Direction::UP;
     target() = {9, 11};
+    frightened() = false;
     Ghost::changeAnimation();
 }

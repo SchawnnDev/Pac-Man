@@ -51,5 +51,6 @@ void Clyde::reset() noexcept
     position() = getPosition(11, 13);
     ghostMode() = GhostMode::Home;
     direction() = Direction::UP;
+    frightened() = false;
     Ghost::changeAnimation();
 }
