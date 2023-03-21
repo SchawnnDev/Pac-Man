@@ -31,7 +31,8 @@ namespace pacman {
         std::array<PlayerPtr, 2> m_players;
         PlayerPtr m_currentPlayer;
         int m_playerCount;
-        int m_freezeTimeout;
+        int64_t m_freezeTimeout;
+        int m_eatenFrightenedGhosts;
 
         // Handlers
         SpriteHandler m_spriteHandler;
@@ -102,7 +103,7 @@ namespace pacman {
 
         void startPlaying(int p_players) noexcept;
 
-        void startLevel() noexcept;
+        void startLevel(bool p_died) noexcept;
 
         void endLevel() noexcept;
 
@@ -118,6 +119,9 @@ namespace pacman {
 
         void performPacmanDying() noexcept;
 
+        int calculateFrightenedGhostScore() noexcept;
+
+        void endPlaying() noexcept;
     };
 
 }

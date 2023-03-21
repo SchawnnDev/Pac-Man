@@ -59,7 +59,7 @@ void HeaderScreen::reset() noexcept
     m_score->activated() = true;
     m_oneUp->activated() = true;
     m_twoUp->activated() = true;
-    m_highScoreText->activated() = false;
+    m_highScoreText->activated() = m_highScore != 0;
     ticks() = 0;
 }
 

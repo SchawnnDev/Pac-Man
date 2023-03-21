@@ -34,7 +34,6 @@ bool Entity::canMoveTo(Direction p_direction) const noexcept {
 }
 
 void Entity::freeze() noexcept {
-    if(m_freeze) return;
     m_freeze = true;
     if(m_currentAnimation) {
         m_currentAnimation->freeze() = true;
@@ -42,7 +41,6 @@ void Entity::freeze() noexcept {
 }
 
 void Entity::unfreeze() noexcept {
-    if(!m_freeze) return;
     m_freeze = false;
     if(m_currentAnimation) {
         m_currentAnimation->freeze() = false;

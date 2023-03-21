@@ -105,6 +105,13 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
     if (first) first = false;
 }
 
+void Board::reset() noexcept {
+    for (BoardCase& boardCase: m_grid) {
+        boardCase.animation().reset();
+        boardCase.activated() = true;
+    }
+}
+
 std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept {
     auto caseFound = Board::findCase(p_position);
     if (caseFound.x() == -1 || caseFound.y() == -1) return std::nullopt;

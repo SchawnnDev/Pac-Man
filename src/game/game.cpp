@@ -12,6 +12,7 @@ Game::Game()
           m_credit{0},
           m_highScore{0},
           m_freezeTimeout{-1},
+          m_eatenFrightenedGhosts{0},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
@@ -171,7 +172,8 @@ void Game::handleLogic() noexcept
             m_inky.freeze();
             m_clyde.freeze();
 
-            if(m_currentPlayer->id() == 1) {
+            auto& player0 = m_players[0];
+            if(player0->level() == 1 && player0->lives() == 3 && !player0->extraLifeGiven()) {
                 // 3 lives to 2 -> one is played for the first round
                 m_players[0]->lives() -= 1;
                 m_players[1]->lives() -= 1;
@@ -235,17 +237,46 @@ void Game::handleLogic() noexcept
                     m_clyde.activated() = false;
                     m_inky.activated() = false;
                     m_pacman.die();
-                    m_freezeTimeout = -1;
+
+                    if(m_currentPlayer->lives() == 0) {
+                        m_state = GameState::GameOver;
+                        m_freezeTimeout = m_ticks + 3 * FRAMERATE;
+                    } else {
+                        m_currentPlayer->lives()--;
+                        m_footerScreen.updateLives();
+                        m_freezeTimeout = -1;
+                    }
+
                 } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated())
                 {
-                    startLevel();
+                    startLevel(true);
                 }
             }
-
         }
-
     }
 
+    if(m_state == GameState::GameOver) {
+        // handle reset
+        if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
+        {
+            // More than 1 player: maybe other player can continue to play
+            if(m_playerCount > 1)
+            {
+                if(m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
+                {
+                    startLevel(false);
+                } else {
+                    // en
+                    endPlaying();
+                }
+
+            } else {
+                endPlaying();
+            }
+
+            m_freezeTimeout = -1;
+        }
+    }
 }
 
 void Game::handleTicks() noexcept {
@@ -306,7 +337,9 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
             startPlaying(1);
             break;
         case SDLK_2:
-            startPlaying(2);
+            if(m_credit > 1) {
+                startPlaying(2);
+            }
             break;
         default:
             break;
@@ -321,11 +354,30 @@ void Game::startPlaying(int p_players) noexcept
     if(p_players > 1) // player changes with startLevel fct
         m_currentPlayer = m_players[1];
     m_players[0]->id() = 1; // Reset player id to 1
+    updateCredits(m_credit - (p_players == 1 ? 1 : 2));
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
     m_gameScreen.activated() = true;
     m_board.activated() = true;
-    startLevel();
+    m_board.reset();
+    std::for_each(m_players.begin(), m_players.end(), [](PlayerPtr &m_p) { m_p->reset(); });
+    startLevel(false);
+}
+
+void Game::endPlaying() noexcept {
+    m_state = GameState::LoadingScreen;
+    m_pacman.activated() = false;
+    m_blinky.activated() = false;
+    m_inky.activated() = false;
+    m_pinky.activated() = false;
+    m_clyde.activated() = false;
+    m_footerScreen.updateState();
+    m_loadingScreen.activated() = true;
+    m_gameScreen.activated() = false;
+    m_board.activated() = false;
+    m_headerScreen.reset();
+    m_currentPlayer = m_players[0];
+    m_currentPlayer->id() = -1;
 }
 
 void Game::updateCredits(int p_credits) noexcept {
@@ -340,13 +392,17 @@ void Game::updateHighScore(int p_highScore) noexcept
     m_headerScreen.updateHighScore();
 }
 
-void Game::startLevel() noexcept
+void Game::startLevel(bool p_died) noexcept
 {
     if(m_state != GameState::Playing) return;
 
-    m_currentPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
+    if(p_died)
+    {
+        m_currentPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
+    }
     m_levelState = LevelState::PlayerDisplay;
     m_gameScreen.updateState();
+    m_pacman.activated() = false;
     m_pacman.reset();
     m_blinky.reset();
     m_pinky.reset();
@@ -411,6 +467,7 @@ void Game::checkCollisions() noexcept
                 } else if(fCase.type() == BoardCaseType::Bonus) {
                     updateScore(50);
                     startFrightened();
+                    m_eatenFrightenedGhosts = 0;
                 }
 
             }
@@ -418,51 +475,50 @@ void Game::checkCollisions() noexcept
         } catch (...){ }
     }
 
-    if (m_pacman.checkCollision(m_blinky))
+    if (m_pacman.checkCollision(m_blinky) && m_blinky.ghostMode() != GhostMode::Eaten)
     {
         if (m_blinky.frightened())
         {
             m_blinky.startEatenMode();
-            freezeDisplayScore(m_blinky, 200);
-        } else if(m_blinky.ghostMode() != GhostMode::Eaten)
-        {
+            freezeDisplayScore(m_blinky, calculateFrightenedGhostScore());
+        } else {
             performPacmanDying();
         }
         return;
     }
 
-    if(m_pacman.checkCollision(m_pinky))
+    if(m_pacman.checkCollision(m_pinky) && m_pinky.ghostMode() != GhostMode::Eaten)
     {
         if(m_pinky.frightened())
         {
             m_pinky.startEatenMode();
-            freezeDisplayScore(m_pinky, 200);
-        } else if(m_pinky.ghostMode() != GhostMode::Eaten) {
+            freezeDisplayScore(m_pinky, calculateFrightenedGhostScore());
+        } else {
             performPacmanDying();
         }
         return;
     }
 
-    if(m_pacman.checkCollision(m_clyde))
+    if(m_pacman.checkCollision(m_clyde) && m_clyde.ghostMode() != GhostMode::Eaten)
     {
         if(m_clyde.frightened())
         {
             m_clyde.startEatenMode();
-            freezeDisplayScore(m_clyde, 200);
-        } else if(m_clyde.ghostMode() != GhostMode::Eaten) {
+            freezeDisplayScore(m_clyde, calculateFrightenedGhostScore());
+        } else {
             performPacmanDying();
         }
         return;
     }
 
 
-    if(m_pacman.checkCollision(m_inky))
+    if(m_pacman.checkCollision(m_inky) && m_inky.ghostMode() != GhostMode::Eaten)
     {
         if(m_inky.frightened())
         {
             m_inky.startEatenMode();
-            freezeDisplayScore(m_inky, 200);
-        } else if(m_inky.ghostMode() != GhostMode::Eaten) {
+            freezeDisplayScore(m_inky, calculateFrightenedGhostScore());
+        } else {
             performPacmanDying();
         }
         return;
@@ -475,6 +531,13 @@ void Game::updateScore(int p_scoreToAdd) noexcept
     auto& score = m_currentPlayer->score();
     score += p_scoreToAdd;
     m_headerScreen.updateScore();
+
+    if(score > 10000 && !m_currentPlayer->extraLifeGiven())
+    {
+        m_currentPlayer->giveExtraLife();
+        m_footerScreen.updateLives();
+        // TODO: sound
+    }
 
     if(score > *m_highScore)
     {
@@ -497,7 +560,7 @@ void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
         p_which.currentAnimation() = SpriteAnimation{{it->second}, false, 1, true, true};
     }
 
-    m_freezeTimeout = m_ticks + FRAMERATE * 1.5;
+    m_freezeTimeout = m_ticks + FRAMERATE;
     updateScore(p_score);
 }
 
@@ -510,4 +573,9 @@ void Game::performPacmanDying() noexcept
     m_inky.freezeMovement();
     m_pacman.state() = PacmanState::DYING;
     m_freezeTimeout = m_ticks + FRAMERATE;
+}
+
+int Game::calculateFrightenedGhostScore() noexcept {
+    m_eatenFrightenedGhosts++;
+    return static_cast<int>(std::pow(2, m_eatenFrightenedGhosts) * 100);
 }

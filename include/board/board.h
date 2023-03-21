@@ -95,6 +95,8 @@ namespace pacman {
 
         void save(const std::string &p_filePath) const noexcept;
 
+        void reset() noexcept;
+
         void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
         /**
