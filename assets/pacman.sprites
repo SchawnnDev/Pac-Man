@@ -89,26 +89,26 @@
       </dir>
       <dir name="Pacman">
         <dir name="Dying">
-          <spr name="pacman_dying_1" x="4" y="111" w="16" h="8"/>
-          <spr name="pacman_dying_2" x="23" y="113" w="16" h="6"/>
-          <spr name="pacman_dying_3" x="42" y="114" w="16" h="5"/>
-          <spr name="pacman_dying_4" x="61" y="114" w="16" h="5"/>
-          <spr name="pacman_dying_5" x="80" y="113" w="16" h="6"/>
-          <spr name="pacman_dying_6" x="99" y="112" w="14" h="7"/>
-          <spr name="pacman_dying_7" x="116" y="112" w="10" h="7"/>
-          <spr name="pacman_dying_8" x="129" y="112" w="6" h="7"/>
-          <spr name="pacman_dying_9" x="138" y="112" w="2" h="7"/>
-          <spr name="pacman_dying_10" x="143" y="109" w="11" h="10"/>
+          <spr name="pacman_dying_1" x="4" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_2" x="23" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_3" x="42" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_4" x="61" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_5" x="80" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_6" x="98" y="105" w="16" h="14"/>
+          <spr name="pacman_dying_7" x="114" y="105" w="14" h="14"/>
+          <spr name="pacman_dying_8" x="126" y="105" w="12" h="14"/>
+          <spr name="pacman_dying_9" x="135" y="105" w="8" h="14"/>
+          <spr name="pacman_dying_10" x="142" y="108" w="13" h="12"/>
         </dir>
         <spr name="full_pacman" x="4" y="90" w="14" h="14"/>
         <spr name="pacman_right_little_open" x="21" y="90" w="13" h="14"/>
-        <spr name="pacman_right_big_open" x="36" y="90" w="9" h="14"/>
+        <spr name="pacman_right_big_open" x="36" y="90" w="12" h="14"/>
         <spr name="pacman_left_little_open" x="48" y="90" w="13" h="14"/>
-        <spr name="pacman_left_big_open" x="64" y="90" w="9" h="14"/>
+        <spr name="pacman_left_big_open" x="61" y="90" w="12" h="14"/>
         <spr name="pacman_up_little_open" x="76" y="91" w="14" h="13"/>
-        <spr name="pacman_up_big_open" x="93" y="95" w="14" h="9"/>
+        <spr name="pacman_up_big_open" x="93" y="93" w="14" h="11"/>
         <spr name="pacman_down_little_open" x="110" y="91" w="14" h="13"/>
-        <spr name="pacman_down_big_open" x="127" y="95" w="14" h="9"/>
+        <spr name="pacman_down_big_open" x="127" y="95" w="14" h="12"/>
         <spr name="pacman_life" x="169" y="76" w="10" h="12"/>
       </dir>
       <dir name="Alphabet">
