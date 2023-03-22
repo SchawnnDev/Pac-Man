@@ -8,8 +8,9 @@
 
 using namespace pacman;
 
-Board::Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept
+Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources) noexcept
         : m_filePath{p_filePath.value_or(std::string{})}
+        , m_currentPlayer{p_currentPlayer}
         , m_boardResources{std::move(p_boardResources)}
         , m_leftDoorIndex{0}
         , m_rightDoorIndex{0}
@@ -126,4 +127,14 @@ BoardCase& Board::getBoardCaseAtPixels(Position p_position) {
     auto caseFound = Board::findCase(p_position);
     if (caseFound.x() == -1 || caseFound.y() == -1) throw;
     return getCase(caseFound);
+}
+
+void Board::load() {
+    for (BoardCase& boardCase: m_grid) {
+        if(boardCase.animation()) {
+            boardCase.animation()->reset();
+        }
+        // TODO : check if exists
+        boardCase.activated() = m_currentPlayer->map()[getGridIndex(boardCase.position())];
+    }
 }

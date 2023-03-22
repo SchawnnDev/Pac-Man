@@ -16,7 +16,7 @@ Game::Game()
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_spriteHandler{"./assets/pacman.sprites"},
-          m_board{"./assets/board.xml", m_spriteHandler.boardResources()},
+          m_board{"./assets/board.xml", m_currentPlayer, m_spriteHandler.boardResources()},
           m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
           m_blinky{m_board, m_pacman, m_spriteHandler.blinkyAnimations()},
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
@@ -421,6 +421,7 @@ void Game::startLevel(bool p_died) noexcept
     m_pinky.reset();
     m_inky.reset();
     m_clyde.reset();
+    m_board.load();
     m_ticks = 0;
     m_freezeTimeout = -1;
 }
@@ -482,6 +483,8 @@ void Game::checkCollisions() noexcept
                     startFrightened();
                     m_eatenFrightenedGhosts = 0;
                 }
+
+                m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
 
             }
 

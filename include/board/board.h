@@ -14,6 +14,7 @@
 #include "utils/constants.h"
 #include "utils/position.h"
 #include "screens/drawable.h"
+#include "game/player.h"
 
 namespace pacman {
 
@@ -22,12 +23,14 @@ namespace pacman {
         std::string m_filePath;
         BoardResources m_boardResources;
 
+        PlayerPtr& m_currentPlayer;
+
         size_t m_leftDoorIndex;
         size_t m_rightDoorIndex;
         size_t m_homeDoorIndex;
     public:
 
-        Board(const std::optional<std::string> &p_filePath, BoardResources p_boardResources) noexcept;
+        Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources) noexcept;
 
         ~Board() = default;
 
@@ -141,6 +144,7 @@ namespace pacman {
             return pos.x() == p_pixelX && pos.y() == p_pixelY;
         }
 
+        void load();
     };
 
 }
