@@ -13,6 +13,7 @@ constinit const int BOARD_OFFSET_Y = 84;
 constinit const int BOARD_CASE_SIZE_WIDTH = (BOARD_SIZE_WIDTH / BOARD_SIZE_X);
 constinit const int BOARD_CASE_SIZE_HEIGHT = (BOARD_SIZE_HEIGHT / BOARD_SIZE_Y);
 constinit const int FRAMERATE = 60;
+constinit const int DOTS_TO_EAT = 198;
 
 // CASE FLAGS
 constinit const int CASE_FLAG_NO_UP = 1 << 0;

@@ -87,7 +87,9 @@ void SpriteHandler::initAnimations() noexcept
 
     // Board
     m_spriteAnimations["board"] = SpriteAnimation{getSprites("board_empty"), false, 0, true, true};
-    m_spriteAnimations["board-level-end"] = SpriteAnimation{getSprites("board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white"), true, 5, true};
+    m_spriteAnimations["board-level-end"] = SpriteAnimation{
+            getSprites("board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white",
+                       "board_empty", "board_white"), true, 15, true};
 
     // Ghosts
     initGhostAnimations("blinky");

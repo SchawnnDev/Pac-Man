@@ -166,13 +166,8 @@ void Game::handleLogic() noexcept
             m_inky.activated() = true;
             m_clyde.activated() = true;
 
-            m_pacman.freeze();
-            m_blinky.freeze();
-            m_pinky.freeze();
-            m_inky.freeze();
-            m_clyde.freeze();
+            freezeEntities();
 
-            m_currentPlayer->lives() -= 1;
             m_footerScreen.updateLives();
 
         }
@@ -183,11 +178,7 @@ void Game::handleLogic() noexcept
             m_gameScreen.updateState(false);
 
             // Unfreeze all entities
-            m_pacman.unfreeze();
-            m_blinky.unfreeze();
-            m_pinky.unfreeze();
-            m_inky.unfreeze();
-            m_clyde.unfreeze();
+            unfreezeEntities();
 
             m_blinky.startScatterMode();
             m_clyde.startHomeMode();
@@ -215,11 +206,7 @@ void Game::handleLogic() noexcept
                 if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
                 {
                     m_pacman.activated() = true;
-                    m_pacman.unfreeze();
-                    m_blinky.unfreeze();
-                    m_pinky.unfreeze();
-                    m_clyde.unfreeze();
-                    m_inky.unfreeze();
+                    unfreezeEntities();
 
                     m_freezeTimeout = -1;
                 }
@@ -256,17 +243,21 @@ void Game::handleLogic() noexcept
                 }
             }
         } else if (m_levelState == LevelState::End) {
-            if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
-                m_blinky.activated() = false;
-                m_pinky.activated() = false;
-                m_clyde.activated() = false;
-                m_inky.activated() = false;
-                m_pacman.currentAnimation()->reset();
-                m_board.startLevelEndAnimation();
-                m_freezeTimeout = -1;
+            if (m_freezeTimeout != -1) {
+                if(m_freezeTimeout < m_ticks)
+                {
+                    m_blinky.activated() = false;
+                    m_pinky.activated() = false;
+                    m_clyde.activated() = false;
+                    m_inky.activated() = false;
+                    m_pacman.currentAnimation()->reset();
+                    m_board.startLevelEndAnimation();
+                    m_freezeTimeout = -1;
+                }
             } else if (m_board.currentAnimation() && !m_board.currentAnimation()->activated()) {
                 // New Level
                 m_currentPlayer->level()++;
+                m_currentPlayer->map().clear();
                 startLevel(false);
             }
         }
@@ -281,6 +272,7 @@ void Game::handleLogic() noexcept
             {
                 if(m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
                 {
+                    m_board.reset();
                     startLevel(true);
                 } else {
                     // en
@@ -378,6 +370,11 @@ void Game::startPlaying(int p_players) noexcept
     m_gameScreen.activated() = true;
     m_board.activated() = true;
     m_board.reset();
+
+    // remove 1 life to each player (first life is played)
+    m_players[0]->lives()--;
+    m_players[1]->lives()--;
+
     startLevel(false);
 }
 
@@ -420,6 +417,8 @@ void Game::startLevel(bool p_died) noexcept
 
     if(p_died)
     {
+        m_currentPlayer->lives()--;
+
         auto& nextPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
         // Avoid to switch players if other player has no lifes remaining
         if(m_playerCount == 2 && nextPlayer->lives() != 0) {
@@ -427,6 +426,8 @@ void Game::startLevel(bool p_died) noexcept
             m_gameScreen.updateCurrentPlayer();
         }
     }
+
+    m_footerScreen.updateLevels();
     m_levelState = LevelState::PlayerDisplay;
     m_gameScreen.updateState(false);
     m_pacman.activated() = false;
@@ -499,6 +500,15 @@ void Game::checkCollisions() noexcept
                 }
 
                 m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
+
+                if(m_currentPlayer->map().size() >= DOTS_TO_EAT) {
+                    // win level
+                    freezeEntities();
+                    m_pacman.currentAnimation()->reset();
+                    m_freezeTimeout = m_ticks + FRAMERATE * 2;
+                    m_levelState = LevelState::End;
+                    return;
+                }
 
             }
 
@@ -577,12 +587,8 @@ void Game::updateScore(int p_scoreToAdd) noexcept
 
 void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
 {
-    m_pacman.freeze();
     m_pacman.activated() = false;
-    m_blinky.freeze();
-    m_pinky.freeze();
-    m_clyde.freeze();
-    m_inky.freeze();
+    freezeEntities();
 
     if (auto it = m_spriteHandler.scoreSprites().find(p_score); it != std::end(
             m_spriteHandler.scoreSprites()))
@@ -608,4 +614,20 @@ void Game::performPacmanDying() noexcept
 int Game::calculateFrightenedGhostScore() noexcept {
     m_eatenFrightenedGhosts++;
     return static_cast<int>(std::pow(2, m_eatenFrightenedGhosts) * 100);
+}
+
+void Game::freezeEntities() noexcept {
+    m_pacman.freeze();
+    m_blinky.freeze();
+    m_pinky.freeze();
+    m_clyde.freeze();
+    m_inky.freeze();
+}
+
+void Game::unfreezeEntities() noexcept {
+    m_pacman.unfreeze();
+    m_blinky.unfreeze();
+    m_pinky.unfreeze();
+    m_clyde.unfreeze();
+    m_inky.unfreeze();
 }

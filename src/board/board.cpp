@@ -112,6 +112,7 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
 }
 
 void Board::reset() noexcept {
+    m_currentAnimation = m_boardResources.boardAnimation;
     for (BoardCase& boardCase: m_grid) {
         if(boardCase.animation()) {
             boardCase.animation()->reset();
@@ -135,17 +136,13 @@ BoardCase& Board::getBoardCaseAtPixels(Position p_position) {
 }
 
 void Board::load() {
+    m_currentAnimation = m_boardResources.boardAnimation;
     for (BoardCase& boardCase: m_grid) {
         if(boardCase.animation()) {
             boardCase.animation()->reset();
         }
         auto const& map = m_currentPlayer->map();
-
-        if (auto it = map.find(getGridIndex(boardCase.position())); it != std::end(map))
-            boardCase.activated() = it->second;
-        else
-            boardCase.activated() = true;
-
+        boardCase.activated() = map.find(getGridIndex(boardCase.position())) == std::end(map);
     }
 }
 

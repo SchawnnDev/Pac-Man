@@ -122,6 +122,10 @@ namespace pacman {
         int calculateFrightenedGhostScore() noexcept;
 
         void endPlaying() noexcept;
+
+        void freezeEntities() noexcept;
+
+        void unfreezeEntities() noexcept;
     };
 
 }

@@ -34,6 +34,7 @@ namespace pacman {
             m_level = 1;
             m_lives = 3;
             m_extraLifeGiven = false;
+            m_map.clear();
         }
     };
 
