@@ -5,8 +5,12 @@
 namespace pacman {
 
     class Fruit : public Entity {
-
+        FruitResources m_fruitResources;
+        int m_ticks;
     public:
+
+        explicit Fruit(Board const& p_board, FruitResources p_fruitResources);
+
         static constexpr auto getFruitsByLevel(int p_level) {
             std::array<int, FRUITS_DISPLAYED> fruits{-1,-1,-1,-1,-1,-1,-1};
             for (int i = 0; i < FRUITS_DISPLAYED; ++i)
@@ -17,6 +21,15 @@ namespace pacman {
             }
             return fruits;
         }
+
+        void tick() noexcept override;
+
+        void changeAnimation() noexcept override;
+
+        void reset() noexcept override;
+
+        inline EntityType entityType() const noexcept override
+        { return EntityType::Fruit; }
     };
 
 }

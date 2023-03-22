@@ -13,36 +13,60 @@ CPMAddPackage("gh:zeux/pugixml#v1.13")
 add_executable(${PROJECT_NAME} ""
         include/entities/entity.h
         include/entities/pacman.h
+        include/entities/ghosts/clyde.h
+        include/entities/ghosts/inky.h
+        include/entities/ghosts/pinky.h
+        include/entities/ghosts/ghost.h
+        include/entities/ghosts/blinky.h
+        include/entities/fruit.h
         include/sprites/sprite.h
         include/sprites/sprite-animation.h
         include/sprites/sprite-handler.h
-        include/utils/constants.h
+        include/sprites/sprite-resources-structs.h
         include/board/board.h
         include/board/board-case.h
-        include/utils/position.h
-        include/entities/ghosts/ghost.h
-        include/entities/ghosts/blinky.h
+        include/screens/elements/text.h
+        include/screens/loading-screen.h
+        include/screens/screen.h
+        include/screens/drawable.h
+        include/screens/elements/image.h
+        include/screens/header-screen.h
+        include/screens/footer-screen.h
+        include/screens/game-screen.h
         include/game/game.h
-        include/sprites/sprite-resources-structs.h
+        include/game/level.h
+        include/game/game-state.h
+        include/game/player.h
+        include/utils/random.h
+        include/utils/shared_value.h
+        include/utils/constants.h
+        include/utils/position.h
+        include/utils/utils.h
+        include/utils/clock.h
 
         src/sprites/sprite.cpp
         src/sprites/sprite-handler.cpp
         src/sprites/sprite-animation.cpp
-        src/entities/pacman.cpp
-        src/entities/entity.cpp
         src/board/board.cpp
         src/board/board-case.cpp
+        src/game/game.cpp
+        src/entities/entity.cpp
+        src/entities/pacman.cpp
+        src/entities/fruit.cpp
         src/entities/ghosts/ghost.cpp
         src/entities/ghosts/blinky.cpp
-        src/utils/position.cpp
-        src/game/game.cpp
-        include/utils/utils.h
-        include/screens/elements/text.h
         src/entities/ghosts/clyde.cpp
-        include/entities/ghosts/clyde.h
-        include/entities/ghosts/inky.h
-        include/entities/ghosts/pinky.h
-        src/entities/ghosts/inky.cpp src/entities/ghosts/pinky.cpp include/utils/clock.h include/screens/loading-screen.h include/screens/screen.h src/screens/screen.cpp src/screens/elements/text.cpp include/screens/drawable.h src/screens/loading-screen.cpp include/screens/elements/image.h src/screens/elements/image.cpp include/utils/shared_value.h include/screens/header-screen.h include/screens/footer-screen.h src/screens/footer-screen.cpp src/screens/header-screen.cpp include/screens/game-screen.h src/screens/game-screen.cpp include/game/level.h include/game/game-state.h include/entities/fruit.h include/game/player.h include/utils/random.h)
+        src/entities/ghosts/inky.cpp
+        src/entities/ghosts/pinky.cpp
+        src/screens/screen.cpp
+        src/screens/elements/text.cpp
+        src/screens/loading-screen.cpp
+        src/screens/elements/image.cpp
+        src/screens/footer-screen.cpp
+        src/screens/header-screen.cpp
+        src/screens/game-screen.cpp
+        src/utils/position.cpp
+        )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

@@ -11,6 +11,7 @@ SpriteHandler::SpriteHandler(std::string_view path) noexcept
         : m_sprites{Sprite{"nothing"}}
         , m_textResources{m_alphabetSprites}
         , m_footerScreenResources{m_fruitsSprites}
+        , m_fruitResources{m_fruitsSprites, m_scoresSprites}
 {
     importSprites(path);
 

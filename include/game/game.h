@@ -18,6 +18,7 @@
 #include "level.h"
 #include "game-state.h"
 #include "player.h"
+#include "entities/fruit.h"
 
 namespace pacman {
 
@@ -44,6 +45,7 @@ namespace pacman {
         Clyde m_clyde;
         Pinky m_pinky;
         Inky m_inky;
+        Fruit m_fruit;
 
         // Screens
         LoadingScreen m_loadingScreen;

@@ -56,4 +56,9 @@ namespace pacman {
         Sprite lifeSprite;
     };
 
+    struct FruitResources final {
+        std::array<Sprite, 8> const& fruitsSprites;
+        std::unordered_map<int, Sprite> const& m_scoresSprites;
+    };
+
 }

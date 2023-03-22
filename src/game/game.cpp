@@ -22,6 +22,7 @@ Game::Game()
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
+          m_fruit{m_board, m_spriteHandler.fruitResources()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_playerCount, m_currentPlayer},
           m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_currentPlayer, m_spriteHandler.footerScreenResources()},
@@ -298,12 +299,13 @@ void Game::handleTicks() noexcept {
     m_clyde.tick();
     m_pinky.tick();
     m_inky.tick();
+    m_fruit.tick();
 }
 
 void Game::handleDrawing() noexcept
 {
     SDL_RenderClear(m_windowRenderer.get());
-    SDL_SetRenderDrawColor(m_windowRenderer.get(), 0,0,0,255);
+    SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
     m_board.draw(m_windowRenderer.get(), m_spriteTexture);
 
@@ -313,6 +315,7 @@ void Game::handleDrawing() noexcept
     m_clyde.draw(m_windowRenderer.get(), m_spriteTexture);
     m_pinky.draw(m_windowRenderer.get(), m_spriteTexture);
     m_inky.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_fruit.draw(m_windowRenderer.get(), m_spriteTexture);
 
     // Draw screens
     m_headerScreen.draw(m_windowRenderer.get(), m_spriteTexture);

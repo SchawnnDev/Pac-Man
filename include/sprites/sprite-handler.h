@@ -30,6 +30,7 @@ namespace pacman {
         TextResources m_textResources;
         LoadingScreenResources m_loadingScreenResources;
         FooterScreenResources m_footerScreenResources;
+        FruitResources m_fruitResources;
     public:
 
         SpriteHandler() = default;
@@ -61,6 +62,9 @@ namespace pacman {
 
         [[nodiscard]] GhostAnimations const &pinkyAnimations() const noexcept { return m_pinkyAnimations; }
 
+        [[nodiscard]] FruitResources const& fruitResources() const noexcept { return m_fruitResources; }
+
+        // Screens
         [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
 
         [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const noexcept { return m_loadingScreenResources; }
@@ -92,6 +96,7 @@ namespace pacman {
             return result;
         }
 
+        FruitResources fruitResources();
     };
 
 }
