@@ -77,12 +77,13 @@ void FooterScreen::updateLives() noexcept
 
 void FooterScreen::updateLevels() noexcept
 {
+    auto const loading = m_gameState == GameState::LoadingScreen;
     auto const fruits = Fruit::getFruitsByLevel(m_currentPlayer->level());
     for (int i = 0; i < FRUITS_DISPLAYED; ++i)
     {
         auto const fruit = fruits[i];
         auto const& level = m_fruits[i];
-        if(fruit == -1) {
+        if(fruit == -1 || loading) {
             level->activated() = false;
             continue;
         }

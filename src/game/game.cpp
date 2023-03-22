@@ -23,9 +23,9 @@ Game::Game()
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
           m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
-          m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_currentPlayer},
+          m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_playerCount, m_currentPlayer},
           m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_currentPlayer, m_spriteHandler.footerScreenResources()},
-          m_gameScreen{m_spriteHandler.textResources(), m_levelState}
+          m_gameScreen{m_spriteHandler.textResources(), m_levelState, m_state, m_currentPlayer}
 {
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -157,7 +157,7 @@ void Game::handleLogic() noexcept
         if(m_levelState == LevelState::PlayerDisplay && m_ticks == 180)
         {
             m_levelState = LevelState::Ready;
-            m_gameScreen.updateState();
+            m_gameScreen.updateState(false);
 
             // Activate all entities but freeze them
             m_pacman.activated() = true;
@@ -172,20 +172,15 @@ void Game::handleLogic() noexcept
             m_inky.freeze();
             m_clyde.freeze();
 
-            auto& player0 = m_players[0];
-            if(player0->level() == 1 && player0->lives() == 3 && !player0->extraLifeGiven()) {
-                // 3 lives to 2 -> one is played for the first round
-                m_players[0]->lives() -= 1;
-                m_players[1]->lives() -= 1;
-                m_footerScreen.updateLives();
-            }
+            m_currentPlayer->lives() -= 1;
+            m_footerScreen.updateLives();
 
         }
 
         if(m_levelState == LevelState::Ready && m_ticks == 360)
         {
             m_levelState = LevelState::Scatter;
-            m_gameScreen.updateState();
+            m_gameScreen.updateState(false);
 
             // Unfreeze all entities
             m_pacman.unfreeze();
@@ -230,25 +225,33 @@ void Game::handleLogic() noexcept
                 }
             } else if (m_pacman.state() == PacmanState::DYING)
             {
-                if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
-                {
-                    m_blinky.activated() = false;
-                    m_pinky.activated() = false;
-                    m_clyde.activated() = false;
-                    m_inky.activated() = false;
-                    m_pacman.die();
+                if (m_freezeTimeout != -1) {
 
-                    if(m_currentPlayer->lives() == 0) {
-                        m_state = GameState::GameOver;
-                        m_freezeTimeout = m_ticks + 3 * FRAMERATE;
-                    } else {
-                        m_currentPlayer->lives()--;
-                        m_footerScreen.updateLives();
-                        m_freezeTimeout = -1;
+                    if (m_freezeTimeout < m_ticks) {
+                        m_blinky.activated() = false;
+                        m_pinky.activated() = false;
+                        m_clyde.activated() = false;
+                        m_inky.activated() = false;
+                        m_pacman.die();
+
+                        if (m_currentPlayer->lives() == 0) {
+                            m_state = GameState::GameOver;
+
+                            auto displayGameOverPlay = false;
+
+                            if (m_playerCount > 1) {
+                                if (m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0) {
+                                    displayGameOverPlay = true;
+                                }
+                            }
+
+                            m_gameScreen.updateState(displayGameOverPlay);
+                            m_freezeTimeout = m_ticks + 3 * FRAMERATE;
+                        } else {
+                            m_freezeTimeout = -1;
+                        }
                     }
-
-                } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated())
-                {
+                } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated()) {
                     startLevel(true);
                 }
             }
@@ -264,7 +267,7 @@ void Game::handleLogic() noexcept
             {
                 if(m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
                 {
-                    startLevel(false);
+                    startLevel(true);
                 } else {
                     // en
                     endPlaying();
@@ -350,17 +353,17 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
 void Game::startPlaying(int p_players) noexcept
 {
     m_playerCount = p_players;
+    m_headerScreen.updatePlayerCount();
     m_state = GameState::Playing;
-    if(p_players > 1) // player changes with startLevel fct
-        m_currentPlayer = m_players[1];
     m_players[0]->id() = 1; // Reset player id to 1
     updateCredits(m_credit - (p_players == 1 ? 1 : 2));
+    std::for_each(m_players.begin(), m_players.end(), [this](PlayerPtr &m_p) { m_p->reset(); m_headerScreen.updateScore(m_p->id()); });
+    m_gameScreen.updateCurrentPlayer();
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
     m_gameScreen.activated() = true;
     m_board.activated() = true;
     m_board.reset();
-    std::for_each(m_players.begin(), m_players.end(), [](PlayerPtr &m_p) { m_p->reset(); });
     startLevel(false);
 }
 
@@ -371,16 +374,18 @@ void Game::endPlaying() noexcept {
     m_inky.activated() = false;
     m_pinky.activated() = false;
     m_clyde.activated() = false;
-    m_footerScreen.updateState();
     m_loadingScreen.activated() = true;
     m_gameScreen.activated() = false;
     m_board.activated() = false;
     m_headerScreen.reset();
     m_currentPlayer = m_players[0];
     m_currentPlayer->id() = -1;
+    m_footerScreen.updateState();
+    m_gameScreen.updateCurrentPlayer();
 }
 
-void Game::updateCredits(int p_credits) noexcept {
+void Game::updateCredits(int p_credits) noexcept
+{
     m_credit = p_credits;
     m_loadingScreen.updateCredit();
     m_footerScreen.updateCredit();
@@ -394,14 +399,22 @@ void Game::updateHighScore(int p_highScore) noexcept
 
 void Game::startLevel(bool p_died) noexcept
 {
-    if(m_state != GameState::Playing) return;
+    if(m_state == GameState::GameOver) {
+        m_state = GameState::Playing;
+        m_gameScreen.updateState(false);
+    } else if (m_state != GameState::Playing) return;
 
     if(p_died)
     {
-        m_currentPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
+        auto& nextPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
+        // Avoid to switch players if other player has no lifes remaining
+        if(m_playerCount == 2 && nextPlayer->lives() != 0) {
+            m_currentPlayer = nextPlayer;
+            m_gameScreen.updateCurrentPlayer();
+        }
     }
     m_levelState = LevelState::PlayerDisplay;
-    m_gameScreen.updateState();
+    m_gameScreen.updateState(false);
     m_pacman.activated() = false;
     m_pacman.reset();
     m_blinky.reset();
@@ -415,7 +428,7 @@ void Game::startLevel(bool p_died) noexcept
 void Game::endLevel() noexcept
 {
     m_levelState = LevelState::End;
-    m_gameScreen.updateState();
+    m_gameScreen.updateState(false);
     m_pacman.activated() = false;
     m_blinky.activated() = false;
     m_pinky.activated() = false;
@@ -530,7 +543,7 @@ void Game::updateScore(int p_scoreToAdd) noexcept
 {
     auto& score = m_currentPlayer->score();
     score += p_scoreToAdd;
-    m_headerScreen.updateScore();
+    m_headerScreen.updateScore(m_currentPlayer->id());
 
     if(score > 10000 && !m_currentPlayer->extraLifeGiven())
     {

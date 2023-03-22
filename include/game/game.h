@@ -28,9 +28,9 @@ namespace pacman {
         shared_value<LevelState> m_levelState;
         shared_value<int> m_credit;
         shared_value<int> m_highScore;
+        shared_value<int> m_playerCount;
         std::array<PlayerPtr, 2> m_players;
         PlayerPtr m_currentPlayer;
-        int m_playerCount;
         int64_t m_freezeTimeout;
         int m_eatenFrightenedGhosts;
 

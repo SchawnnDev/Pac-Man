@@ -107,7 +107,9 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
 
 void Board::reset() noexcept {
     for (BoardCase& boardCase: m_grid) {
-        boardCase.animation().reset();
+        if(boardCase.animation()) {
+            boardCase.animation()->reset();
+        }
         boardCase.activated() = true;
     }
 }
