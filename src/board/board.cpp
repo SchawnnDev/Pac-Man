@@ -12,6 +12,7 @@ Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentP
         : m_filePath{p_filePath.value_or(std::string{})}
         , m_currentPlayer{p_currentPlayer}
         , m_boardResources{std::move(p_boardResources)}
+        , m_currentAnimation{m_boardResources.boardAnimation}
         , m_leftDoorIndex{0}
         , m_rightDoorIndex{0}
         , m_homeDoorIndex{0}
@@ -92,9 +93,13 @@ bool first = true;
 void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
     if(!activated()) return;
 
-    SDL_Rect bg = {0, BOARD_OFFSET_Y, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT};
-    SDL_RenderCopy(p_window_renderer, p_texture, &m_boardResources.emptyBoardSprite.rect(),
-                   &bg); // Copie du sprite grâce au SDL_Renderer
+    if(m_currentAnimation) {
+        auto sprite = m_currentAnimation->display();
+        if(sprite) {
+            SDL_Rect bg = {0, BOARD_OFFSET_Y, BOARD_SIZE_WIDTH, BOARD_SIZE_HEIGHT};
+            SDL_RenderCopy(p_window_renderer, p_texture, &sprite->rect(), &bg);
+        }
+    }
 
     // 10 14
     for (int x = 0; x < BOARD_SIZE_X; ++x) {
@@ -134,7 +139,18 @@ void Board::load() {
         if(boardCase.animation()) {
             boardCase.animation()->reset();
         }
-        // TODO : check if exists
-        boardCase.activated() = m_currentPlayer->map()[getGridIndex(boardCase.position())];
+        auto const& map = m_currentPlayer->map();
+
+        if (auto it = map.find(getGridIndex(boardCase.position())); it != std::end(map))
+            boardCase.activated() = it->second;
+        else
+            boardCase.activated() = true;
+
     }
+}
+
+void Board::startLevelEndAnimation() {
+    m_currentAnimation = m_boardResources.boardLevelEndAnimation;
+    m_currentAnimation->reset();
+    m_currentAnimation->start();
 }

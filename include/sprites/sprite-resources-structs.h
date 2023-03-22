@@ -30,7 +30,8 @@ namespace pacman {
     struct BoardResources final {
         SpriteAnimation bonusAnimation;
         Sprite pointSprite;
-        Sprite emptyBoardSprite;
+        SpriteAnimation boardAnimation;
+        SpriteAnimation boardLevelEndAnimation;
     };
 
     struct TextResources final {

@@ -85,7 +85,9 @@ void SpriteHandler::initAnimations() noexcept
     m_spriteAnimations["ghost-eyes-up"] = SpriteAnimation{getSprites("ghost_eyes_up"), false, 0, true, true};
     m_spriteAnimations["ghost-eyes-down"] = SpriteAnimation{getSprites("ghost_eyes_down"), false, 0, true, true};
 
-
+    // Board
+    m_spriteAnimations["board"] = SpriteAnimation{getSprites("board_empty"), false, 0, true, true};
+    m_spriteAnimations["board-level-end"] = SpriteAnimation{getSprites("board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white"), true, 5, true};
 
     // Ghosts
     initGhostAnimations("blinky");
@@ -176,7 +178,8 @@ void SpriteHandler::initStructs() noexcept
     m_boardResources = {
             m_spriteAnimations["bonus"],
             getSprite("point").value_or(nothing),
-            getSprite("board_empty").value_or(nothing)
+            m_spriteAnimations["board"],
+            m_spriteAnimations["board-level-end"]
     };
 
     // Text

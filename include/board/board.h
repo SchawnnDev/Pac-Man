@@ -22,6 +22,7 @@ namespace pacman {
         std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> m_grid;
         std::string m_filePath;
         BoardResources m_boardResources;
+        std::optional<SpriteAnimation> m_currentAnimation;
 
         PlayerPtr& m_currentPlayer;
 
@@ -44,6 +45,10 @@ namespace pacman {
         [[nodiscard]] size_t rightDoorIndex() const { return m_rightDoorIndex; }
 
         [[nodiscard]] size_t homeDoorIndex() const { return m_homeDoorIndex; }
+
+        [[nodiscard]] auto const &currentAnimation() const { return m_currentAnimation; }
+
+        auto &currentAnimation() { return m_currentAnimation; }
 
         static constexpr bool checkGridCoordinates(Position p_position) noexcept {
             return checkGridCoordinates(p_position.x(), p_position.y());
@@ -145,6 +150,8 @@ namespace pacman {
         }
 
         void load();
+
+        void startLevelEndAnimation();
     };
 
 }

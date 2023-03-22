@@ -255,6 +255,20 @@ void Game::handleLogic() noexcept
                     startLevel(true);
                 }
             }
+        } else if (m_levelState == LevelState::End) {
+            if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
+                m_blinky.activated() = false;
+                m_pinky.activated() = false;
+                m_clyde.activated() = false;
+                m_inky.activated() = false;
+                m_pacman.currentAnimation()->reset();
+                m_board.startLevelEndAnimation();
+                m_freezeTimeout = -1;
+            } else if (m_board.currentAnimation() && !m_board.currentAnimation()->activated()) {
+                // New Level
+                m_currentPlayer->level()++;
+                startLevel(false);
+            }
         }
     }
 
