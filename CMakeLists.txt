@@ -10,6 +10,29 @@ find_package(SDL2 REQUIRED)
 # XML Reader Library
 CPMAddPackage("gh:zeux/pugixml#v1.13")
 
+# Add SDL Mixer
+string(TIMESTAMP BEFORE "%s")
+CPMAddPackage(
+        GITHUB_REPOSITORY libsdl-org/SDL_Mixer
+        GIT_TAG release-2.6.3
+        OPTIONS
+        "SDL2MIXER_INSTALL OFF"
+        "SDL2MIXER_SAMPLES OFF"
+        "SDL2MIXER_VENDORED ON"
+        "SDL2MIXER_BUILD_SHARED_LIBS OFF"
+        "SDL2MIXER_OPUS OFF"
+        "SDL2MIXER_OGG OFF"
+        "SDL2MIXER_MIDI OFF"
+        "SDL2MIXER_MP3 OFF"
+        "SDL2MIXER_VORBIS OFF"
+        "SDL2MIXER_MOD OFF"
+        "SDL2MIXER_FLAC OFF"
+)
+find_package(SDL_Mixer REQUIRED)
+string(TIMESTAMP AFTER "%s")
+math(EXPR DELTASDL_Mixer "${AFTER} - ${BEFORE}")
+message(STATUS "SDL_Mixer TIME: ${DELTASDL_Mixer}s")
+
 add_executable(${PROJECT_NAME} ""
         include/entities/entity.h
         include/entities/pacman.h
@@ -74,10 +97,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_EXTENSIONS NO
         )
 target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL_Mixer_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} pugixml::pugixml)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} pugixml::pugixml SDL2_mixer)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)

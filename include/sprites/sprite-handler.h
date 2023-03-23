@@ -96,7 +96,6 @@ namespace pacman {
             return result;
         }
 
-        FruitResources fruitResources();
     };
 
 }
