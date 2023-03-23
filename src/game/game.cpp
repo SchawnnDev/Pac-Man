@@ -257,8 +257,7 @@ void Game::handleLogic() noexcept
                 }
             } else if (m_board.currentAnimation() && !m_board.currentAnimation()->activated()) {
                 // New Level
-                m_currentPlayer->level()++;
-                m_currentPlayer->map().clear();
+                m_currentPlayer->nextLevel();
                 startLevel(false);
             }
         }
@@ -503,9 +502,10 @@ void Game::checkCollisions() noexcept
                 }
 
                 m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
+                auto const dotsEaten = m_currentPlayer->map().size();
 
-                if(m_currentPlayer->map().size() >= DOTS_TO_EAT) {
-                    // win level
+                // Check win
+                if(dotsEaten >= DOTS_TO_EAT) {
                     freezeEntities();
                     m_pacman.currentAnimation()->reset();
                     m_freezeTimeout = m_ticks + FRAMERATE * 2;
@@ -513,9 +513,26 @@ void Game::checkCollisions() noexcept
                     return;
                 }
 
+                // Check fruit
+                auto const eatenFruits = m_currentPlayer->eatenFruitsCurrentLevel();
+                if ((dotsEaten >= DOTS_TO_EAT_FIRST_FRUIT && eatenFruits == 0) ||
+                    (dotsEaten >= DOTS_TO_EAT_SECOND_FRUIT && eatenFruits == 1))
+                {
+                    m_fruit.display(m_currentPlayer->level());
+                    m_currentPlayer->eatenFruitsCurrentLevel()++;
+                }
+
             }
 
         } catch (...){ }
+
+        // Handle fruit eating
+        if(m_fruit.activated() && m_fruit.position() == m_pacman.position()) {
+            auto const points = getFruitValueByLevel(m_currentPlayer->level());
+            m_fruit.eat(points);
+            updateScore(points);
+        }
+
     }
 
     if (m_pacman.checkCollision(m_blinky) && m_blinky.ghostMode() != GhostMode::Eaten)

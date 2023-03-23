@@ -7,6 +7,7 @@ namespace pacman {
     class Fruit : public Entity {
         FruitResources m_fruitResources;
         int m_ticks;
+        bool m_score;
     public:
 
         explicit Fruit(Board const& p_board, FruitResources p_fruitResources);
@@ -22,11 +23,21 @@ namespace pacman {
             return fruits;
         }
 
+        static constexpr auto getFruitByLevel(int p_level)
+        {
+            auto const idx = (p_level >= FRUITS_REGISTERED ? FRUITS_REGISTERED : p_level) - 1;
+            return FRUITS_LEVELS[idx];
+        }
+
         void tick() noexcept override;
 
         void changeAnimation() noexcept override;
 
         void reset() noexcept override;
+
+        void display(int p_level);
+
+        void eat(int p_score);
 
         inline EntityType entityType() const noexcept override
         { return EntityType::Fruit; }
