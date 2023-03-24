@@ -96,35 +96,63 @@ namespace pacman {
             return isOnBoardCase(p_position, m_rightDoorIndex);
         }
 
-        [[nodiscard]] std::optional<BoardCase>
-        getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept;
+        [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept;
 
+        /**
+         * @param p_position Index of grid (x, y)
+         * @return Get case in grid at given index (x, y)
+         */
         [[nodiscard]] BoardCase& getBoardCaseAtPixels(Position p_position);
 
+        /**
+         * @param p_filePath Save board to file
+         */
         void save(const std::string &p_filePath) const noexcept;
 
+        /**
+         * Reset board
+         */
         void reset() noexcept;
 
+
+        /**
+         * Draw board to screen
+         * @param p_window_renderer Window renderer
+         * @param p_texture Texture to get sprite from
+         */
         void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
         /**
-         *
-         * @param p_pixelPosition
-         * @return
+         * @param p_pixelPosition Position
+         * @return Given position is a case or not
          */
         static constexpr bool isCase(Position p_pixelPosition) noexcept {
             return isCase(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
+        /**
+         * @param p_pixelX Position x
+         * @param p_pixelY Position y
+         * @return Given position is a case or not
+         */
         static constexpr bool isCase(int p_pixelX, int p_pixelY) noexcept {
             return p_pixelX % BOARD_CASE_SIZE_WIDTH == 0 &&
                    (p_pixelY - BOARD_OFFSET_Y) % BOARD_CASE_SIZE_HEIGHT == 0;
         }
 
+        /**
+         * @param p_pixelPosition Position
+         * @return Find case index in grid of pixel position
+         */
         static constexpr Position findCase(Position p_pixelPosition) noexcept {
             return findCase(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
+        /**
+         * @param p_pixelX Pixel position X
+         * @param p_pixelY Pixel position Y
+         * @return Find case index in grid of pixel x and y
+         */
         static constexpr Position findCase(int p_pixelX, int p_pixelY) noexcept {
             p_pixelY -= BOARD_OFFSET_Y;
 
@@ -138,10 +166,19 @@ namespace pacman {
             };
         }
 
+        /**
+         * @param p_pixelPosition Position to check
+         * @return Checks if position is a case and if position is in the center of a case
+         */
         static constexpr bool isCaseCenter(Position p_pixelPosition) noexcept {
             return isCaseCenter(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
+        /**
+         * @param p_pixelX Pixel position x
+         * @param p_pixelY Pixel position y
+         * @return Checks if (x, y) is a case and if (x, y) is in the center of a case
+         */
         static constexpr bool isCaseCenter(int p_pixelX, int p_pixelY) noexcept {
             Position foundCase = findCase(p_pixelX, p_pixelY);
             if (foundCase.x() == -1 || foundCase.y() == -1) return false;
@@ -149,8 +186,15 @@ namespace pacman {
             return pos.x() == p_pixelX && pos.y() == p_pixelY;
         }
 
+        /**
+         * Load board from current player
+         */
         void load();
 
+        /**
+         * Starts level end animation
+         * (board flashing white and normal)
+         */
         void startLevelEndAnimation();
     };
 

@@ -6,6 +6,10 @@
 namespace pacman {
     template<std::semiregular T>
     requires std::is_scalar_v<T>
+    /**
+     * Wrapper for a shared_ptr
+     * @tparam T type to wrap
+     */
     class shared_value
     {
         std::shared_ptr<T> m_sharedValue;

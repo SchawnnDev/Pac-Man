@@ -26,11 +26,17 @@ namespace pacman {
         [[nodiscard]] inline uint64_t since_start() const noexcept { return std::chrono::duration_cast<std::chrono::milliseconds>(source_clock::now() - m_start).count(); }
         [[nodiscard]] inline double last_delta() const noexcept { return std::chrono::duration<double, std::milli>{m_last_delta}.count(); }
 
+        /**
+         * Begin frame
+         */
         void begin_frame() noexcept
         {
             m_frame_start = source_clock::now();
         }
 
+        /**
+         * End frame
+         */
         void end_frame() noexcept
         {
             const auto now = source_clock::now();

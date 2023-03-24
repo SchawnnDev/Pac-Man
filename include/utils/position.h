@@ -46,14 +46,27 @@ namespace pacman {
             return !(rhs == *this);
         }
 
+        /**
+         * @param position Position to add
+         * @return Added position
+         */
         [[nodiscard]] constexpr Position add(Position position) const noexcept {
             return {m_x + position.x(), m_y + position.y()};
         }
 
+        /**
+         * @param position Position to subtract
+         * @return Subtracted position
+         */
         [[nodiscard]] constexpr Position subtract(Position position) const noexcept {
             return {m_x - position.x(), m_y - position.y()};
         }
 
+        /**
+         * @param pivot Point to rotate from
+         * @param angle Angle to rotate from
+         * @return This position rotated from angle degrees from pivot position
+         */
         [[nodiscard]] constexpr Position rotateVec(const Position pivot, int angle) const
         {
             auto angleDegrees = (angle * (std::numbers::pi / 180));
@@ -75,6 +88,11 @@ namespace pacman {
             return result;
         }
 
+        /**
+         * @param p_direction Move direction
+         * @param count Pixels to move to
+         * @return Position calculated from direction and count to move
+         */
         [[nodiscard]] constexpr Position getPositionAt(Direction p_direction, int count) const noexcept {
             switch (p_direction) {
                 case Direction::UP:
@@ -90,6 +108,10 @@ namespace pacman {
             return {-1, -1};
         }
 
+        /**
+         * @param p_direction Direction to move to
+         * @param p_pixels Number of pixels to move to
+         */
         constexpr void moveAt(Direction p_direction, int p_pixels) noexcept {
             switch (p_direction) {
                 case Direction::UP:
@@ -107,31 +129,56 @@ namespace pacman {
             }
         }
 
+        /**
+         * @param p_target Target
+         * @return Calculated distance between this position and target
+         */
         [[nodiscard]] constexpr int distanceTo(Position p_target) const noexcept {
             auto x = p_target.x() - m_x;
             auto y = p_target.y() - m_y;
             return x * x + y * y;
         }
 
+        /**
+         * @return Grid position to pixels
+         */
         constexpr void toPixels() noexcept {
             m_x *= BOARD_CASE_SIZE_WIDTH;
             m_y *= BOARD_CASE_SIZE_HEIGHT;
         }
 
+        /**
+         * @return SDL_Rect form position with width and height = 0
+         */
         constexpr SDL_Rect toSDLRect() noexcept {
             return {m_x, m_y, 0, 0};
         }
 
     };
 
+    /**
+     * @param p_x x position (grid position)
+     * @param p_y y position (grid position)
+     * @return Calculates pixel position of x & y
+     */
     constexpr Position getPosition(int p_x, int p_y) noexcept {
         return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
+    /**
+     * @param p_x x position (grid position)
+     * @param p_y y position (grid position)
+     * @return Calculates pixel position of x & y (sdl rect)
+     */
     constexpr SDL_Rect getRectPosition(int p_x, int p_y) noexcept {
         return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
+    /**
+     * @param p_x x position
+     * @param p_y y position
+     * @return Calculates center position of x & y
+     */
     constexpr Position getCenteredPosition(int p_x, int p_y) noexcept {
         Position pos = getPosition(p_x, p_y);
         pos.x() += BOARD_CASE_SIZE_WIDTH / 2;
@@ -139,20 +186,21 @@ namespace pacman {
         return pos;
     }
 
+    /**
+     * @param p_x x position
+     * @param p_y y position
+     * @return Calculates center position of x & y (sdl rect)
+     */
     constexpr SDL_Rect getRectCenteredPosition(int p_x, int p_y) noexcept {
         auto pos = getCenteredPosition(p_x, p_y);
         return {pos.x(), pos.y()};
     }
 
-    constexpr SDL_Rect
-    calculateSprite(SDL_Rect p_center, SDL_Rect p_sprite, int p_zoomFactor) noexcept {
-        p_center.x -= p_sprite.w * (p_zoomFactor / 2);
-        p_center.y -= p_sprite.h * (p_zoomFactor / 2);
-        p_center.w = p_sprite.w * p_zoomFactor;
-        p_center.h = p_sprite.h * p_zoomFactor;
-        return p_center;
-    }
-
+    /**
+     *
+     * @param p_direction direction to get opposite from
+     * @return opposite direction
+     */
     constexpr Direction getOpposite(Direction p_direction) noexcept {
         switch (p_direction) {
             case Direction::UP:
@@ -167,10 +215,21 @@ namespace pacman {
         return Direction::LEFT;
     }
 
+    /**
+     *
+     * @param p_direction start direction to calculate angle from
+     * @param angle angle
+     * @return direction get from start direction + angle
+     */
     constexpr Direction getDirectionByAngle(Direction p_direction, int angle) noexcept {
         return Direction(positiveModulo(static_cast<int>(p_direction) - angle / 90, 4));
     }
 
+    /**
+     *
+     * @param p_direction direction to get priority from
+     * @return priority of given direction
+     */
     constexpr int getDirectionPriority(Direction p_direction) noexcept {
         switch (p_direction) {
             case Direction::UP:
@@ -185,6 +244,10 @@ namespace pacman {
         return -1;
     }
 
+    /**
+     * @param p_direction direction to get the name from
+     * @return name of given direction
+     */
     inline std::string getDirectionName(Direction p_direction) noexcept {
         switch (p_direction) {
             case Direction::UP:
