@@ -35,67 +35,141 @@ namespace pacman {
 
         ~Board() = default;
 
-        [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const &
-        grid() const noexcept { return m_grid; };
+        /**
+         * @return BoardCase grid, covering the whole board
+         */
+        [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const &grid() const noexcept { return m_grid; };
 
+        /**
+         * @return BoardCase grid, covering the whole board
+         */
         std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() noexcept { return m_grid; };
 
+        /**
+         * @return Index in grid of left door
+         */
         [[nodiscard]] size_t leftDoorIndex() const { return m_leftDoorIndex; }
 
+        /**
+         * @return Index in grid of right door
+         */
         [[nodiscard]] size_t rightDoorIndex() const { return m_rightDoorIndex; }
 
+        /**
+         * @return Index in grid of home door
+         */
         [[nodiscard]] size_t homeDoorIndex() const { return m_homeDoorIndex; }
 
+        /**
+         * @return Current sprite animation of drawable
+         */
         [[nodiscard]] auto const &currentAnimation() const { return m_currentAnimation; }
 
+        /**
+         * @return Reference to the current sprite animation of drawable
+         */
         auto &currentAnimation() { return m_currentAnimation; }
 
+        /**
+         * @param p_position Position index
+         * @return Check if indexes p_position are valid indexes
+         */
         static constexpr bool checkGridCoordinates(Position p_position) noexcept {
             return checkGridCoordinates(p_position.x(), p_position.y());
         }
 
+        /**
+         * @param p_x X index
+         * @param p_y Y index
+         * @return Check if indexes p_x, p_y are valid indexes
+         */
         static constexpr bool checkGridCoordinates(int p_x, int p_y) noexcept {
             return p_x < 0 || p_y < 0 || getGridIndex(p_x, p_y) < BOARD_SIZE_X * BOARD_SIZE_Y;
         }
 
+        /**
+         * @param p_x X index
+         * @param p_y Y index
+         * @return Calculated grid index from (p_x, p_y)
+         */
         static constexpr size_t getGridIndex(int p_x, int p_y) noexcept {
             return BOARD_SIZE_X * p_y + p_x;
         }
 
+        /**
+         * @param p_position Position to get the grid index from
+         * @return Calculated grid index from position
+         */
         static constexpr size_t getGridIndex(Position p_position) noexcept {
             return getGridIndex(p_position.x(), p_position.y());
         }
 
+        /**
+         * @param p_position x,y position index
+         * @return Get boardcase from grid at position
+         */
         [[nodiscard]] inline BoardCase const &getCase(Position p_position) const noexcept {
             return getCase(p_position.x(), p_position.y());
         }
 
+        /**
+         * @param p_position x,y position index
+         * @return Get boardcase from grid at position
+         */
         [[nodiscard]] inline BoardCase &getCase(Position p_position) noexcept {
             return getCase(p_position.x(), p_position.y());
         }
 
+        /**
+         * @param p_x X index
+         * @param p_y Y index
+         * @return Get boardcase from grid at (p_x, p_y)
+         */
         [[nodiscard]] inline BoardCase const &getCase(int p_x, int p_y) const noexcept {
             return m_grid[getGridIndex(p_x, p_y)];
         }
 
+        /**
+         * @param p_x X index
+         * @param p_y Y index
+         * @return Get boardcase from grid at (p_x, p_y)
+         */
         inline BoardCase &getCase(int p_x, int p_y) noexcept {
             return m_grid[getGridIndex(p_x, p_y)];
         }
 
+        /**
+         * @param p_position Position to check if is on boardcase
+         * @param p_boardCaseIndex Index of the case in grid
+         * @return Found case position is equals to given boardCaseIndex
+         */
         [[nodiscard]] static constexpr bool isOnBoardCase(Position p_position, size_t p_boardCaseIndex) noexcept {
             auto caseFound = Board::findCase(p_position);
             if (caseFound.x() == -1 || caseFound.y() == -1) return false;
             return getGridIndex(caseFound.x(), caseFound.y()) == p_boardCaseIndex;
         }
 
+        /**
+         * @param p_position Position
+         * @return Checks if position is left door position
+         */
         [[nodiscard]] constexpr bool isOnLeftDoor(Position p_position) const noexcept {
             return isOnBoardCase(p_position, m_leftDoorIndex);
         }
 
+        /**
+         * @param p_position Position
+         * @return Checks if position is right door position
+         */
         [[nodiscard]] constexpr bool isOnRightDoor(Position p_position) const noexcept {
             return isOnBoardCase(p_position, m_rightDoorIndex);
         }
 
+        /**
+         * @param p_position Square position
+         * @param p_direction Direcetion of the square to get to
+         * @return Get the boardcase at a position and given direction to find the next square
+         */
         [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept;
 
         /**

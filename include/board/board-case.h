@@ -6,6 +6,9 @@
 
 namespace pacman {
 
+    /**
+     *  Type of the case, to distinguish between doors, walls, points,...
+     */
     enum class BoardCaseType {
         PointPath,
         BasicPath,
@@ -54,12 +57,25 @@ namespace pacman {
 
         [[nodiscard]] Position position() const noexcept { return {m_x, m_y}; }
 
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept;
+        /**
+         * Draw boardcase to screen
+         * @param p_window_renderer Window renderer
+         * @param p_texture Texture to get sprite from
+         */
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
+        /**
+         * @param p_boardCase BoardCase to check
+         * @return BoardCaseType of p_boardCase is practicable by an entity (to avoid going in walls cases)
+         */
         static inline bool isPracticable(BoardCase p_boardCase) noexcept {
             return isTypePracticable(p_boardCase.type());
         }
 
+        /**
+         * @param p_boardCaseType BoardCaseType to check
+         * @return BoardCaseType is practicable by an entity (to avoid going in walls cases)
+         */
         static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType) noexcept {
             return p_boardCaseType == BoardCaseType::PointPath
                    || p_boardCaseType == BoardCaseType::BasicPath

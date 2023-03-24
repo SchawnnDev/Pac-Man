@@ -67,9 +67,7 @@ void Ghost::handleHomeMode() noexcept {
 }
 
 
-void Ghost::handleScatterMode() noexcept {
-
-}
+void Ghost::handleScatterMode() noexcept {}
 
 auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool checkPracticable) noexcept {
     // Ghost is on a tile, and he must choose a direction

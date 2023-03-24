@@ -17,14 +17,34 @@ namespace pacman {
 
         ~Inky() override = default;
 
+        /**
+         * @return Type of entity
+         * @override
+         */
         [[nodiscard]] inline EntityType entityType() const noexcept override { return EntityType::Inky; };
 
+        /**
+         * @brief Tick logic, handles intern entities logic
+         * @override
+         */
         void tick() noexcept override;
 
+        /**
+         * @brief Reset all variables to default
+         * @override
+         */
         void reset() noexcept override;
 
+        /**
+         * @brief Starts the scatter mode, changing target to a corner
+         * @override
+         */
         void startScatterMode() noexcept override;
 
+        /**
+         * @brief Handles chase target and logic
+         * @override
+         */
         void handleChaseTarget() noexcept override;
     };
 
