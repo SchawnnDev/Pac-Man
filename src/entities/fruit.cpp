@@ -8,7 +8,7 @@ Fruit::Fruit(Board const &p_board, FruitResources p_fruitResources)
     , m_score{false}
     , m_fruitResources{p_fruitResources}
 {
-    reset();
+    Fruit::reset();
 }
 
 void Fruit::tick() noexcept

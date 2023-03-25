@@ -10,7 +10,7 @@ void Ghost::startEatenMode() noexcept {
     m_ghostMode = GhostMode::Eaten;
     m_frightened = false;
     turnAround(); // turn 180 degrees
-    target() = board().grid()[board().homeDoorIndex()].position().subtract({0, 1});
+    target() = board().grid()[board().homeDoorIndex()].position();
 }
 
 void Ghost::startFrightenedMode() noexcept {

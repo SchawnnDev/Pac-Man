@@ -170,7 +170,6 @@ void Game::handleLogic() noexcept
             freezeEntities();
 
             m_footerScreen.updateLives();
-
         }
 
         if(m_levelState == LevelState::Ready && m_ticks == 360)
@@ -376,6 +375,17 @@ void Game::startPlaying(int p_players) noexcept
     // remove 1 life to each player (first life is played)
     m_players[0]->lives()--;
     m_players[1]->lives()--;
+    auto c = 0;
+
+    for (auto&bla:m_board.grid()) {
+        if(bla.type() == BoardCaseType::PointPath)
+            c++;
+        else if (bla.type() == BoardCaseType::Bonus) {
+            c++;
+        }
+    }
+
+    std::cout << "Counter: " << c << std::endl;
 
     startLevel(false);
 }
@@ -436,6 +446,8 @@ void Game::startLevel(bool p_died) noexcept
     m_pacman.reset();
     m_blinky.reset();
     m_pinky.reset();
+    m_fruit.reset();
+    m_fruit.unfreeze();
     m_inky.reset();
     m_clyde.reset();
     m_board.load();
@@ -491,26 +503,29 @@ void Game::checkCollisions() noexcept
             auto& fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
 
             if(fCase.activated()) {
-                fCase.activated() = false;
+                auto isPoint = fCase.type() == BoardCaseType::PointPath;
+                auto isBonus = fCase.type() == BoardCaseType::Bonus;
+                auto dotsEaten = m_currentPlayer->map().size();
 
-                if(fCase.type() == BoardCaseType::PointPath) {
-                    updateScore(10);
-                } else if(fCase.type() == BoardCaseType::Bonus) {
-                    updateScore(50);
-                    startFrightened();
-                    m_eatenFrightenedGhosts = 0;
-                }
+                if(isPoint || isBonus) {
+                    fCase.activated() = false;
+                    dotsEaten++;
+                    updateScore(isPoint ? 10 : 50);
+                    m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
 
-                m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
-                auto const dotsEaten = m_currentPlayer->map().size();
+                    if(isBonus) {
+                        startFrightened();
+                        m_eatenFrightenedGhosts = 0;
+                    }
 
-                // Check win
-                if(dotsEaten >= DOTS_TO_EAT) {
-                    freezeEntities();
-                    m_pacman.currentAnimation()->reset();
-                    m_freezeTimeout = m_ticks + FRAMERATE * 2;
-                    m_levelState = LevelState::End;
-                    return;
+                    // Check win
+                    if(dotsEaten >= DOTS_TO_EAT) {
+                        freezeEntities();
+                        m_pacman.currentAnimation()->reset();
+                        m_freezeTimeout = m_ticks + FRAMERATE * 2;
+                        m_levelState = LevelState::End;
+                        return;
+                    }
                 }
 
                 // Check fruit
@@ -524,7 +539,9 @@ void Game::checkCollisions() noexcept
 
             }
 
-        } catch (...){ }
+        } catch (...){
+            // Should not happen
+        }
 
         // Handle fruit eating
         if(m_fruit.activated() && m_fruit.position() == m_pacman.position()) {
@@ -627,6 +644,7 @@ void Game::performPacmanDying() noexcept
     m_pinky.freezeMovement();
     m_clyde.freezeMovement();
     m_inky.freezeMovement();
+    m_fruit.freeze();
     m_pacman.state() = PacmanState::DYING;
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
