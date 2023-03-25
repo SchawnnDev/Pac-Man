@@ -6,6 +6,14 @@
 
 namespace pacman {
 
+    /**
+     * @class HeaderScreen
+     *
+     * @brief A screen that displays the header.
+     *
+     * The HeaderScreen class displays the header, including the high score,
+     * the current player, and the current player's score.
+     */
     class HeaderScreen : public Screen
     {
         const int m_charSize = 20;
@@ -24,17 +32,44 @@ namespace pacman {
 
     public:
 
+        /**
+         * @brief Constructor for the HeaderScreen class.
+         *
+         * @param p_textResources The text resources to use.
+         * @param p_highScore A shared value that holds the high score.
+         * @param p_playerCount A shared value that holds the number of players.
+         * @param p_currentPlayer A pointer to the current player object.
+         */
         HeaderScreen(TextResources p_textResources, const shared_value<int>& p_highScore,
                      shared_value<int> const& p_playerCount, PlayerPtr &p_currentPlayer);
 
+        /**
+         * @brief Performs a tick of the screen.
+         * @override
+         */
         void tick() noexcept override;
 
+        /**
+         * @brief Resets the screen to its initial state.
+         * @override
+         */
         void reset() noexcept override;
 
+        /**
+         * @brief Updates the high score on the screen.
+         */
         void updateHighScore() noexcept;
 
+        /**
+         * @brief Updates the score for the given player on the screen.
+         *
+         * @param p_playerId The ID of the player whose score to update.
+         */
         void updateScore(int p_playerId) noexcept;
 
+        /**
+         * @brief Updates the players shown on the screen (1UP or 1UP + 2UP)
+         */
         void updatePlayerCount() noexcept;
     };
 
