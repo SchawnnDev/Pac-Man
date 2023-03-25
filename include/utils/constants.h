@@ -21,6 +21,14 @@ constinit const int CASE_FLAG_TUNNEL_SLOW_DOWN = 1 << 1;
 
 // TIMEOUTS
 constinit const int COUNTER_BLA = 180;
+constinit const int CYCLES_COUNT = 7;
+constinit const std::array<int, CYCLES_COUNT> START_CYCLES{7 * FRAMERATE, 20 * FRAMERATE, 7 * FRAMERATE, 20 * FRAMERATE,
+                                                           5 * FRAMERATE, 20 * FRAMERATE, 5 * FRAMERATE};
+constinit const std::array<int, CYCLES_COUNT> MID_CYCLES{7 * FRAMERATE, 20 * FRAMERATE, 7 * FRAMERATE, 20 * FRAMERATE,
+                                                         5 * FRAMERATE, 1033 * FRAMERATE, FRAMERATE / 60};
+constinit const std::array<int, CYCLES_COUNT> END_CYCLES{5 * FRAMERATE, 20 * FRAMERATE, 5 * FRAMERATE, 20 * FRAMERATE,
+                                                         5 * FRAMERATE, 1037 * FRAMERATE, FRAMERATE / 60};
+
 
 // FRUITS
 constinit const int FRUITS_REGISTERED = 14;
