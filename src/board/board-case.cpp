@@ -33,7 +33,7 @@ pacman::getClosestBoardCase(Position p_target, std::span<const DirectionBoardCas
 
         auto isHomeDoorPracticable = boardCase->type() == BoardCaseType::GhostHomeDoor && p_acceptHomeDoor;
 
-        if (!BoardCase::isPracticable(boardCase.value()) && !isHomeDoorPracticable) {
+        if (!BoardCase::isPracticable(boardCase.value(), false) && !isHomeDoorPracticable) {
             continue;
         }
 

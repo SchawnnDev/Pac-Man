@@ -106,23 +106,26 @@ namespace pacman {
 
         /**
          * @param p_boardCase BoardCase to check
+         * @param p_homeDoorIncluded Add GhostHomeDoor type to check
          * @return BoardCaseType of p_boardCase is practicable by an entity (to avoid going in walls cases)
          */
-        static inline bool isPracticable(BoardCase p_boardCase) noexcept {
-            return isTypePracticable(p_boardCase.type());
+        static inline bool isPracticable(BoardCase p_boardCase, bool p_homeDoorIncluded) noexcept {
+            return isTypePracticable(p_boardCase.type(), p_homeDoorIncluded);
         }
 
         /**
          * @param p_boardCaseType BoardCaseType to check
+         * @param p_homeDoorIncluded Add GhostHomeDoor type to check
          * @return BoardCaseType is practicable by an entity (to avoid going in walls cases)
          */
-        static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType) noexcept {
-            return p_boardCaseType == BoardCaseType::PointPath
+        static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType, bool p_homeDoorIncluded = false) noexcept {
+            if(p_boardCaseType == BoardCaseType::PointPath
                    || p_boardCaseType == BoardCaseType::BasicPath
                    || p_boardCaseType == BoardCaseType::Bonus
                    || p_boardCaseType == BoardCaseType::DoorLeft
                    || p_boardCaseType == BoardCaseType::DoorRight
-                   || p_boardCaseType == BoardCaseType::GhostHome;
+                   || p_boardCaseType == BoardCaseType::GhostHome) return true;
+            return p_homeDoorIncluded && p_boardCaseType == BoardCaseType::GhostHomeDoor;
         }
 
     };

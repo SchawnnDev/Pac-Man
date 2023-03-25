@@ -30,7 +30,7 @@ bool Entity::canMoveTo(Direction p_direction) const noexcept {
     if (caseFound.x() == -1 || caseFound.y() == -1) return false;
     auto nextCasePos = caseFound.getPositionAt(p_direction, 1);
     if (!Board::checkGridCoordinates(nextCasePos)) return false;
-    return BoardCase::isPracticable(board().getCase(nextCasePos));
+    return BoardCase::isPracticable(board().getCase(nextCasePos), false);
 }
 
 void Entity::freeze() noexcept {

@@ -83,10 +83,10 @@ namespace pacman {
         /**
          * @param withOpposite Add the opposite direction to the possible directions
          * @param noUp Avoid up direction in possible directions list
-         * @param checkPracticable Check if possible directions are practicable or not
+         * @param homeDoorPracticable Check if possible directions are practicable or not
          * @return A vector of DirectionBoardCasePair including direction and BoardCase that are possible to travel to
          */
-        auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool checkPracticable = false) noexcept;
+        auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode,

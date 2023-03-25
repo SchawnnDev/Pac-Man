@@ -52,7 +52,7 @@ void Ghost::handleHomeMode() noexcept {
 
         if (!nextCase) return; // should not be null
 
-        if (!BoardCase::isPracticable(nextCase.value())) {
+        if (!BoardCase::isPracticable(nextCase.value(), false)) {
             if (direction() == Direction::DOWN) {
                 direction() = Direction::UP;
             } else if (direction() == Direction::UP) {
@@ -69,7 +69,7 @@ void Ghost::handleHomeMode() noexcept {
 
 void Ghost::handleScatterMode() noexcept {}
 
-auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool checkPracticable) noexcept {
+auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept {
     // Ghost is on a tile, and he must choose a direction
     auto pairs = std::vector<DirectionBoardCasePair>{};
     auto const& actualCase = currentCase();
@@ -92,9 +92,9 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool checkPracti
     bool const flagNoUp = actualCase->flags() & CASE_FLAG_NO_UP;
 
     pairs.erase(
-            std::remove_if(pairs.begin(), pairs.end(), [&noUp, &flagNoUp, &checkPracticable](auto const &p) {
+            std::remove_if(pairs.begin(), pairs.end(), [&noUp, &flagNoUp, &homeDoorPracticable](auto const &p) {
                 return (noUp && p.first == Direction::UP && flagNoUp)
-                       || !p.second || (checkPracticable && !BoardCase::isPracticable(p.second.value()));
+                       || !p.second || !BoardCase::isPracticable(p.second.value(), homeDoorPracticable);
             }), pairs.end()
     );
 
@@ -105,9 +105,9 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
     if(!currentCase()) return std::nullopt;
     auto const& actualCase = currentCase();
     auto caseIsHome = actualCase->type() == BoardCaseType::GhostHome;
-    auto pairs = getPossibleDirections(caseIsHome, !m_frightened, !caseIsHome && m_frightened);
 
     if(ghostMode() != GhostMode::Home && !caseIsHome && m_frightened) {
+        auto pairs = getPossibleDirections(false, true, false);
         if(pairs.empty()) return std::nullopt;
         auto r = *select_randomly(pairs.begin(), pairs.end());
 
@@ -132,6 +132,7 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
         homeDoorPracticable = true;
     }
 
+    auto pairs = getPossibleDirections(caseIsHome, !m_frightened, homeDoorPracticable);
     auto const &foundCase = getClosestBoardCase(destination, pairs, homeDoorPracticable);
 
     // foundCase should not be null
@@ -230,7 +231,7 @@ void Ghost::turnAround() noexcept
 
         if (!nextCase) return; // should not be null
 
-        if (!BoardCase::isPracticable(nextCase.value())) {
+        if (!BoardCase::isPracticable(nextCase.value(), false)) {
             // todo:
         }
 
