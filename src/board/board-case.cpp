@@ -5,9 +5,9 @@ using namespace pacman;
 void BoardCase::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept
 {
     if(!activated()) return;
-    if (m_animation) {
+    if (m_currentAnimation) {
         auto centered = getRectCenteredPosition(m_x, m_y);
-        auto &spriteAnimation = m_animation.value();
+        auto &spriteAnimation = m_currentAnimation.value();
         auto found = spriteAnimation.display();
         if (found) {
             auto sprite = found.value();

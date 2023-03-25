@@ -44,11 +44,11 @@ Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentP
 
         switch (boardCase.type()) {
             case BoardCaseType::Bonus:
-                boardCase.animation() = m_boardResources.bonusAnimation;
+                boardCase.currentAnimation() = m_boardResources.bonusAnimation;
                 break;
             case BoardCaseType::PointPath:
-                boardCase.animation() = SpriteAnimation{{m_boardResources.pointSprite}};
-                boardCase.animation()->singleSprite() = true;
+                boardCase.currentAnimation() = SpriteAnimation{{m_boardResources.pointSprite}};
+                boardCase.currentAnimation()->singleSprite() = true;
                 break;
             case BoardCaseType::DoorLeft:
                 m_leftDoorIndex = getGridIndex(x, y);
@@ -114,8 +114,8 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
 void Board::reset() noexcept {
     m_currentAnimation = m_boardResources.boardAnimation;
     for (BoardCase& boardCase: m_grid) {
-        if(boardCase.animation()) {
-            boardCase.animation()->reset();
+        if(boardCase.currentAnimation()) {
+            boardCase.currentAnimation()->reset();
         }
         boardCase.activated() = true;
     }
@@ -138,8 +138,8 @@ BoardCase& Board::getBoardCaseAtPixels(Position p_position) {
 void Board::load() {
     m_currentAnimation = m_boardResources.boardAnimation;
     for (BoardCase& boardCase: m_grid) {
-        if(boardCase.animation()) {
-            boardCase.animation()->reset();
+        if(boardCase.currentAnimation()) {
+            boardCase.currentAnimation()->reset();
         }
         auto const& map = m_currentPlayer->map();
         boardCase.activated() = map.find(getGridIndex(boardCase.position())) == std::end(map);

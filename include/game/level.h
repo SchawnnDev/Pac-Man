@@ -4,7 +4,16 @@
 
 namespace pacman {
 
-    // All in global state or new level state?
+    /**
+     * @brief Level state
+     * According to GameState, the LevelState represents a sub-state to GameState::Playing
+     * The 5 states are:
+     * - PlayerDisplay: Current player displayed, entities not drawn
+     * - Ready: Ready text displayed, entities drawn
+     * - Scatter: Scatter mode for ghosts
+     * - Chase: Chase mode for ghosts
+     * - End: End of level, leading to a new level
+     */
     enum class LevelState {
         PlayerDisplay,
         Ready,

@@ -61,12 +61,12 @@ namespace pacman {
         [[nodiscard]] size_t homeDoorIndex() const { return m_homeDoorIndex; }
 
         /**
-         * @return Current sprite animation of drawable
+         * @return Current sprite currentAnimation of drawable
          */
         [[nodiscard]] auto const &currentAnimation() const { return m_currentAnimation; }
 
         /**
-         * @return Reference to the current sprite animation of drawable
+         * @return Reference to the current sprite currentAnimation of drawable
          */
         auto &currentAnimation() { return m_currentAnimation; }
 
@@ -193,6 +193,7 @@ namespace pacman {
          * Draw board to screen
          * @param p_window_renderer Window renderer
          * @param p_texture Texture to get sprite from
+         * @override
          */
         void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
 
@@ -266,7 +267,7 @@ namespace pacman {
         void load();
 
         /**
-         * Starts level end animation
+         * Starts level end currentAnimation
          * (board flashing white and normal)
          */
         void startLevelEndAnimation();

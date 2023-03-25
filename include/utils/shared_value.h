@@ -15,6 +15,10 @@ namespace pacman {
         std::shared_ptr<T> m_sharedValue;
 
     public:
+        /**
+         * @brief Constructs a new shared_value object with the default value of T.
+         * @param value The default value of T to use.
+         */
         [[nodiscard]] explicit shared_value(T value = T{})
                 : m_sharedValue{std::make_shared<T>(value)}
         {}

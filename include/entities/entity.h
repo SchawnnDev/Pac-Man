@@ -45,7 +45,7 @@ namespace pacman {
         virtual void tick() noexcept = 0;
 
         /**
-         * @brief Changes animation corresponding to current state
+         * @brief Changes currentAnimation corresponding to current state
          */
         virtual void changeAnimation() noexcept = 0;
 
@@ -161,7 +161,7 @@ namespace pacman {
         void unfreeze() noexcept;
 
         /**
-         * @brief Freezes entities movement (animation still activated)
+         * @brief Freezes entities movement (currentAnimation still activated)
          */
         void freezeMovement() noexcept;
 

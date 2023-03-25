@@ -14,6 +14,10 @@
 
 namespace pacman {
 
+    /**
+     * @class SpriteHandler
+     * @brief Handles loading and accessing game sprites.
+     */
     class SpriteHandler {
         std::vector<Sprite> m_sprites;
         std::unordered_map<std::string, SpriteAnimation> m_spriteAnimations{};
@@ -33,49 +37,118 @@ namespace pacman {
         FruitResources m_fruitResources;
     public:
 
-        SpriteHandler() = default;
-
+        /**
+         * @brief Constructs a SpriteHandler object with the given file path.
+         * @param path The file path to load the sprites from.
+         */
         explicit SpriteHandler(std::string_view path) noexcept;
 
         ~SpriteHandler() = default;
 
+        /**
+         * @brief Get a sprite by name.
+         *
+         * @param name the name of the sprite
+         * @return an optional containing the sprite if found, or an empty optional if not
+         */
         std::optional<Sprite> getSprite(std::string_view name) const noexcept;
 
+        /**
+         * @brief Import sprites from a file.
+         *
+         * @param path the path to the file
+         */
         void importSprites(std::string_view path) noexcept;
 
+        /**
+         * Initialize animations.
+         */
         void initAnimations() noexcept;
 
+        /**
+         * Initialize structs.
+         */
         void initStructs() noexcept;
 
+        /**
+         * Initialize ghost animations by name.
+         *
+         * @param name the name of the ghost
+         */
         void initGhostAnimations(const std::string &name) noexcept;
 
+        /**
+         * Get a sprite animation by name.
+         *
+         * @param name the name of the animation
+         * @return an optional containing the animation if found, or an empty optional if not
+         */
         std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
 
+        /**
+         * @return An instance for pacman animations
+         */
         [[nodiscard]] PacmanAnimations const &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
 
         // Ghosts
+        /**
+         * @return An instance for blinky animations
+         */
         [[nodiscard]] GhostAnimations const &blinkyAnimations() const noexcept { return m_blinkyAnimations; }
 
+        /**
+         * @return An instance for cylde animations
+         */
         [[nodiscard]] GhostAnimations const &clydeAnimations() const noexcept { return m_clydeAnimations; }
 
+        /**
+         * @return An instance for inky animations
+         */
         [[nodiscard]] GhostAnimations const &inkyAnimations() const noexcept { return m_inkyAnimations; }
 
+        /**
+         * @return An instance for pinky animations
+         */
         [[nodiscard]] GhostAnimations const &pinkyAnimations() const noexcept { return m_pinkyAnimations; }
 
+        /**
+         * @return An instance for fruit resources
+         */
         [[nodiscard]] FruitResources const& fruitResources() const noexcept { return m_fruitResources; }
 
         // Screens
+        /**
+         * @return An instance for text resources
+         */
         [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
 
+        /**
+         * @return An instance for loading screen resources
+         */
         [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const noexcept { return m_loadingScreenResources; }
 
+        /**
+         * @return An instance for footer screen resources
+         */
         [[nodiscard]] FooterScreenResources const &footerScreenResources() const noexcept { return m_footerScreenResources; }
 
         // Board
+        /**
+         * @return An instance for board resources
+         */
         [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }
 
+        /**
+         * @return A map that contains sprites for scores
+         */
         [[nodiscard]] std::unordered_map<int, Sprite> const& scoreSprites() const { return m_scoresSprites; }
 
+       /**
+        * @brief Returns a vector of sprites with the given names.
+        * @tparam Args Variadic template parameter pack for the sprite names. Each parameter must be convertible to std::string_view.
+        * @param p_sprites Sprite names.
+        * @return A vector of Sprite objects.
+        */
         template<typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)
         [[nodiscard]]
@@ -89,9 +162,8 @@ namespace pacman {
                                auto sprite = getSprite(p_spriteName);
                                if (!sprite) {
                                    std::cout << "Could not find sprite " << p_spriteName << std::endl;
-                                   return getSprite("nothing").value();
                                }
-                               return getSprite(p_spriteName).value();
+                               return getSprite(p_spriteName).value_or(getSprite("nothing").value());
                            });
             return result;
         }

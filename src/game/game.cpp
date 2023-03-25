@@ -46,10 +46,10 @@ Game::Game()
     m_spriteSurface.reset(SDL_LoadBMP("./assets/pacman_sprites.bmp"));
 
     SDL_SetColorKey(m_spriteSurface.get(), SDL_TRUE, SDL_MapRGB(m_spriteSurface->format, 0, 0, 0));
-    SDL_SetTextureBlendMode(m_spriteTexture, SDL_BLENDMODE_BLEND);
 
-    m_spriteTexture = SDL_CreateTextureFromSurface(m_windowRenderer.get(),
-                                                   m_spriteSurface.get());
+    m_spriteTexture.reset(SDL_CreateTextureFromSurface(m_windowRenderer.get(), m_spriteSurface.get()));
+
+    SDL_SetTextureBlendMode(m_spriteTexture.get(), SDL_BLENDMODE_BLEND);
 
 }
 
@@ -306,21 +306,21 @@ void Game::handleDrawing() noexcept
     SDL_RenderClear(m_windowRenderer.get());
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
-    m_board.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_board.draw(m_windowRenderer.get(), m_spriteTexture.get());
 
     // Draw entities
-    m_pacman.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_blinky.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_clyde.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_pinky.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_inky.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_fruit.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_pacman.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_blinky.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_clyde.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_pinky.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_inky.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_fruit.draw(m_windowRenderer.get(), m_spriteTexture.get());
 
     // Draw screens
-    m_headerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_footerScreen.draw(m_windowRenderer.get(), m_spriteTexture);
-    m_gameScreen.draw(m_windowRenderer.get(), m_spriteTexture);
+    m_headerScreen.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_loadingScreen.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_footerScreen.draw(m_windowRenderer.get(), m_spriteTexture.get());
+    m_gameScreen.draw(m_windowRenderer.get(), m_spriteTexture.get());
 
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
 
@@ -335,7 +335,7 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
 
     if(event.key.keysym.sym == SDLK_c)
     {
-        updateCredits(credit() + 1);
+        updateCredits(m_credit + 1);
         return;
     }
 
