@@ -19,6 +19,7 @@
 #include "game-state.h"
 #include "player.h"
 #include "entities/fruit.h"
+#include "game-cycle.h"
 
 namespace pacman {
 
@@ -42,6 +43,7 @@ namespace pacman {
         // Handlers
         SpriteHandler m_spriteHandler;
         Board m_board;
+        GameCycle m_gameCycle;
 
         // Entities
         Pacman m_pacman;
@@ -201,6 +203,11 @@ namespace pacman {
          *
          */
         void unfreezeEntities() noexcept;
+
+        /**
+         * @brief Check cycle change and do actions if a change occurs
+         */
+        void handleCycleChange() noexcept;
     public:
         /**
          * @brief Constructs a new Game object.

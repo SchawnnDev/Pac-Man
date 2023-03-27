@@ -15,6 +15,7 @@ Game::Game()
           m_eatenFrightenedGhosts{0},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
+          m_gameCycle{},
           m_spriteHandler{"./assets/pacman.sprites"},
           m_board{"./assets/board.xml", m_currentPlayer, m_spriteHandler.boardResources()},
           m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
@@ -184,21 +185,14 @@ void Game::handleLogic() noexcept
             m_clyde.startHomeMode();
             m_pinky.startHomeMode();
             m_inky.startHomeMode();
-        }
 
-        if(m_levelState == LevelState::Scatter)
-        {
-            if (m_ticks == 360*2) {
-                m_pinky.startScatterMode();
-            } else if(m_ticks == 360*2+60) {
-                m_clyde.startScatterMode();
-            } else if(m_ticks == 360*2+120) {
-                m_inky.startScatterMode();
-            }
+            m_gameCycle.startTicks() = m_ticks;
         }
 
         if (isLevelPlaying(m_levelState))
         {
+            handleCycleChange();
+
             if (m_pacman.state() == PacmanState::LIVING)
             {
                 checkCollisions();
@@ -262,7 +256,7 @@ void Game::handleLogic() noexcept
         }
     }
 
-    if(m_state == GameState::GameOver) {
+    else if(m_state == GameState::GameOver) {
         // handle reset
         if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
         {
@@ -375,17 +369,6 @@ void Game::startPlaying(int p_players) noexcept
     // remove 1 life to each player (first life is played)
     m_players[0]->lives()--;
     m_players[1]->lives()--;
-    auto c = 0;
-
-    for (auto&bla:m_board.grid()) {
-        if(bla.type() == BoardCaseType::PointPath)
-            c++;
-        else if (bla.type() == BoardCaseType::Bonus) {
-            c++;
-        }
-    }
-
-    std::cout << "Counter: " << c << std::endl;
 
     startLevel(false);
 }
@@ -451,6 +434,7 @@ void Game::startLevel(bool p_died) noexcept
     m_inky.reset();
     m_clyde.reset();
     m_board.load();
+    m_gameCycle.reset();
     m_ticks = 0;
     m_freezeTimeout = -1;
 }
@@ -649,12 +633,14 @@ void Game::performPacmanDying() noexcept
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
 
-int Game::calculateFrightenedGhostScore() noexcept {
+int Game::calculateFrightenedGhostScore() noexcept
+{
     m_eatenFrightenedGhosts++;
     return static_cast<int>(std::pow(2, m_eatenFrightenedGhosts) * 100);
 }
 
-void Game::freezeEntities() noexcept {
+void Game::freezeEntities() noexcept
+{
     m_pacman.freeze();
     m_blinky.freeze();
     m_pinky.freeze();
@@ -662,10 +648,25 @@ void Game::freezeEntities() noexcept {
     m_inky.freeze();
 }
 
-void Game::unfreezeEntities() noexcept {
+void Game::unfreezeEntities() noexcept
+{
     m_pacman.unfreeze();
     m_blinky.unfreeze();
     m_pinky.unfreeze();
     m_clyde.unfreeze();
     m_inky.unfreeze();
+}
+
+void Game::handleCycleChange() noexcept {
+    // Check cycle change
+    if (m_ticks <= m_gameCycle.getCycleDuration(m_currentPlayer->level())) return;
+    m_gameCycle.changeGameState();
+    m_levelState = m_gameCycle.getGameState();
+    m_gameCycle.startTicks() = m_ticks;
+
+    auto const newMode = m_levelState == LevelState::Scatter ? GhostMode::Scatter : GhostMode::Chase;
+    m_blinky.handleCycleChange(newMode);
+    m_pinky.handleCycleChange(newMode);
+    m_inky.handleCycleChange(newMode);
+    m_clyde.handleCycleChange(newMode);
 }

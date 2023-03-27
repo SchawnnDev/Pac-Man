@@ -26,6 +26,7 @@ namespace pacman {
      */
     class Ghost : public Entity {
         GhostMode m_ghostMode;
+        GhostMode m_lastGhostMode; // used when switching modes (eaten)
         Position m_target;
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
@@ -93,11 +94,11 @@ namespace pacman {
               GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(p_ghostMode), m_target{},
                   m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman}, m_dotsCounter{0}, m_ticks{0},
-                  m_frightened{false} {
+                  m_frightened{false}, m_lastGhostMode{GhostMode::Scatter} {
             currentAnimation() = m_ghostAnimations.leftAnimation;
         }
 
-        ~Ghost() override;
+        ~Ghost() override = default;
 
         /**
          * @return Current ghost mode
@@ -135,6 +136,12 @@ namespace pacman {
         bool& frightened() { return m_frightened; }
 
         /**
+         * @brief Used for setting ghost mode when switching from eaten to scatter/chase
+         * @return Reference to last ghost mode
+         */
+        GhostMode& lastGhostMode() { return m_lastGhostMode; }
+
+        /**
          * @brief Starts the scatter mode, changing target to a corner
          */
         virtual void startScatterMode() noexcept = 0;
@@ -158,6 +165,12 @@ namespace pacman {
          * @brief Start eaten mode, changing target to home and animations to eyes
          */
         void startEatenMode() noexcept;
+
+        /**
+         * Cycles changes, scatter => chase or chase => scatter
+         * @param p_newMode New cycle ghost mode
+         */
+        void handleCycleChange(GhostMode p_newMode);
 
     };
 

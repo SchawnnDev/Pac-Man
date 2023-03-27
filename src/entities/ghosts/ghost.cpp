@@ -3,17 +3,18 @@
 
 using namespace pacman;
 
-Ghost::~Ghost() = default;
-
-void Ghost::startEatenMode() noexcept {
+void Ghost::startEatenMode() noexcept
+{
     if(m_ghostMode == GhostMode::Eaten) return;
+    m_lastGhostMode = m_ghostMode;
     m_ghostMode = GhostMode::Eaten;
     m_frightened = false;
     turnAround(); // turn 180 degrees
     target() = board().grid()[board().homeDoorIndex()].position();
 }
 
-void Ghost::startFrightenedMode() noexcept {
+void Ghost::startFrightenedMode() noexcept
+{
     if(m_frightened || m_ghostMode == GhostMode::Eaten) return;
     m_frightened = true;
     turnAround(); // turn 180 degrees
@@ -26,7 +27,8 @@ void Ghost::startChaseMode() noexcept
     turnAround();
 }
 
-void Ghost::startHomeMode() noexcept {
+void Ghost::startHomeMode() noexcept
+{
     if(ghostMode() == GhostMode::Home) return;
     reset();
 }
@@ -39,12 +41,18 @@ void Ghost::handleEatenMode() noexcept
 
     if(Board::isCase(position()) && currCase && currCase->type() == BoardCaseType::GhostHome)
     {
-        startScatterMode();
+        if(m_lastGhostMode == GhostMode::Scatter)
+        {
+            startScatterMode();
+        } else {
+            startChaseMode();
+        }
     }
 
 }
 
-void Ghost::handleHomeMode() noexcept {
+void Ghost::handleHomeMode() noexcept
+{
     // Home mode: ghost going up & down
     if(Board::isCase(position())) {
 
@@ -67,9 +75,11 @@ void Ghost::handleHomeMode() noexcept {
 }
 
 
-void Ghost::handleScatterMode() noexcept {}
+void Ghost::handleScatterMode() noexcept
+{}
 
-auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept {
+auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
+{
     // Ghost is on a tile, and he must choose a direction
     auto pairs = std::vector<DirectionBoardCasePair>{};
     auto const& actualCase = currentCase();
@@ -101,7 +111,8 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPra
     return pairs;
 }
 
-std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
+std::optional<BoardCase> Ghost::handlePathFinding() noexcept
+{
     if(!currentCase()) return std::nullopt;
     auto const& actualCase = currentCase();
     auto caseIsHome = actualCase->type() == BoardCaseType::GhostHome;
@@ -145,7 +156,8 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept {
 
 }
 
-void Ghost::handleMovement() noexcept {
+void Ghost::handleMovement() noexcept
+{
     if(!currentCase()) return;
     auto const& actualCase = currentCase();
     auto currentSpeed = speed();
@@ -192,7 +204,8 @@ void Ghost::handleMovement() noexcept {
 
 }
 
-void Ghost::changeAnimation() noexcept {
+void Ghost::changeAnimation() noexcept
+{
     currentAnimation()->freeze() = false;
 
     if(m_frightened)
@@ -241,4 +254,15 @@ void Ghost::turnAround() noexcept
         changeAnimation();
     }
 
+}
+
+void Ghost::handleCycleChange(GhostMode p_newMode)
+{
+    if(m_ghostMode == GhostMode::Chase && p_newMode == GhostMode::Scatter) {
+        startScatterMode();
+    } else if(m_ghostMode == GhostMode::Scatter && p_newMode == GhostMode::Chase) {
+        startChaseMode();
+    } else {
+        m_lastGhostMode = p_newMode;
+    }
 }
