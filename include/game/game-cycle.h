@@ -21,7 +21,7 @@ namespace pacman {
         /**
         * @brief Default constructor for GameCycle.
         */
-        GameCycle() : m_cycle{0}, m_startTicks{0} {}
+        GameCycle() : m_cycle{1}, m_startTicks{0} {}
 
         /**
          * @brief Increments the current game cycle.
@@ -49,7 +49,7 @@ namespace pacman {
         /**
          * @brief Resets the current game cycle to zero.
          */
-        constexpr void reset() { m_cycle = 0; m_startTicks = 0; }
+        constexpr void reset() { m_cycle = 1; m_startTicks = 0; }
 
         /**
          * @return Reference to start ticks of cycle
@@ -59,7 +59,7 @@ namespace pacman {
         /**
          * @return LevelState according to current cycle
          */
-        [[nodiscard]] auto getGameState() const { return m_cycle % 2 == 0 ? LevelState::Scatter : LevelState::Chase; }
+        [[nodiscard]] auto getGameState() const { return m_cycle % 2 == 0 ? LevelState::Chase : LevelState::Scatter; }
     };
 
 }
