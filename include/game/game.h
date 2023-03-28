@@ -1,25 +1,27 @@
 #pragma once
 
 #include <optional>
+
 #include "board/board.h"
 #include "entities/entity.h"
 #include "entities/pacman.h"
 #include "entities/ghosts/blinky.h"
-#include "sprites/sprite-handler.h"
 #include "entities/ghosts/clyde.h"
 #include "entities/ghosts/pinky.h"
 #include "entities/ghosts/inky.h"
-#include "utils/clock.h"
+#include "entities/fruit.h"
 #include "screens/loading-screen.h"
-#include "utils/shared_value.h"
 #include "screens/header-screen.h"
 #include "screens/footer-screen.h"
 #include "screens/game-screen.h"
+#include "sprites/sprite-handler.h"
 #include "level.h"
 #include "game-state.h"
 #include "player.h"
-#include "entities/fruit.h"
 #include "game-cycle.h"
+#include "utils/clock.h"
+#include "utils/shared_value.h"
+#include "audio/audio-handler.h"
 
 namespace pacman {
 
@@ -44,6 +46,7 @@ namespace pacman {
         SpriteHandler m_spriteHandler;
         Board m_board;
         GameCycle m_gameCycle;
+        AudioHandler m_audioHandler;
 
         // Entities
         Pacman m_pacman;

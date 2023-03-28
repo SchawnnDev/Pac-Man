@@ -89,7 +89,7 @@ add_executable(${PROJECT_NAME} ""
         src/screens/header-screen.cpp
         src/screens/game-screen.cpp
         src/utils/position.cpp
-        include/game/game-cycle.h)
+        include/game/game-cycle.h include/audio/audio-handler.h src/audio/audio-handler.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

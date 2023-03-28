@@ -4,7 +4,11 @@ using namespace pacman;
 
 int main(int argc, char** argv)
 {
-    Game game{};
-    game.start();
+    try {
+        Game game{};
+        game.start();
+    } catch(...) {
+        return -1;
+    }
     return 0;
 }
