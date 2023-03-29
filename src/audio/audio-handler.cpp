@@ -11,8 +11,6 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
             return m_credit;
         case Audio::Death:
             return m_death;
-        case Audio::Death2:
-            return m_death_2;
         case Audio::EatFruit:
             return m_eat_fruit;
         case Audio::EatGhost:

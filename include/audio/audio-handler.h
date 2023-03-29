@@ -11,7 +11,6 @@ namespace pacman {
     enum class Audio {
         Credit,
         Death,
-        Death2,
         EatFruit,
         EatGhost,
         Extend,
@@ -47,7 +46,6 @@ namespace pacman {
          */
         MixChunkPtr m_credit{nullptr, Mix_FreeChunk};
         MixChunkPtr m_death{nullptr, Mix_FreeChunk};
-        MixChunkPtr m_death_2{nullptr, Mix_FreeChunk};
         MixChunkPtr m_eat_fruit{nullptr, Mix_FreeChunk};
         MixChunkPtr m_eat_ghost{nullptr, Mix_FreeChunk};
         MixChunkPtr m_extend{nullptr, Mix_FreeChunk};
