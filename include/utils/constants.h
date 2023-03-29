@@ -26,7 +26,7 @@ constinit const int DOTS_TO_EAT = 193; // Normally 244
 // AUDIO
 constinit const int AUDIO_FREQUENCY = 96000;
 constinit const int AUDIO_CHANNELS = 2;
-constinit const int AUDIO_CHUNK_SIZE = 1024;
+constinit const int AUDIO_CHUNK_SIZE = 2048;
 constinit const int AUDIO_FILES_COUNT = 17;
 constinit const std::array<const char *, AUDIO_FILES_COUNT> AUDIO_FILES{"credit", "death_1", "death_2", "eat_fruit",
                                                                         "eat_ghost", "extend", "game_start",
