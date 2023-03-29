@@ -89,8 +89,34 @@ void Ghost::handleHomeMode() noexcept
 }
 
 
-void Ghost::handleScatterMode() noexcept
-{}
+void Ghost::handleScatterMode() noexcept {}
+
+void Ghost::handleFrightenedMode() noexcept {
+    if(!m_frightened) return;
+
+    m_ticks++;
+
+    if(m_ticks >= m_frightenedTimeout) {
+        m_frightened = false;
+        m_frightenedTimeout = 0;
+        m_frightenedFlashing = false;
+        changeAnimation();
+        return;
+    }
+
+    auto const flashesTimout = m_frightenedFlashes * GHOST_FRIGHTENED_FLASH_DURATION * 2;
+    auto remainingTime = m_frightenedTimeout - flashesTimout;
+
+    if(m_ticks < remainingTime) {
+        return;
+    }
+
+    if((m_frightenedTimeout - m_ticks) % GHOST_FRIGHTENED_FLASH_DURATION == 0)
+    {
+        m_frightenedFlashing = !m_frightenedFlashing;
+    }
+
+}
 
 auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
 {
@@ -287,36 +313,6 @@ void Ghost::handleCycleChange(GhostMode p_newMode)
     }
 }
 
-void Ghost::handleFrightenedMode() noexcept {
-    if(!m_frightened) return;
-
-    m_ticks++;
-
-    if(m_ticks >= m_frightenedTimeout) {
-        m_frightened = false;
-        changeAnimation();
-        return;
-    }
-
-    /*
-     * If m_ticks == 0: disable frightened
-     * If m_ticks < m_frightenedTimeout - GHOST_FRIGHTENED_FLASH_DURATION * 2: do nothing
-     */
-
-    auto const flashesTimout = m_frightenedFlashes * GHOST_FRIGHTENED_FLASH_DURATION * 2;
-    auto remainingTime = m_frightenedTimeout - flashesTimout;
-
-    if(m_ticks < remainingTime) {
-        return;
-    }
-
-    if(m_ticks % GHOST_FRIGHTENED_FLASH_DURATION == 0)
-    {
-
-    }
-
-}
-
 void Ghost::tick() noexcept {
 
     if(freezed() || !activated()) return;
@@ -349,4 +345,5 @@ void Ghost::reset() noexcept {
     m_frightenedFlashing = false;
     m_frightenedTimeout = 0;
     m_frightenedFlashes = 0;
+    m_ticks = 0;
 }

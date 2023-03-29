@@ -29,6 +29,14 @@ namespace pacman {
         std::optional<BoardCase> m_currentCase;
         int m_speed; // speed in pixel per tick
         bool m_freeze;
+
+        /**
+         * @param p_topLeft Top left position of rectangle
+         * @param p_bottomRight Bottom right position of rectangle
+         * @return Checks collisions between this entity and (p_topLeft, p_bottomRight) rectangle
+         */
+        [[nodiscard]] bool checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept;
+
     public:
 
         Entity() = delete;
@@ -169,13 +177,6 @@ namespace pacman {
          * @brief Unfreeze entities movement
          */
         void unfreezeMovement() noexcept;
-
-        /**
-         * @param p_topLeft Top left position of rectangle
-         * @param p_bottomRight Bottom right position of rectangle
-         * @return Checks collisions between this entity and (p_topLeft, p_bottomRight) rectangle
-         */
-        [[nodiscard]] bool checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept;
 
         /**
          * @param p_with Entity to check collision with

@@ -15,10 +15,9 @@ void Blinky::handleChaseTarget() noexcept {
 
 void Blinky::reset() noexcept
 {
+    Ghost::reset();
     position() = getPosition(10, 10);
     direction() = Direction::LEFT;
-    frightened() = false;
     startScatterMode();
-    ticks() = 0;
     Ghost::changeAnimation();
 }

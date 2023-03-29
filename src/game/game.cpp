@@ -335,6 +335,7 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
     if(event.key.keysym.sym == SDLK_c)
     {
         updateCredits(m_credit + 1);
+        m_audioHandler.playAudio(Audio::Credit, 0);
         return;
     }
 
