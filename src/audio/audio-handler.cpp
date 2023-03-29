@@ -44,16 +44,19 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     }
 }
 
-void AudioHandler::playAudio(Audio p_audio) noexcept
+void AudioHandler::playAudio(Audio p_audio, int p_channel) noexcept
 {
     auto& found = find(p_audio);
 
+    // handle channels
+    p_channel = p_channel < AUDIO_CHANNELS ? p_channel : 0;
+
+    // lazy loading
     if(found.get() == nullptr) {
         found.reset(Mix_LoadWAV(getFilePath(p_audio).c_str()));
     }
 
-    // Currently handling one channel
-    Mix_PlayChannel(0, found.get(), 0);
+    Mix_PlayChannel(p_channel, found.get(), 0);
 
 }
 

@@ -48,7 +48,17 @@ constinit const std::array<int, CYCLES_COUNT> MID_CYCLES{7 * FRAMERATE, 20 * FRA
                                                          5 * FRAMERATE, 1033 * FRAMERATE, FRAMERATE / 60};
 constinit const std::array<int, CYCLES_COUNT> END_CYCLES{5 * FRAMERATE, 20 * FRAMERATE, 5 * FRAMERATE, 20 * FRAMERATE,
                                                          5 * FRAMERATE, 1037 * FRAMERATE, FRAMERATE / 60};
-
+constinit const int GHOST_FRIGHTENED_TIMEOUTS_COUNT = 18;
+constinit const std::array<int, GHOST_FRIGHTENED_TIMEOUTS_COUNT> GHOST_FRIGHTENED_TIMEOUTS{6 * FRAMERATE, 5 * FRAMERATE,
+                                                                                           4 * FRAMERATE, 3 * FRAMERATE,
+                                                                                           2 * FRAMERATE, 5 * FRAMERATE,
+                                                                                           2 * FRAMERATE, 2 * FRAMERATE,
+                                                                                           1, 5 * FRAMERATE,
+                                                                                           2 * FRAMERATE, 1, 1,
+                                                                                           3 * FRAMERATE, 1, 1, 0,
+                                                                                           FRAMERATE};
+constinit const std::array<int, GHOST_FRIGHTENED_TIMEOUTS_COUNT> GHOST_FRIGHTENED_FLASHES{6, 5, 4, 3, 2, 5, 2, 2, 1, 5,
+                                                                                          2, 1, 1, 3, 1, 1, 0, 1};
 
 // FRUITS
 constinit const int FRUITS_REGISTERED = 14;

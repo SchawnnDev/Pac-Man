@@ -33,6 +33,8 @@ namespace pacman {
         bool m_frightened;
         int m_dotsCounter;
         int m_ticks;
+        int m_frightenedTimeout;
+        int m_frightenedFlashes;
     protected:
         /**
          * @return Reference to Pacman object, since the chase targeting system needs the position of pacman
@@ -90,11 +92,19 @@ namespace pacman {
         auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
     public:
-        Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode,
-              GhostAnimations const &p_ghostAnimations)
-                : Entity({0, 0}, 4, Direction::LEFT, p_board), m_ghostMode(p_ghostMode), m_target{},
-                  m_ghostAnimations{p_ghostAnimations}, m_pacman{p_pacman}, m_dotsCounter{0}, m_ticks{0},
-                  m_frightened{false}, m_lastGhostMode{GhostMode::Scatter} {
+        Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations)
+                : Entity({0, 0}, 4, Direction::LEFT, p_board)
+                , m_ghostMode(p_ghostMode)
+                , m_target{}
+                , m_ghostAnimations{p_ghostAnimations}
+                , m_pacman{p_pacman}
+                , m_dotsCounter{0}
+                , m_ticks{0}
+                , m_frightenedTicks{0}
+                , m_frightenedFlashes{0}
+                , m_frightened{false}
+                , m_lastGhostMode{GhostMode::Scatter}
+        {
             currentAnimation() = m_ghostAnimations.leftAnimation;
         }
 
@@ -158,8 +168,9 @@ namespace pacman {
 
         /**
          * @brief Start frightened mode, disabling path finding algorithm and using random decisions to travel trough the board
+         * @param p_level Current player level to know timeouts
          */
-        void startFrightenedMode() noexcept;
+        void startFrightenedMode(int p_level) noexcept;
 
         /**
          * @brief Start eaten mode, changing target to home and animations to eyes

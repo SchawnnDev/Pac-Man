@@ -27,7 +27,14 @@ namespace pacman {
         Siren4,
         Siren5
     };
-
+    /**
+     * @class AudioHandler
+     *
+     * Actually, there are 2 audio channels
+     * Therefore, when more than two sounds are played at the same time,
+     * one channel will be overwritten.
+     *
+     */
     class AudioHandler {
 
         /**
@@ -56,7 +63,7 @@ namespace pacman {
     public:
         AudioHandler();
 
-        void playAudio(Audio p_audio) noexcept;
+        void playAudio(Audio p_audio, int p_channel) noexcept;
 
         MixChunkPtr& find(Audio p_audio) noexcept;
 

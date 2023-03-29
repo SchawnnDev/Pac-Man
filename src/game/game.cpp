@@ -377,7 +377,7 @@ void Game::startPlaying(int p_players) noexcept
     m_players[1]->lives()--;
 
     // play start audio
-    m_audioHandler.playAudio(Audio::GameStart);
+    m_audioHandler.playAudio(Audio::GameStart, 0);
 
     startLevel(false);
 }
@@ -477,10 +477,10 @@ void Game::startChase() noexcept
 
 void Game::startFrightened() noexcept
 {
-    m_blinky.startFrightenedMode();
-    m_pinky.startFrightenedMode();
-    m_inky.startFrightenedMode();
-    m_clyde.startFrightenedMode();
+    m_blinky.startFrightenedMode(false);
+    m_pinky.startFrightenedMode(false);
+    m_inky.startFrightenedMode(false);
+    m_clyde.startFrightenedMode(false);
 }
 
 

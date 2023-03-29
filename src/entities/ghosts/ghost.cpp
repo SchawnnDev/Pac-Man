@@ -13,11 +13,14 @@ void Ghost::startEatenMode() noexcept
     target() = board().grid()[board().homeDoorIndex()].position();
 }
 
-void Ghost::startFrightenedMode() noexcept
+void Ghost::startFrightenedMode(int p_level) noexcept
 {
     if(m_frightened || m_ghostMode == GhostMode::Eaten) return;
     m_frightened = true;
     turnAround(); // turn 180 degrees
+    const auto idx = (p_level > GHOST_FRIGHTENED_TIMEOUTS_COUNT ? GHOST_FRIGHTENED_TIMEOUTS_COUNT : p_level) - 1;
+    m_frightenedTimeout = GHOST_FRIGHTENED_TIMEOUTS[idx];
+    m_frightenedFlashes = GHOST_FRIGHTENED_FLASHES[idx];
 }
 
 void Ghost::startChaseMode() noexcept
@@ -76,7 +79,11 @@ void Ghost::handleHomeMode() noexcept
 
 
 void Ghost::handleScatterMode() noexcept
-{}
+{
+
+
+
+}
 
 auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
 {
