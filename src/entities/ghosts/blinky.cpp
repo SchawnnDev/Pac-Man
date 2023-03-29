@@ -2,29 +2,6 @@
 
 using namespace pacman;
 
-void Blinky::tick() noexcept {
-    if(freezed() || !activated()) return;
-    currentCase() = board().getBoardCaseAtPixels(position());
-
-    switch(ghostMode())
-    {
-        case GhostMode::Home:
-            break;
-        case GhostMode::Scatter:
-            handleScatterMode();
-            break;
-        case GhostMode::Chase:
-            handleChaseTarget();
-            break;
-        case GhostMode::Eaten:
-            handleEatenMode();
-            break;
-    }
-
-    // handle path finding & movements
-    handleMovement();
-}
-
 void Blinky::startScatterMode() noexcept {
     if (ghostMode() == GhostMode::Scatter) return;
     ghostMode() = GhostMode::Scatter;
@@ -42,5 +19,6 @@ void Blinky::reset() noexcept
     direction() = Direction::LEFT;
     frightened() = false;
     startScatterMode();
+    ticks() = 0;
     Ghost::changeAnimation();
 }

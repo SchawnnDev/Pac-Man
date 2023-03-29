@@ -2,30 +2,6 @@
 
 using namespace pacman;
 
-void Clyde::tick() noexcept {
-    if(freezed() || !activated()) return;
-    currentCase() = board().getBoardCaseAtPixels(position());
-
-    switch(ghostMode())
-    {
-        case GhostMode::Home:
-            handleHomeMode();
-            return;
-        case GhostMode::Scatter:
-            handleScatterMode();
-            break;
-        case GhostMode::Chase:
-            handleChaseTarget();
-            break;
-        case GhostMode::Eaten:
-            handleEatenMode();
-            break;
-    }
-
-    // handle path finding & movements
-    handleMovement();
-}
-
 void Clyde::startScatterMode() noexcept {
     if (ghostMode() == GhostMode::Scatter) return;
     ghostMode() = GhostMode::Scatter;
@@ -52,5 +28,6 @@ void Clyde::reset() noexcept
     ghostMode() = GhostMode::Home;
     direction() = Direction::UP;
     frightened() = false;
+    ticks() = 0;
     Ghost::changeAnimation();
 }

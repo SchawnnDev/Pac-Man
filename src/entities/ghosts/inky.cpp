@@ -2,30 +2,6 @@
 
 using namespace pacman;
 
-void Inky::tick() noexcept {
-    if(freezed() || !activated()) return;
-    currentCase() = board().getBoardCaseAtPixels(position());
-
-    switch(ghostMode())
-    {
-        case GhostMode::Home:
-            handleHomeMode();
-            return;
-        case GhostMode::Scatter:
-            handleScatterMode();
-            break;
-        case GhostMode::Chase:
-            handleChaseTarget();
-            break;
-        case GhostMode::Eaten:
-            handleEatenMode();
-            break;
-    }
-
-    // handle path finding & movements
-    handleMovement();
-}
-
 void Inky::startScatterMode() noexcept {
     if (ghostMode() == GhostMode::Scatter) return;
     ghostMode() = GhostMode::Scatter;
@@ -55,5 +31,6 @@ void Inky::reset() noexcept
     direction() = Direction::UP;
     target() = {9, 11};
     frightened() = false;
+    ticks() = 0;
     Ghost::changeAnimation();
 }

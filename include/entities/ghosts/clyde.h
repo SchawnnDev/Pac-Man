@@ -21,12 +21,6 @@ namespace pacman {
         [[nodiscard]] inline EntityType entityType() const noexcept override { return EntityType::Clyde; };
 
         /**
-         * @brief Tick logic, handles intern entities logic
-         * @override
-         */
-        void tick() noexcept override;
-
-        /**
          * @brief Reset all variables to default
          * @override
          */

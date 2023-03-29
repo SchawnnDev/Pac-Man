@@ -16,11 +16,22 @@ void Ghost::startEatenMode() noexcept
 void Ghost::startFrightenedMode(int p_level) noexcept
 {
     if(m_frightened || m_ghostMode == GhostMode::Eaten) return;
+
+    // Handle timeouts
+    if (p_level > GHOST_FRIGHTENED_TIMEOUTS_COUNT) {
+        m_frightenedTimeout = 0;
+        m_frightenedFlashes = 0;
+    } else {
+        m_frightenedTimeout = GHOST_FRIGHTENED_TIMEOUTS[p_level - 1];
+        m_frightenedFlashes = GHOST_FRIGHTENED_FLASHES[p_level - 1];
+    }
+
+    // Don't start frightened mode when timeout is 0
+    if(m_frightenedTimeout == 0) return;
+
+    m_ticks = 0;
     m_frightened = true;
     turnAround(); // turn 180 degrees
-    const auto idx = (p_level > GHOST_FRIGHTENED_TIMEOUTS_COUNT ? GHOST_FRIGHTENED_TIMEOUTS_COUNT : p_level) - 1;
-    m_frightenedTimeout = GHOST_FRIGHTENED_TIMEOUTS[idx];
-    m_frightenedFlashes = GHOST_FRIGHTENED_FLASHES[idx];
 }
 
 void Ghost::startChaseMode() noexcept
@@ -79,11 +90,7 @@ void Ghost::handleHomeMode() noexcept
 
 
 void Ghost::handleScatterMode() noexcept
-{
-
-
-
-}
+{}
 
 auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
 {
@@ -217,7 +224,13 @@ void Ghost::changeAnimation() noexcept
 
     if(m_frightened)
     {
-        currentAnimation() = m_ghostAnimations.frightenedAnimation;
+
+        if(m_frightenedFlashing) {
+            currentAnimation() = m_ghostAnimations.frightenedAnimation;
+        } else {
+            currentAnimation() = m_ghostAnimations.frightenedAnimation;
+        }
+
         // TODO: impl end frightened animation
         return;
     }
@@ -252,7 +265,7 @@ void Ghost::turnAround() noexcept
         if (!nextCase) return; // should not be null
 
         if (!BoardCase::isPracticable(nextCase.value(), false)) {
-            // todo:
+            // todo: handle other direction
         }
 
         changeAnimation();
@@ -272,4 +285,68 @@ void Ghost::handleCycleChange(GhostMode p_newMode)
     } else {
         m_lastGhostMode = p_newMode;
     }
+}
+
+void Ghost::handleFrightenedMode() noexcept {
+    if(!m_frightened) return;
+
+    m_ticks++;
+
+    if(m_ticks >= m_frightenedTimeout) {
+        m_frightened = false;
+        changeAnimation();
+        return;
+    }
+
+    /*
+     * If m_ticks == 0: disable frightened
+     * If m_ticks < m_frightenedTimeout - GHOST_FRIGHTENED_FLASH_DURATION * 2: do nothing
+     */
+
+    auto const flashesTimout = m_frightenedFlashes * GHOST_FRIGHTENED_FLASH_DURATION * 2;
+    auto remainingTime = m_frightenedTimeout - flashesTimout;
+
+    if(m_ticks < remainingTime) {
+        return;
+    }
+
+    if(m_ticks % GHOST_FRIGHTENED_FLASH_DURATION == 0)
+    {
+
+    }
+
+}
+
+void Ghost::tick() noexcept {
+
+    if(freezed() || !activated()) return;
+    currentCase() = board().getBoardCaseAtPixels(position());
+
+    if(frightened()) { handleFrightenedMode(); }
+
+    switch(ghostMode())
+    {
+        case GhostMode::Home:
+            handleHomeMode();
+            return;
+        case GhostMode::Scatter:
+            handleScatterMode();
+            break;
+        case GhostMode::Chase:
+            handleChaseTarget();
+            break;
+        case GhostMode::Eaten:
+            handleEatenMode();
+            break;
+    }
+
+    // handle path finding & movements
+    handleMovement();
+}
+
+void Ghost::reset() noexcept {
+    m_frightened = false;
+    m_frightenedFlashing = false;
+    m_frightenedTimeout = 0;
+    m_frightenedFlashes = 0;
 }

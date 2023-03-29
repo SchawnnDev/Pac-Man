@@ -31,6 +31,7 @@ namespace pacman {
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
         bool m_frightened;
+        bool m_frightenedFlashing;
         int m_dotsCounter;
         int m_ticks;
         int m_frightenedTimeout;
@@ -62,6 +63,11 @@ namespace pacman {
         void handleEatenMode() noexcept;
 
         /**
+         * @brief Handles frightened mode (timeout and flashes)
+         */
+         void handleFrightenedMode() noexcept;
+
+        /**
          * @brief Moves the ghost according to direction & speed
          */
         void handleMovement() noexcept;
@@ -91,6 +97,12 @@ namespace pacman {
          */
         auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
+        /**
+         * @brief Tick logic, handles intern entities logic
+         * @override
+         */
+        void tick() noexcept override;
+
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board)
@@ -100,9 +112,10 @@ namespace pacman {
                 , m_pacman{p_pacman}
                 , m_dotsCounter{0}
                 , m_ticks{0}
-                , m_frightenedTicks{0}
+                , m_frightenedTimeout{0}
                 , m_frightenedFlashes{0}
                 , m_frightened{false}
+                , m_frightenedFlashing{false}
                 , m_lastGhostMode{GhostMode::Scatter}
         {
             currentAnimation() = m_ghostAnimations.leftAnimation;
@@ -182,6 +195,8 @@ namespace pacman {
          * @param p_newMode New cycle ghost mode
          */
         void handleCycleChange(GhostMode p_newMode);
+
+        void reset() noexcept override;
 
     };
 
