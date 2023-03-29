@@ -32,6 +32,7 @@ void Ghost::startFrightenedMode(int p_level) noexcept
     m_ticks = 0;
     m_frightened = true;
     turnAround(); // turn 180 degrees
+    Ghost::changeAnimation();
 }
 
 void Ghost::startChaseMode() noexcept
@@ -114,6 +115,7 @@ void Ghost::handleFrightenedMode() noexcept {
     if((m_frightenedTimeout - m_ticks) % GHOST_FRIGHTENED_FLASH_DURATION == 0)
     {
         m_frightenedFlashing = !m_frightenedFlashing;
+        changeAnimation();
     }
 
 }
@@ -252,7 +254,7 @@ void Ghost::changeAnimation() noexcept
     {
 
         if(m_frightenedFlashing) {
-            currentAnimation() = m_ghostAnimations.frightenedAnimation;
+            currentAnimation() = m_ghostAnimations.frightenedEndAnimation;
         } else {
             currentAnimation() = m_ghostAnimations.frightenedAnimation;
         }

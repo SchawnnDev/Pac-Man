@@ -9,8 +9,8 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     switch (p_audio) {
         case Audio::Credit:
             return m_credit;
-        case Audio::Death1:
-            return m_death_1;
+        case Audio::Death:
+            return m_death;
         case Audio::Death2:
             return m_death_2;
         case Audio::EatFruit:
@@ -44,7 +44,7 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     }
 }
 
-void AudioHandler::playAudio(Audio p_audio, int p_channel) noexcept
+void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_delay, int p_loops) noexcept
 {
     auto& found = find(p_audio);
 
@@ -56,8 +56,17 @@ void AudioHandler::playAudio(Audio p_audio, int p_channel) noexcept
         found.reset(Mix_LoadWAV(getFilePath(p_audio).c_str()));
     }
 
-    Mix_PlayChannel(p_channel, found.get(), 0);
+    Mix_PlayChannelTimed(p_channel, found.get(), p_loops, p_delay);
+}
 
+void AudioHandler::pauseAudio(int p_channel) noexcept
+{
+    Mix_Pause(p_channel);
+}
+
+void AudioHandler::resumeAudio(int p_channel) noexcept
+{
+    Mix_Resume(p_channel);
 }
 
 std::string AudioHandler::getFilePath(Audio p_audio) noexcept {

@@ -28,7 +28,8 @@ constinit const int AUDIO_FREQUENCY = 96000;
 constinit const int AUDIO_CHANNELS = 2;
 constinit const int AUDIO_CHUNK_SIZE = 2048;
 constinit const int AUDIO_FILES_COUNT = 17;
-constinit const std::array<const char *, AUDIO_FILES_COUNT> AUDIO_FILES{"credit", "death_1", "death_2", "eat_fruit",
+constinit const int AUDIO_MUNCH_DURATION = 79; // in MS
+constinit const std::array<const char *, AUDIO_FILES_COUNT> AUDIO_FILES{"credit", "death", "death_2", "eat_fruit",
                                                                         "eat_ghost", "extend", "game_start",
                                                                         "intermission", "munch_1", "munch_2",
                                                                         "power_pellet", "retreating", "siren_1",
@@ -39,7 +40,7 @@ constinit const int CASE_FLAG_NO_UP = 1 << 0;
 constinit const int CASE_FLAG_TUNNEL_SLOW_DOWN = 1 << 1;
 
 // TIMEOUTS
-constinit const int TIMEOUT_START_GAME = static_cast<int>(4.228798 * FRAMERATE); // Duration of start sound -> 4.228798
+constinit const int TIMEOUT_START_GAME = static_cast<int>(4.228798 * FRAMERATE) + 10; // Duration of start sound -> 4.228798
 constinit const int TIMEOUT_PRE_START_GAME = TIMEOUT_START_GAME / 2;
 constinit const int CYCLES_COUNT = 7;
 constinit const std::array<int, CYCLES_COUNT> START_CYCLES{7 * FRAMERATE, 20 * FRAMERATE, 7 * FRAMERATE, 20 * FRAMERATE,
@@ -59,7 +60,7 @@ constinit const std::array<int, GHOST_FRIGHTENED_TIMEOUTS_COUNT> GHOST_FRIGHTENE
                                                                                            FRAMERATE};
 constinit const std::array<int, GHOST_FRIGHTENED_TIMEOUTS_COUNT> GHOST_FRIGHTENED_FLASHES{6, 5, 4, 3, 2, 5, 2, 2, 1, 5,
                                                                                           2, 1, 1, 3, 1, 1, 0, 1};
-constinit const int GHOST_FRIGHTENED_FLASH_DURATION = 3; // in ticks
+constinit const int GHOST_FRIGHTENED_FLASH_DURATION = 10; // in ticks
 // FRUITS
 constinit const int FRUITS_REGISTERED = 14;
 constinit const std::array<int, FRUITS_REGISTERED> FRUITS_LEVELS{0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7};
