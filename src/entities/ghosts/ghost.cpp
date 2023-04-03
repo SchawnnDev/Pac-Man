@@ -350,3 +350,7 @@ void Ghost::reset() noexcept {
     m_frightenedTimeout = 0;
     m_frightenedFlashes = 0;
 }
+
+void Ghost::handleChaseTarget() noexcept {
+
+}

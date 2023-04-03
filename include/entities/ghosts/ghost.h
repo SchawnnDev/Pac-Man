@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "utils/position.h"
 #include "entities/entity.h"
 #include "entities/pacman.h"
@@ -36,6 +37,7 @@ namespace pacman {
         int m_ticks;
         int m_frightenedTimeout;
         int m_frightenedFlashes;
+        std::function<Position(Pacman const &m_pacman)> m_targetHandlingFct;
     protected:
         /**
          * @return Reference to Pacman object, since the chase targeting system needs the position of pacman
@@ -44,8 +46,9 @@ namespace pacman {
 
         /**
          * @brief Handles chase target and logic (specific to each ghost)
+         * Executes m_targetHandlingFct function
          */
-        virtual void handleChaseTarget() noexcept = 0;
+        void handleChaseTarget() noexcept;
 
         /**
          * @brief Handles scatter mode target and logic
