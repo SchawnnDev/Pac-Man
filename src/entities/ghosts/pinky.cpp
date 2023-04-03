@@ -23,11 +23,10 @@ void Pinky::handleChaseTarget() noexcept {
 
 void Pinky::reset() noexcept
 {
+    Ghost::reset();
     position() = getPosition(10, 12);
     ghostMode() = GhostMode::Home;
     direction() = Direction::DOWN;
     target() = {10, 14};
-    frightened() = false;
-    ticks() = 0;
     Ghost::changeAnimation();
 }

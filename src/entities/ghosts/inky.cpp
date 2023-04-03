@@ -26,11 +26,10 @@ void Inky::handleChaseTarget() noexcept {
 
 void Inky::reset() noexcept
 {
+    Ghost::reset();
     position() = getPosition(9, 13);
     ghostMode() = GhostMode::Home;
     direction() = Direction::UP;
     target() = {9, 11};
-    frightened() = false;
-    ticks() = 0;
     Ghost::changeAnimation();
 }

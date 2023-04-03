@@ -24,10 +24,9 @@ void Clyde::handleChaseTarget() noexcept {
 
 void Clyde::reset() noexcept
 {
+    Ghost::reset();
     position() = getPosition(11, 13);
     ghostMode() = GhostMode::Home;
     direction() = Direction::UP;
-    frightened() = false;
-    ticks() = 0;
     Ghost::changeAnimation();
 }

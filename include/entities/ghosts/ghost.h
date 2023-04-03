@@ -100,12 +100,6 @@ namespace pacman {
          */
         auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
-        /**
-         * @brief Tick logic, handles intern entities logic
-         * @override
-         */
-        void tick() noexcept override;
-
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board)
@@ -199,7 +193,17 @@ namespace pacman {
          */
         void handleCycleChange(GhostMode p_newMode);
 
+        /**
+         * @brief Reset all variables to default
+         * @override
+         */
         void reset() noexcept override;
+
+        /**
+         * @brief Tick logic, handles intern entities logic
+         * @override
+         */
+        void tick() noexcept override;
 
     };
 

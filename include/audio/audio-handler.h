@@ -10,8 +10,7 @@ namespace pacman {
 
     enum class Audio {
         Credit,
-        Death1,
-        Death2,
+        Death,
         EatFruit,
         EatGhost,
         Extend,
@@ -34,6 +33,9 @@ namespace pacman {
      * Therefore, when more than two sounds are played at the same time,
      * one channel will be overwritten.
      *
+     * - Channel 0 : misc sounds
+     * - Channel 1 : ghost sounds
+     *
      */
     class AudioHandler {
 
@@ -43,8 +45,7 @@ namespace pacman {
          * it will be, and then saved into MixChunkPtr
          */
         MixChunkPtr m_credit{nullptr, Mix_FreeChunk};
-        MixChunkPtr m_death_1{nullptr, Mix_FreeChunk};
-        MixChunkPtr m_death_2{nullptr, Mix_FreeChunk};
+        MixChunkPtr m_death{nullptr, Mix_FreeChunk};
         MixChunkPtr m_eat_fruit{nullptr, Mix_FreeChunk};
         MixChunkPtr m_eat_ghost{nullptr, Mix_FreeChunk};
         MixChunkPtr m_extend{nullptr, Mix_FreeChunk};
@@ -63,7 +64,11 @@ namespace pacman {
     public:
         AudioHandler();
 
-        void playAudio(Audio p_audio, int p_channel) noexcept;
+        void playAudio(Audio p_audio, int p_channel = 0, int p_delay = -1, int p_loops = 0) noexcept;
+
+        void pauseAudio(int p_channel = 0) noexcept;
+
+        void resumeAudio(int p_channel = 0) noexcept;
 
         MixChunkPtr& find(Audio p_audio) noexcept;
 

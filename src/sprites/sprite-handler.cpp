@@ -79,9 +79,9 @@ void SpriteHandler::initAnimations() noexcept
             getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
-                       "pacman_dying_10"), true, 6};
+                       "pacman_dying_10", "nothing", "nothing"), true, 6};
     m_spriteAnimations["ghost-frightened"] = SpriteAnimation{getSprites("ghost_frightened_1", "ghost_frightened_2"), false, 3};
-    m_spriteAnimations["ghost-frightened-end"] = SpriteAnimation{getSprites("ghost_frightened_1", "ghost_frightened_2", "ghost_frightened_end_1", "ghost_frightened_end_2"), false, GHOST_FRIGHTENED_FLASH_DURATION};
+    m_spriteAnimations["ghost-frightened-end"] = SpriteAnimation{getSprites("ghost_frightened_end_1", "ghost_frightened_end_2"), false, GHOST_FRIGHTENED_FLASH_DURATION};
     m_spriteAnimations["ghost-eyes-right"] = SpriteAnimation{getSprites("ghost_eyes_right"), false, 0, true, true};
     m_spriteAnimations["ghost-eyes-left"] = SpriteAnimation{getSprites("ghost_eyes_left"), false, 0, true, true};
     m_spriteAnimations["ghost-eyes-up"] = SpriteAnimation{getSprites("ghost_eyes_up"), false, 0, true, true};

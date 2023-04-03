@@ -245,6 +245,7 @@ void Game::handleLogic() noexcept
                     m_clyde.activated() = false;
                     m_inky.activated() = false;
                     m_pacman.die();
+                    m_audioHandler.playAudio(Audio::Death);
 
                     if (m_currentPlayer->lives() == 0) {
                         m_state = GameState::GameOver;
@@ -335,6 +336,7 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
     if(event.key.keysym.sym == SDLK_c)
     {
         updateCredits(m_credit + 1);
+        m_audioHandler.playAudio(Audio::Credit, 0);
         return;
     }
 
@@ -477,10 +479,11 @@ void Game::startChase() noexcept
 
 void Game::startFrightened() noexcept
 {
-    m_blinky.startFrightenedMode(false);
-    m_pinky.startFrightenedMode(false);
-    m_inky.startFrightenedMode(false);
-    m_clyde.startFrightenedMode(false);
+    auto const level = m_currentPlayer->level();
+    m_blinky.startFrightenedMode(level);
+    m_pinky.startFrightenedMode(level);
+    m_inky.startFrightenedMode(level);
+    m_clyde.startFrightenedMode(level);
 }
 
 
@@ -509,6 +512,10 @@ void Game::checkCollisions() noexcept
                     if(isBonus) {
                         startFrightened();
                         m_eatenFrightenedGhosts = 0;
+                        m_audioHandler.playAudio(Audio::PowerPellet);
+                    } else {
+                        m_audioHandler.playAudio(Audio::Munch1, 0, AUDIO_MUNCH_DURATION);
+                        m_audioHandler.playAudio(Audio::Munch2);
                     }
 
                     // Check win
@@ -541,6 +548,7 @@ void Game::checkCollisions() noexcept
             auto const points = getFruitValueByLevel(m_currentPlayer->level());
             m_fruit.eat(points);
             updateScore(points);
+            m_audioHandler.playAudio(Audio::EatFruit);
         }
 
     }
@@ -550,6 +558,7 @@ void Game::checkCollisions() noexcept
         if (m_blinky.frightened())
         {
             m_blinky.startEatenMode();
+            m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_blinky, calculateFrightenedGhostScore());
         } else {
             performPacmanDying();
@@ -562,6 +571,7 @@ void Game::checkCollisions() noexcept
         if(m_pinky.frightened())
         {
             m_pinky.startEatenMode();
+            m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_pinky, calculateFrightenedGhostScore());
         } else {
             performPacmanDying();
@@ -574,6 +584,7 @@ void Game::checkCollisions() noexcept
         if(m_clyde.frightened())
         {
             m_clyde.startEatenMode();
+            m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_clyde, calculateFrightenedGhostScore());
         } else {
             performPacmanDying();
@@ -587,6 +598,7 @@ void Game::checkCollisions() noexcept
         if(m_inky.frightened())
         {
             m_inky.startEatenMode();
+            m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_inky, calculateFrightenedGhostScore());
         } else {
             performPacmanDying();
