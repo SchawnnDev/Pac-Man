@@ -50,10 +50,7 @@ namespace pacman {
 
         // Entities
         Pacman m_pacman;
-        Blinky m_blinky;
-        Clyde m_clyde;
-        Pinky m_pinky;
-        Inky m_inky;
+        std::array<Ghost, 4> m_ghosts;
         Fruit m_fruit;
 
         // Screens
@@ -211,6 +208,7 @@ namespace pacman {
          * @brief Check cycle change and do actions if a change occurs
          */
         void handleCycleChange() noexcept;
+
     public:
         /**
          * @brief Constructs a new Game object.

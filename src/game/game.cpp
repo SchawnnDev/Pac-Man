@@ -18,13 +18,15 @@ Game::Game()
           m_levelState{LevelState::PlayerDisplay},
           m_gameCycle{},
           m_audioHandler{},
+          m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
+          m_ghosts{
+              Ghost{m_board, m_pacman, GhostMode::Scatter, m_spriteHandler.blinkyAnimations(), EntityType::Blinky},
+              Ghost{m_board, m_pacman, GhostMode::Home, m_spriteHandler.pinkyAnimations(), EntityType::Pinky},
+              Ghost{m_board, m_pacman, GhostMode::Home, m_spriteHandler.clydeAnimations(), EntityType::Clyde},
+              Ghost{m_board, m_pacman, GhostMode::Home, m_spriteHandler.inkyAnimations(), EntityType::Inky}
+          },
           m_spriteHandler{ASSETS_SPRITES_PATH},
           m_board{ASSETS_BOARD_PATH, m_currentPlayer, m_spriteHandler.boardResources()},
-          m_pacman{m_board, m_spriteHandler.pacmanAnimations()},
-          m_blinky{m_board, m_pacman, m_spriteHandler.blinkyAnimations()},
-          m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
-          m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
-          m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
           m_fruit{m_board, m_spriteHandler.fruitResources()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_playerCount, m_currentPlayer},
@@ -64,7 +66,6 @@ Game::Game()
 
     // Set SDL_mixer min volume
     Mix_Volume(0, MIX_MAX_VOLUME * .75);
-
 }
 
 Game::~Game()
@@ -82,10 +83,7 @@ void Game::start() noexcept
     Clock clock{};
     m_board.activated() = false;
     m_pacman.activated() = false;
-    m_blinky.activated() = false;
-    m_pinky.activated() = false;
-    m_inky.activated() = false;
-    m_clyde.activated() = false;
+    std::for_each(m_ghosts.begin(), m_ghosts.end(), [](Ghost&p_ghost) { p_ghost.activated() = false; });
     m_headerScreen.activated() = true;
     m_gameScreen.activated() = false;
 

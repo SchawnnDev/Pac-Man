@@ -31,6 +31,7 @@ namespace pacman {
         Position m_target;
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
+        EntityType m_entityType;
         bool m_frightened;
         bool m_frightenedFlashing;
         int m_dotsCounter;
@@ -101,7 +102,7 @@ namespace pacman {
         auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
     public:
-        Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations)
+        Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations, EntityType p_entityType)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board)
                 , m_ghostMode(p_ghostMode)
                 , m_target{}
@@ -164,7 +165,7 @@ namespace pacman {
         /**
          * @brief Starts the scatter mode, changing target to a corner
          */
-        virtual void startScatterMode() noexcept = 0;
+        void startScatterMode() noexcept;
 
         /**
          * @brief Starts the chase mode, changing target to pacman
@@ -204,6 +205,13 @@ namespace pacman {
          * @override
          */
         void tick() noexcept override;
+
+        /**
+         * @return Type of entity
+         * @override
+         */
+        [[nodiscard]] EntityType entityType() const noexcept override;
+
 
     };
 

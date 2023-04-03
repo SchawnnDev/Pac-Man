@@ -351,5 +351,36 @@ void Ghost::reset() noexcept {
 }
 
 void Ghost::handleChaseTarget() noexcept {
+    if (ghostMode() != GhostMode::Chase) return;
+    target() = m_targetHandlingFct(m_pacman);
+}
+
+EntityType Ghost::entityType() const noexcept {
+    return m_entityType;
+}
+
+void Ghost::startScatterMode() noexcept
+{
+    if (ghostMode() == GhostMode::Scatter) return;
+    ghostMode() = GhostMode::Scatter;
+
+    switch (m_entityType) {
+        case EntityType::Blinky:
+            target() = {BOARD_SIZE_X - 3, -3};
+            break;
+        case EntityType::Pinky:
+            target() = {2, -3};
+            break;
+        case EntityType::Clyde:
+            target() = {0, BOARD_SIZE_Y + 1};
+            break;
+        case EntityType::Inky:
+            target() = {BOARD_SIZE_X - 1, BOARD_SIZE_Y + 1};
+            break;
+        default: // Impossible
+            return;
+    }
+
+    turnAround();
 
 }
