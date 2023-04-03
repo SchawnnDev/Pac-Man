@@ -41,6 +41,7 @@ namespace pacman {
         PlayerPtr m_currentPlayer;
         int64_t m_freezeTimeout;
         int m_eatenFrightenedGhosts;
+        bool m_currentEatSound;
 
         // Handlers
         SpriteHandler m_spriteHandler;

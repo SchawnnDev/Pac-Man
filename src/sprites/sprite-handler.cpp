@@ -211,7 +211,7 @@ void SpriteHandler::initStructs() noexcept
     m_footerScreenResources.lifeSprite = getSprite("pacman_life").value_or(nothing);
     std::array<std::string, 8> const fruitNames = {"fruit_cherry", "fruit_raspberry", "fruit_orange", "fruit_apple",
                                                    "fruit_medal", "fruit_helmet", "fruit_bell", "fruit_key"};
-    for (int i = 0; i < fruitNames.size(); ++i)
+    for (size_t i = 0; i < fruitNames.size(); ++i)
         m_fruitsSprites[i] = getSprite(fruitNames[i]).value_or(nothing);
 
     //

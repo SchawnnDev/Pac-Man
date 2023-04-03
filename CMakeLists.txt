@@ -5,7 +5,42 @@ project(PacMan LANGUAGES CXX)
 # add dependencies
 include(cmake/CPM.cmake)
 
+SET(BUILD_SHARED_LIBS OFF CACHE BOOL "BUILD_SHARED_LIBS" FORCE)
+SET(BUILD_STATIC_LIBS ON CACHE BOOL "BUILD_STATIC_LIBS" FORCE)
+SET(POSITION_INDEPENDENT_CODE ON CACHE BOOL "POSITION_INDEPENDENT_CODE" FORCE)
+
+string(TIMESTAMP BEFORE "%s")
+CPMAddPackage(
+        NAME SDL2
+        GITHUB_REPOSITORY libsdl-org/SDL
+        GIT_TAG release-2.26.2
+        OPTIONS
+        "SDL2_DISABLE_INSTALL ON"
+        "SDL_SHARED OFF"
+        "SDL_STATIC ON"
+        "SDL_STATIC_PIC ON"
+        "SDL_WERROR OFF"
+)
 find_package(SDL2 REQUIRED)
+if (SDL2_ADDED)
+    file(GLOB SDL_HEADERS "${SDL_SOURCE_DIR}/include/*.h")
+
+    # Create a target that copies headers at build time, when they change
+    add_custom_target(sdl_copy_headers_in_build_dir
+            COMMAND ${CMAKE_COMMAND} -E copy_directory "${SDL_SOURCE_DIR}/include" "${CMAKE_BINARY_DIR}/SDLHeaders/SDL2"
+            DEPENDS ${SDL_HEADERS})
+
+    # Make SDL depend from it
+    add_dependencies(SDL2-static sdl_copy_headers_in_build_dir)
+
+    # And add the directory where headers have been copied as an interface include dir
+    target_include_directories(SDL2-static INTERFACE "${CMAKE_BINARY_DIR}/SDLHeaders")
+
+    set(SDL2_INCLUDE_DIR ${SDL2_SOURCE_DIR}/include)
+endif()
+string(TIMESTAMP AFTER "%s")
+math(EXPR DELTASDL "${AFTER} - ${BEFORE}")
+message(STATUS "SDL2 TIME: ${DELTASDL}s")
 
 # XML Reader Library
 CPMAddPackage("gh:zeux/pugixml#v1.13")
@@ -88,7 +123,6 @@ add_executable(${PROJECT_NAME} ""
         src/screens/footer-screen.cpp
         src/screens/header-screen.cpp
         src/screens/game-screen.cpp
-        src/utils/position.cpp
         include/game/game-cycle.h include/audio/audio-handler.h src/audio/audio-handler.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -97,10 +131,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_EXTENSIONS NO
         )
 target_sources(${PROJECT_NAME} PRIVATE src/main.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL_Mixer_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIR} ${SDL_Mixer_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_definitions(${PROJECT_NAME} PRIVATE "SDL_MAIN_HANDLED")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} pugixml::pugixml SDL2_mixer)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} SDL2-static pugixml::pugixml SDL2_mixer)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)

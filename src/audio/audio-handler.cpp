@@ -42,7 +42,7 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     }
 }
 
-void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_delay, int p_loops) noexcept
+void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p_loops) noexcept
 {
     auto& found = find(p_audio);
 
@@ -54,7 +54,7 @@ void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_delay, int p_lo
         found.reset(Mix_LoadWAV(getFilePath(p_audio).c_str()));
     }
 
-    Mix_PlayChannelTimed(p_channel, found.get(), p_loops, p_delay);
+    Mix_PlayChannelTimed(p_channel, found.get(), p_loops, p_duration);
 }
 
 void AudioHandler::pauseAudio(int p_channel) noexcept

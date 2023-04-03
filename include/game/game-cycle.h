@@ -14,7 +14,7 @@ namespace pacman {
     class GameCycle {
 
         int m_cycle;
-        uint64_t m_startTicks;
+        int64_t m_startTicks;
 
     public:
 
@@ -33,7 +33,7 @@ namespace pacman {
          * @param p_level The level for which to get the cycle duration.
          * @return The duration of the cycle.
          */
-        [[nodiscard]] constexpr uint64_t getCycleDuration(int p_level) const {
+        [[nodiscard]] constexpr int64_t getCycleDuration(int p_level) const {
 
             auto cycle = (m_cycle > CYCLES_COUNT ? CYCLES_COUNT : m_cycle) - 1;
 

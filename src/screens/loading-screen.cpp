@@ -76,7 +76,7 @@ void LoadingScreen::tick() noexcept {
     auto els = elements();
     const auto size = els.size() - 4; // 3 > reserved
 
-    for (int j = 0; j < size; ++j) {
+    for (size_t j = 0; j < size; ++j) {
         auto &element = els[j];
         if (element->activated() || ticks() != j * (FRAMERATE / 2)) continue;
         element->activated() = true;

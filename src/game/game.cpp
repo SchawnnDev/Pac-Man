@@ -14,6 +14,7 @@ Game::Game()
           m_highScore{0},
           m_freezeTimeout{-1},
           m_eatenFrightenedGhosts{0},
+          m_currentEatSound{false},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
           m_gameCycle{},
@@ -46,12 +47,12 @@ Game::Game()
         throw;
     }
 
+    Mix_AllocateChannels(AUDIO_CHANNELS);
 
     m_window.reset(SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_UNDEFINED,
                                     SDL_WINDOWPOS_UNDEFINED, WINDOW_SIZE_WIDTH,
                                     WINDOW_SIZE_HEIGHT, SDL_WINDOW_SHOWN));
-    m_windowRenderer.reset(SDL_CreateRenderer(m_window.get(), -1,
-                                              SDL_RENDERER_ACCELERATED));
+    m_windowRenderer.reset(SDL_CreateRenderer(m_window.get(), -1, SDL_RENDERER_ACCELERATED));
     SDL_SetRenderDrawBlendMode(m_windowRenderer.get(), SDL_BLENDMODE_BLEND);
 
     m_spriteSurface.reset(SDL_LoadBMP(ASSETS_SPRITE_PATH));
@@ -63,7 +64,9 @@ Game::Game()
     SDL_SetTextureBlendMode(m_spriteTexture.get(), SDL_BLENDMODE_BLEND);
 
     // Set SDL_mixer min volume
-    Mix_Volume(0, MIX_MAX_VOLUME * .75);
+    for (int i = 0; i < AUDIO_CHANNELS; ++i) {
+        Mix_Volume(i, MIX_MAX_VOLUME * .75);
+    }
 
 }
 
@@ -446,6 +449,7 @@ void Game::startLevel(bool p_died) noexcept
     m_clyde.reset();
     m_board.load();
     m_gameCycle.reset();
+    m_currentEatSound = false;
     m_ticks = 0;
     m_freezeTimeout = -1;
 }
@@ -512,10 +516,10 @@ void Game::checkCollisions() noexcept
                     if(isBonus) {
                         startFrightened();
                         m_eatenFrightenedGhosts = 0;
-                        m_audioHandler.playAudio(Audio::PowerPellet);
+                        m_audioHandler.playAudio(Audio::PowerPellet, 1, -1, 1);
                     } else {
-                        m_audioHandler.playAudio(Audio::Munch1, 0, AUDIO_MUNCH_DURATION);
-                        m_audioHandler.playAudio(Audio::Munch2);
+                        m_audioHandler.playAudio(m_currentEatSound ? Audio::Munch1 : Audio::Munch2);
+                        m_currentEatSound = !m_currentEatSound;
                     }
 
                     // Check win

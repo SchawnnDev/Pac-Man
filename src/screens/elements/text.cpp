@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <iostream>
+#include <algorithm>
 #include "screens/elements/text.h"
 
 using namespace pacman;

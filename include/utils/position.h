@@ -21,8 +21,6 @@ namespace pacman {
         int m_x;
         int m_y;
 
-        friend std::ostream &operator<<(std::ostream &, const Position &);
-
     public:
 
         constexpr Position() : m_x(0), m_y(0) {}
@@ -67,11 +65,11 @@ namespace pacman {
          * @param angle Angle to rotate from
          * @return This position rotated from angle degrees from pivot position
          */
-        [[nodiscard]] constexpr Position rotateVec(const Position pivot, int angle) const
+        [[nodiscard]] Position rotateVec(const Position pivot, int angle) const
         {
             auto angleDegrees = (angle * (std::numbers::pi / 180));
-            auto sn = std::sin(angleDegrees);
-            auto cn = std::cos(angleDegrees);
+            auto const sn = std::sin(angleDegrees);
+            auto const cn = std::cos(angleDegrees);
             Position result{m_x, m_y};
 
             // translate point back to origin

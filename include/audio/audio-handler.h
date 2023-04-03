@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "SDL_mixer.h"
 
@@ -64,7 +65,7 @@ namespace pacman {
     public:
         AudioHandler();
 
-        void playAudio(Audio p_audio, int p_channel = 0, int p_delay = -1, int p_loops = 0) noexcept;
+        void playAudio(Audio p_audio, int p_channel = 0, int p_duration = -1, int p_loops = 0) noexcept;
 
         void pauseAudio(int p_channel = 0) noexcept;
 

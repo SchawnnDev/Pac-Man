@@ -8,6 +8,8 @@
 #include <memory>
 #include <unordered_map>
 #include <optional>
+#include <algorithm>
+#include <array>
 #include "sprite.h"
 #include "sprite-animation.h"
 #include "sprite-resources-structs.h"
@@ -42,8 +44,6 @@ namespace pacman {
          * @param path The file path to load the sprites from.
          */
         explicit SpriteHandler(std::string_view path) noexcept;
-
-        ~SpriteHandler() = default;
 
         /**
          * @brief Get a sprite by name.
