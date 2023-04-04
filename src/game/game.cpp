@@ -389,8 +389,6 @@ void Game::startPlaying(int p_players) noexcept
 
     // play start audio
     m_audioHandler.playAudio(Audio::GameStart, 0);
-    m_audioHandler.playAudio(Audio::Siren1, 2, -1, -1);
-    m_audioHandler.pauseAudio(3);
 
     startLevel(false);
 }
@@ -458,6 +456,8 @@ void Game::startLevel(bool p_died) noexcept
     m_clyde.reset();
     m_board.load();
     m_gameCycle.reset();
+    m_audioHandler.playAudio(m_audioHandler.getSiren(1 + m_currentPlayer->eatenPowerPelletsCurrentLevel()), 2, -1, -1);
+    m_audioHandler.pauseAudio(2);
     m_currentEatSound = false;
     m_ticks = 0;
     m_freezeTimeout = -1;
@@ -532,6 +532,9 @@ void Game::checkCollisions() noexcept
                     if(isBonus) {
                         startFrightened();
                         m_eatenFrightenedGhosts = 0;
+                        m_currentPlayer->eatenPowerPelletsCurrentLevel()++;
+                        m_audioHandler.playAudio(m_audioHandler.getSiren(1 + m_currentPlayer->eatenPowerPelletsCurrentLevel()), 2, -1, -1);
+                        m_audioHandler.pauseAudio(2);
                     } else {
                         m_audioHandler.playAudio(m_currentEatSound ? Audio::Munch1 : Audio::Munch2);
                         m_currentEatSound = !m_currentEatSound;
@@ -541,7 +544,7 @@ void Game::checkCollisions() noexcept
                     if(dotsEaten >= DOTS_TO_EAT) {
                         freezeEntities();
                         m_pacman.currentAnimation()->reset();
-                        m_audioHandler.pauseAudio(3);
+                        m_audioHandler.pauseAudio(2);
                         m_freezeTimeout = m_ticks + FRAMERATE * 2;
                         m_levelState = LevelState::End;
                         return;
@@ -671,7 +674,7 @@ void Game::performPacmanDying() noexcept
     m_inky.freezeMovement();
     m_fruit.freeze();
     m_pacman.state() = PacmanState::DYING;
-    m_audioHandler.pauseAudio(3);
+    m_audioHandler.pauseAudio(2);
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
 

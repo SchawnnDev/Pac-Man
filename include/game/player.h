@@ -13,17 +13,19 @@ namespace pacman {
         int m_level;
         int m_lives;
         int m_eatenFruitsCurrentLevel;
+        int m_eatenPowerPelletsCurrentLevel;
         bool m_extraLifeGiven;
         std::unordered_map<size_t, bool> m_map;
     public:
         explicit Player(int p_id) : m_id{p_id}, m_score{0}, m_level{1}, m_lives{3},
-            m_eatenFruitsCurrentLevel{0}, m_extraLifeGiven{false}, m_map{} {}
+                                    m_eatenFruitsCurrentLevel{0}, m_eatenPowerPelletsCurrentLevel{0}, m_extraLifeGiven{false}, m_map{} {}
 
         int &id() { return m_id; }
         int &score() { return m_score; }
         int &level() { return m_level; }
         int &lives() { return m_lives; }
         int &eatenFruitsCurrentLevel() { return m_eatenFruitsCurrentLevel; }
+        int &eatenPowerPelletsCurrentLevel() { return m_eatenPowerPelletsCurrentLevel; }
         auto &map() { return m_map; }
 
         /**
@@ -57,6 +59,13 @@ namespace pacman {
         [[nodiscard]] int eatenFruitsCurrentLevel() const { return m_eatenFruitsCurrentLevel; }
 
         /**
+         * @brief Returns the number of power pellets the pacman has eaten in the current level.
+         *        (handle sirens)
+         * @return The number of power pellets the pacman has eaten in the current level.
+         */
+        [[nodiscard]] int eatenPowerPelletsCurrentLevel() const { return m_eatenPowerPelletsCurrentLevel; }
+
+        /**
          * @brief Returns whether the player has been given an extra life.
          * @return True if the player has been given an extra life, false otherwise.
          */
@@ -85,6 +94,7 @@ namespace pacman {
             m_level = 1;
             m_lives = 3;
             m_eatenFruitsCurrentLevel = 0;
+            m_eatenPowerPelletsCurrentLevel = 0;
             m_extraLifeGiven = false;
             m_map.clear();
         }
@@ -95,6 +105,7 @@ namespace pacman {
         inline void nextLevel() {
             m_level++;
             m_eatenFruitsCurrentLevel = 0;
+            m_eatenPowerPelletsCurrentLevel = 0;
             m_map.clear();
         }
     };

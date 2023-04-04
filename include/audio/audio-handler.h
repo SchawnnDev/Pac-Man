@@ -86,6 +86,11 @@ namespace pacman {
         {
             return m_lastKnownAudio[p_channel];
         }
+
+        inline Audio getSiren(int p_sirenNb) {
+            if(p_sirenNb < 1 || p_sirenNb > 5) return Audio::Siren1;
+            return (Audio) (static_cast<int>(Audio::Siren1) + (p_sirenNb - 1));
+        }
     };
 
 }
