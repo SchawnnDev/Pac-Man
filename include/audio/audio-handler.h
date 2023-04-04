@@ -4,12 +4,14 @@
 #include <string>
 
 #include "SDL_mixer.h"
+#include "utils/constants.h"
 
 namespace pacman {
 
     using MixChunkPtr = std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)>;
 
     enum class Audio {
+        None,
         Credit,
         Death,
         EatFruit,
@@ -36,6 +38,7 @@ namespace pacman {
      *
      * - Channel 0 : misc sounds
      * - Channel 1 : ghost sounds
+     * - Channel 2 : ghost sirens
      *
      */
     class AudioHandler {
@@ -62,6 +65,8 @@ namespace pacman {
         MixChunkPtr m_siren_4{nullptr, Mix_FreeChunk};
         MixChunkPtr m_siren_5{nullptr, Mix_FreeChunk};
 
+        std::array<Audio, AUDIO_CHANNELS> m_lastKnownAudio;
+
     public:
         AudioHandler();
 
@@ -71,9 +76,16 @@ namespace pacman {
 
         void resumeAudio(int p_channel = 0) noexcept;
 
+        void pauseAll() noexcept;
+
         MixChunkPtr& find(Audio p_audio) noexcept;
 
         static std::string getFilePath(Audio p_audio) noexcept;
+
+        [[nodiscard]] inline Audio getLastKnownAudioPlayed(int p_channel) const noexcept
+        {
+            return m_lastKnownAudio[p_channel];
+        }
     };
 
 }

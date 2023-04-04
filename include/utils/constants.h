@@ -25,7 +25,7 @@ constinit const int DOTS_TO_EAT = 193; // Normally 244
 
 // AUDIO
 constinit const int AUDIO_FREQUENCY = 96000;
-constinit const int AUDIO_CHANNELS = 2;
+constinit const int AUDIO_CHANNELS = 4;
 constinit const int AUDIO_CHUNK_SIZE = 2048;
 constinit const int AUDIO_FILES_COUNT = 16;
 constinit const int AUDIO_MUNCH_DURATION = 79; // in MS

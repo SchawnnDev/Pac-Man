@@ -3,7 +3,9 @@
 
 using namespace pacman;
 
-AudioHandler::AudioHandler() = default;
+AudioHandler::AudioHandler()
+    : m_lastKnownAudio{}
+{}
 
 MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     switch (p_audio) {
@@ -44,6 +46,7 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
 
 void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p_loops) noexcept
 {
+    if(p_audio == Audio::None) return;
     auto& found = find(p_audio);
 
     // handle channels
@@ -53,7 +56,7 @@ void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p
     if(found.get() == nullptr) {
         found.reset(Mix_LoadWAV(getFilePath(p_audio).c_str()));
     }
-
+    m_lastKnownAudio[p_channel] = p_audio;
     Mix_PlayChannelTimed(p_channel, found.get(), p_loops, p_duration);
 }
 
@@ -67,6 +70,13 @@ void AudioHandler::resumeAudio(int p_channel) noexcept
     Mix_Resume(p_channel);
 }
 
+void AudioHandler::pauseAll() noexcept
+{
+    for (int i = 0; i < AUDIO_CHANNELS; ++i) {
+        pauseAudio(i);
+    }
+}
+
 std::string AudioHandler::getFilePath(Audio p_audio) noexcept {
-    return AUDIO_FOLDER_PATH + std::string{AUDIO_FILES[static_cast<int>(p_audio)]} + AUDIO_EXTENSION;
+    return AUDIO_FOLDER_PATH + std::string{AUDIO_FILES[static_cast<int>(p_audio) - 1]} + AUDIO_EXTENSION;
 }

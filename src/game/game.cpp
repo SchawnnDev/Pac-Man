@@ -100,6 +100,7 @@ void Game::start() noexcept
         handleEvents();
         handleKeys();
         handleLogic();
+        handleAudio();
         handleTicks();
         handleDrawing();
 
@@ -226,6 +227,8 @@ void Game::handleLogic() noexcept
         m_pinky.startHomeMode();
         m_inky.startHomeMode();
 
+        m_audioHandler.resumeAudio(2);
+
         m_gameCycle.startTicks() = m_ticks;
     } else if (isLevelPlaying(m_levelState)) {
         handleCycleChange();
@@ -289,6 +292,9 @@ void Game::handleLogic() noexcept
         }
     }
 
+}
+
+void Game::handleAudio() noexcept {
 }
 
 void Game::handleTicks() noexcept {
@@ -383,6 +389,8 @@ void Game::startPlaying(int p_players) noexcept
 
     // play start audio
     m_audioHandler.playAudio(Audio::GameStart, 0);
+    m_audioHandler.playAudio(Audio::Siren1, 2, -1, -1);
+    m_audioHandler.pauseAudio(3);
 
     startLevel(false);
 }
@@ -402,6 +410,7 @@ void Game::endPlaying() noexcept {
     m_currentPlayer->id() = -1;
     m_footerScreen.updateState();
     m_gameScreen.updateCurrentPlayer();
+    m_audioHandler.pauseAll();
 }
 
 void Game::updateCredits(int p_credits) noexcept
@@ -488,6 +497,13 @@ void Game::startFrightened() noexcept
     m_pinky.startFrightenedMode(level);
     m_inky.startFrightenedMode(level);
     m_clyde.startFrightenedMode(level);
+
+    // Handle timeouts
+    if (level <= GHOST_FRIGHTENED_TIMEOUTS_COUNT) {
+        auto const ticks = GHOST_FRIGHTENED_TIMEOUTS[level - 1] / FRAMERATE * 1000;
+        m_audioHandler.playAudio(Audio::PowerPellet, 1, ticks, -1);
+    }
+
 }
 
 
@@ -516,7 +532,6 @@ void Game::checkCollisions() noexcept
                     if(isBonus) {
                         startFrightened();
                         m_eatenFrightenedGhosts = 0;
-                        m_audioHandler.playAudio(Audio::PowerPellet, 1, -1, 1);
                     } else {
                         m_audioHandler.playAudio(m_currentEatSound ? Audio::Munch1 : Audio::Munch2);
                         m_currentEatSound = !m_currentEatSound;
@@ -526,6 +541,7 @@ void Game::checkCollisions() noexcept
                     if(dotsEaten >= DOTS_TO_EAT) {
                         freezeEntities();
                         m_pacman.currentAnimation()->reset();
+                        m_audioHandler.pauseAudio(3);
                         m_freezeTimeout = m_ticks + FRAMERATE * 2;
                         m_levelState = LevelState::End;
                         return;
@@ -655,6 +671,7 @@ void Game::performPacmanDying() noexcept
     m_inky.freezeMovement();
     m_fruit.freeze();
     m_pacman.state() = PacmanState::DYING;
+    m_audioHandler.pauseAudio(3);
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
 
@@ -690,6 +707,7 @@ void Game::handleCycleChange() noexcept {
     m_gameCycle.startTicks() = m_ticks;
 
     auto const newMode = m_levelState == LevelState::Scatter ? GhostMode::Scatter : GhostMode::Chase;
+
     m_blinky.handleCycleChange(newMode);
     m_pinky.handleCycleChange(newMode);
     m_inky.handleCycleChange(newMode);

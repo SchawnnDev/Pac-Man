@@ -98,6 +98,13 @@ namespace pacman {
         void handleLogic() noexcept;
 
         /**
+         * @brief Handle audios
+         *
+         * This method checks the game/level state, and updates the audio when a specific state changes
+         */
+        void handleAudio() noexcept;
+
+        /**
          * @brief Handle game ticks.
          *
          * This method updates the game tick count and resets it if necessary.
