@@ -1,9 +1,10 @@
-#include "entities/ghosts/ghost.h"
+#include "entities/ghost.h"
 #include "utils/random.h"
 
 using namespace pacman;
 
-void Ghost::startEatenMode() noexcept
+template <EntityType T>
+void Ghost<T>::startEatenMode() noexcept
 {
     if(m_ghostMode == GhostMode::Eaten) return;
     m_lastGhostMode = m_ghostMode;
@@ -13,9 +14,10 @@ void Ghost::startEatenMode() noexcept
     target() = board().grid()[board().homeDoorIndex()].position();
 }
 
-void Ghost::startFrightenedMode(int p_level) noexcept
+template <EntityType T>
+void Ghost<T>::startFrightenedMode(int p_level) noexcept
 {
-    if(m_frightened || m_ghostMode == GhostMode::Eaten) return;
+    if(m_ghostMode == GhostMode::Eaten) return;
 
     // Handle timeouts
     if (p_level > GHOST_FRIGHTENED_TIMEOUTS_COUNT) {
@@ -30,26 +32,29 @@ void Ghost::startFrightenedMode(int p_level) noexcept
     if(m_frightenedTimeout == 0) return;
 
     m_ticks = 0;
+    m_frightenedFlashing = false;
     m_frightened = true;
     turnAround(); // turn 180 degrees
-    Ghost::changeAnimation();
+    Ghost<T>::changeAnimation();
 }
 
-void Ghost::startChaseMode() noexcept
+template <EntityType T>
+void Ghost<T>::startChaseMode() noexcept
 {
     if (ghostMode() == GhostMode::Chase) return;
     ghostMode() = GhostMode::Chase;
     turnAround();
 }
 
-void Ghost::startHomeMode() noexcept
+template <EntityType T>
+void Ghost<T>::startHomeMode() noexcept
 {
     if(ghostMode() == GhostMode::Home) return;
     reset();
 }
 
-
-void Ghost::handleEatenMode() noexcept
+template <EntityType T>
+void Ghost<T>::handleEatenMode() noexcept
 {
     if(ghostMode() != GhostMode::Eaten) return;
     auto const& currCase = currentCase();
@@ -66,7 +71,8 @@ void Ghost::handleEatenMode() noexcept
 
 }
 
-void Ghost::handleHomeMode() noexcept
+template <EntityType T>
+void Ghost<T>::handleHomeMode() noexcept
 {
     // Home mode: ghost going up & down
     if(Board::isCase(position())) {
@@ -82,17 +88,62 @@ void Ghost::handleHomeMode() noexcept
                 direction() = Direction::DOWN;
             }
 
-            Ghost::changeAnimation();
+            Ghost<T>::changeAnimation();
         }
     }
 
     position().moveAt(direction(), speed() / 2); //TODO: MAYBE HANDLE SPEED IN ONE FCT
 }
 
+template <EntityType T>
+void Ghost<T>::handleScatterMode() noexcept {}
 
-void Ghost::handleScatterMode() noexcept {}
+template<EntityType T>
+void Ghost<T>::handleChaseTarget() noexcept {
 
-void Ghost::handleFrightenedMode() noexcept {
+    if constexpr (T == EntityType::Blinky) {
+        target() = Board::findCase(pacman().position());
+    } else if constexpr (T == EntityType::Clyde) {
+        auto currentPosition = Board::findCase(position());
+        auto position = Board::findCase(pacman().position());
+
+        if(position.distanceTo(currentPosition) >= 64) // distance without sqrt => 8^2
+        {
+            target() = position;
+        } else {
+            // Clyde switches to scatter when pacman is located at 8 or more cases
+            target() = {0, BOARD_SIZE_Y + 1};
+        }
+    } else if constexpr (T == EntityType::Inky) {
+        auto position = Board::findCase(pacman().position());
+        // move 2 cases in the front of pacman
+        position.moveAt(pacman().direction(), 2);
+
+        // move 2 cases to the left if pacman is going up (specific)
+        if (pacman().direction() == Direction::UP) {
+            position.moveAt(Direction::LEFT, 2);
+        }
+
+        // Calculate the vector between above point and blinky's position
+        // Rotate vec2 by 180 degrees (just switch signs)
+        target() = Board::findCase(m_blinkyPosition).rotateVec(position, 180);
+    } else if constexpr (T == EntityType::Pinky) {
+        auto position = Board::findCase(pacman().position());
+        // move 4 cases in the front of pacman
+        position.moveAt(pacman().direction(), 4);
+
+        // move 4 cases to the left if pacman is going up (specific)
+        if (pacman().direction() == Direction::UP) {
+            position.moveAt(Direction::LEFT, 4);
+        }
+
+        target() = position;
+    }
+
+}
+
+template <EntityType T>
+void Ghost<T>::handleFrightenedMode() noexcept {
     if(!m_frightened) return;
 
     m_ticks++;
@@ -120,7 +171,8 @@ void Ghost::handleFrightenedMode() noexcept {
 
 }
 
-auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
+template <EntityType T>
+auto Ghost<T>::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
 {
     // Ghost is on a tile, and he must choose a direction
     auto pairs = std::vector<DirectionBoardCasePair>{};
@@ -153,7 +205,8 @@ auto Ghost::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPra
     return pairs;
 }
 
-std::optional<BoardCase> Ghost::handlePathFinding() noexcept
+template <EntityType T>
+std::optional<BoardCase> Ghost<T>::handlePathFinding() noexcept
 {
     if(!currentCase()) return std::nullopt;
     auto const& actualCase = currentCase();
@@ -198,7 +251,8 @@ std::optional<BoardCase> Ghost::handlePathFinding() noexcept
 
 }
 
-void Ghost::handleMovement() noexcept
+template <EntityType T>
+void Ghost<T>::handleMovement() noexcept
 {
     if(!currentCase()) return;
     auto const& actualCase = currentCase();
@@ -246,7 +300,8 @@ void Ghost::handleMovement() noexcept
 
 }
 
-void Ghost::changeAnimation() noexcept
+template <EntityType T>
+void Ghost<T>::changeAnimation() noexcept
 {
     currentAnimation()->freeze() = false;
 
@@ -282,7 +337,8 @@ void Ghost::changeAnimation() noexcept
 
 }
 
-void Ghost::turnAround() noexcept
+template<EntityType T>
+void Ghost<T>::turnAround() noexcept
 {
     auto const opposite = getOpposite(direction());
 
@@ -304,7 +360,8 @@ void Ghost::turnAround() noexcept
 
 }
 
-void Ghost::handleCycleChange(GhostMode p_newMode)
+template<EntityType T>
+void Ghost<T>::handleCycleChange(GhostMode p_newMode)
 {
     if(m_ghostMode == GhostMode::Chase && p_newMode == GhostMode::Scatter) {
         startScatterMode();
@@ -315,7 +372,8 @@ void Ghost::handleCycleChange(GhostMode p_newMode)
     }
 }
 
-void Ghost::tick() noexcept {
+template<EntityType T>
+void Ghost<T>::tick() noexcept {
 
     if(freezed() || !activated()) return;
     currentCase() = board().getBoardCaseAtPixels(position());
@@ -342,10 +400,58 @@ void Ghost::tick() noexcept {
     handleMovement();
 }
 
-void Ghost::reset() noexcept {
+template<EntityType T>
+void Ghost<T>::reset() noexcept {
     m_frightened = false;
     m_frightenedFlashing = false;
     m_frightenedTimeout = 0;
     m_frightenedFlashes = 0;
     m_ticks = 0;
+
+    if constexpr (T == EntityType::Blinky) {
+        position() = getPosition(10, 10);
+        direction() = Direction::LEFT;
+        startScatterMode();
+        Ghost::changeAnimation();
+    } else if constexpr (T == EntityType::Clyde) {
+        position() = getPosition(11, 13);
+        ghostMode() = GhostMode::Home;
+        direction() = Direction::UP;
+        Ghost::changeAnimation();
+    } else if constexpr (T == EntityType::Inky) {
+        position() = getPosition(9, 13);
+        ghostMode() = GhostMode::Home;
+        direction() = Direction::UP;
+        target() = {9, 11};
+        Ghost::changeAnimation();
+    } else if constexpr (T == EntityType::Pinky) {
+        position() = getPosition(10, 12);
+        ghostMode() = GhostMode::Home;
+        direction() = Direction::DOWN;
+        target() = {10, 14};
+        Ghost::changeAnimation();
+    }
+
+}
+
+template<EntityType T>
+void Ghost<T>::startScatterMode() noexcept {
+    if (ghostMode() == GhostMode::Scatter) return;
+    ghostMode() = GhostMode::Scatter;
+
+    if constexpr (T == EntityType::Blinky) {
+        target() = {2, -3};
+    } else if constexpr (T == EntityType::Clyde) {
+        target() = {0, BOARD_SIZE_Y + 1};
+    } else if constexpr (T == EntityType::Inky) {
+        target() = {BOARD_SIZE_X - 1, BOARD_SIZE_Y + 1};
+    } else if constexpr (T == EntityType::Pinky) {
+        target() = {BOARD_SIZE_X - 3, -3};
+    }
+
+}
+
+template<EntityType T>
+EntityType Ghost<T>::entityType() const noexcept {
+    return T;
 }

@@ -5,10 +5,6 @@
 #include "board/board.h"
 #include "entities/entity.h"
 #include "entities/pacman.h"
-#include "entities/ghosts/blinky.h"
-#include "entities/ghosts/clyde.h"
-#include "entities/ghosts/pinky.h"
-#include "entities/ghosts/inky.h"
 #include "entities/fruit.h"
 #include "screens/loading-screen.h"
 #include "screens/header-screen.h"
@@ -22,6 +18,7 @@
 #include "utils/clock.h"
 #include "utils/shared_value.h"
 #include "audio/audio-handler.h"
+#include "entities/ghost.h"
 
 namespace pacman {
 
@@ -51,10 +48,10 @@ namespace pacman {
 
         // Entities
         Pacman m_pacman;
-        Blinky m_blinky;
-        Clyde m_clyde;
-        Pinky m_pinky;
-        Inky m_inky;
+        Ghost<EntityType::Blinky> m_blinky;
+        Ghost<EntityType::Clyde> m_clyde;
+        Ghost<EntityType::Pinky> m_pinky;
+        Ghost<EntityType::Inky> m_inky;
         Fruit m_fruit;
 
         // Screens

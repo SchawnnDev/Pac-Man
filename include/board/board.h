@@ -33,8 +33,6 @@ namespace pacman {
 
         Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources) noexcept;
 
-        ~Board() = default;
-
         /**
          * @return BoardCase grid, covering the whole board
          */

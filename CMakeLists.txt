@@ -71,11 +71,7 @@ message(STATUS "SDL_Mixer TIME: ${DELTASDL_Mixer}s")
 add_executable(${PROJECT_NAME} ""
         include/entities/entity.h
         include/entities/pacman.h
-        include/entities/ghosts/clyde.h
-        include/entities/ghosts/inky.h
-        include/entities/ghosts/pinky.h
-        include/entities/ghosts/ghost.h
-        include/entities/ghosts/blinky.h
+        include/entities/ghost.h
         include/entities/fruit.h
         include/sprites/sprite.h
         include/sprites/sprite-animation.h
@@ -100,6 +96,8 @@ add_executable(${PROJECT_NAME} ""
         include/utils/constants.h
         include/utils/position.h
         include/utils/utils.h
+        include/game/game-cycle.h
+        include/audio/audio-handler.h
         include/utils/clock.h
 
         src/sprites/sprite.cpp
@@ -111,11 +109,7 @@ add_executable(${PROJECT_NAME} ""
         src/entities/entity.cpp
         src/entities/pacman.cpp
         src/entities/fruit.cpp
-        src/entities/ghosts/ghost.cpp
-        src/entities/ghosts/blinky.cpp
-        src/entities/ghosts/clyde.cpp
-        src/entities/ghosts/inky.cpp
-        src/entities/ghosts/pinky.cpp
+        src/entities/ghost.cpp
         src/screens/screen.cpp
         src/screens/elements/text.cpp
         src/screens/loading-screen.cpp
@@ -123,7 +117,7 @@ add_executable(${PROJECT_NAME} ""
         src/screens/footer-screen.cpp
         src/screens/header-screen.cpp
         src/screens/game-screen.cpp
-        include/game/game-cycle.h include/audio/audio-handler.h src/audio/audio-handler.cpp)
+        src/audio/audio-handler.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 20

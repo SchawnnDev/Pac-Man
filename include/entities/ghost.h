@@ -25,12 +25,19 @@ namespace pacman {
     /**
      * @brief Entity wrapper class for ghosts, including path finding and common ghost logic
      */
+    template<EntityType T>
     class Ghost : public Entity {
+        static_assert(std::is_enum<EntityType>::value, "EntityType must be an enum class");
+
+        static_assert(T == EntityType::Inky || T == EntityType::Blinky ||
+                      T == EntityType::Pinky || T == EntityType::Clyde,
+                      "T must be Inky, Blinky, Pinky, or Clyde");
         GhostMode m_ghostMode;
         GhostMode m_lastGhostMode; // used when switching modes (eaten)
         Position m_target;
         GhostAnimations const &m_ghostAnimations;
         Pacman const &m_pacman;
+        Position m_blinkyPosition;
         bool m_frightened;
         bool m_frightenedFlashing;
         int m_dotsCounter;
@@ -44,10 +51,10 @@ namespace pacman {
         [[nodiscard]] Pacman const &pacman() const { return m_pacman; }
 
         /**
-         * @brief Handles chase target and logic (specific to each ghost)
+         * @brief Handles chase target and logic (specific to blinky, clyde & pinky)
          * Executes m_targetHandlingFct function
          */
-        virtual void handleChaseTarget() noexcept = 0;
+        void handleChaseTarget() noexcept;
 
         /**
          * @brief Handles scatter mode target and logic
@@ -100,12 +107,13 @@ namespace pacman {
         auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
 
     public:
-        Ghost(Board const &p_board, Pacman const &p_pacman, GhostMode p_ghostMode, GhostAnimations const &p_ghostAnimations)
+        Ghost(Board const &p_board, Pacman const &p_pacman, GhostAnimations const &p_ghostAnimations)
                 : Entity({0, 0}, 4, Direction::LEFT, p_board)
-                , m_ghostMode(p_ghostMode)
+                , m_ghostMode{GhostMode::Home}
                 , m_target{}
                 , m_ghostAnimations{p_ghostAnimations}
                 , m_pacman{p_pacman}
+                , m_blinkyPosition{}
                 , m_dotsCounter{0}
                 , m_ticks{0}
                 , m_frightenedTimeout{0}
@@ -115,6 +123,7 @@ namespace pacman {
                 , m_lastGhostMode{GhostMode::Scatter}
         {
             currentAnimation() = m_ghostAnimations.leftAnimation;
+            position() = getPosition(10, 10);
         }
 
         ~Ghost() override = default;
@@ -145,6 +154,18 @@ namespace pacman {
         int& ticks() { return m_dotsCounter; }
 
         /**
+         * @brief Returns the position of the Blinky ghost.
+         *
+         * This function returns a reference to the position of the Blinky ghost.
+         * If the ghost type is not EntityType::Inky, this function is disabled
+         * using std::enable_if and will not be compiled.
+         *
+         * @return A reference to the position of the Blinky ghost.
+         */
+        template <EntityType U = T, typename std::enable_if<U == EntityType::Inky>::type* = nullptr>
+        Position& blinkyPosition() { return m_blinkyPosition; };
+
+        /**
          * @return Ghost is in frightened sub-mode
          */
         [[nodiscard]] bool frightened() const { return m_frightened; }
@@ -163,7 +184,7 @@ namespace pacman {
         /**
          * @brief Starts the scatter mode, changing target to a corner
          */
-        virtual void startScatterMode() noexcept = 0;
+        void startScatterMode() noexcept;
 
         /**
          * @brief Starts the chase mode, changing target to pacman
@@ -203,6 +224,8 @@ namespace pacman {
          * @override
          */
         void tick() noexcept override;
+
+        [[nodiscard]] EntityType entityType() const noexcept override;
 
     };
 

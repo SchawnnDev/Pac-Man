@@ -25,7 +25,7 @@ Game::Game()
           m_blinky{m_board, m_pacman, m_spriteHandler.blinkyAnimations()},
           m_clyde{m_board, m_pacman, m_spriteHandler.clydeAnimations()},
           m_pinky{m_board, m_pacman, m_spriteHandler.pinkyAnimations()},
-          m_inky{m_board, m_pacman, m_blinky, m_spriteHandler.inkyAnimations()},
+          m_inky{m_board, m_pacman, m_spriteHandler.inkyAnimations()},
           m_fruit{m_board, m_spriteHandler.fruitResources()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_playerCount, m_currentPlayer},
@@ -306,6 +306,7 @@ void Game::handleTicks() noexcept {
     m_blinky.tick();
     m_clyde.tick();
     m_pinky.tick();
+    m_inky.blinkyPosition() = m_blinky.position();
     m_inky.tick();
     m_fruit.tick();
 }
