@@ -216,6 +216,11 @@ namespace pacman {
          * @brief Check cycle change and do actions if a change occurs
          */
         void handleCycleChange() noexcept;
+
+        /**
+         * Handle ghost mode, exit, ghost counters etc
+         */
+        void handleGhostHomePriority() noexcept;
     public:
         /**
          * @brief Constructs a new Game object.

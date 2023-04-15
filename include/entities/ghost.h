@@ -45,6 +45,10 @@ namespace pacman {
         int m_ticks;
         int m_frightenedTimeout;
         int m_frightenedFlashes;
+        bool m_hasHomeExitPriority;
+        int m_homeDotsNeededDots;
+        int m_homeDotsEatCounter;
+        int m_homeDotsEatTimeout;
     protected:
         /**
          * @return Reference to Pacman object, since the chase targeting system needs the position of pacman
@@ -119,6 +123,10 @@ namespace pacman {
                 , m_ticks{0}
                 , m_frightenedTimeout{0}
                 , m_frightenedFlashes{0}
+                , m_homeDotsEatTimeout{0}
+                , m_hasHomeExitPriority{false}
+                , m_homeDotsNeededDots{0}
+                , m_homeDotsEatCounter{0}
                 , m_frightened{false}
                 , m_frightenedFlashing{false}
                 , m_lastGhostMode{GhostMode::Scatter}
@@ -153,6 +161,12 @@ namespace pacman {
 
         [[nodiscard]] int ticks() const { return m_dotsCounter; }
         int& ticks() { return m_dotsCounter; }
+
+        /**
+         * @brief Home exit priority handles dot counter & home exiting logic
+         * @return Reference to homeExitPriority boolean
+         */
+        bool& homeExitPriority() { return m_hasHomeExitPriority; }
 
         /**
          * @brief Returns the position of the Blinky ghost.
@@ -195,7 +209,7 @@ namespace pacman {
         /**
          * @brief Starts the home mode, going up and down in the home until mode changes
          */
-        void startHomeMode() noexcept;
+        void startHomeMode(int p_level, bool p_dead) noexcept;
 
         /**
          * @brief Start frightened mode, disabling path finding algorithm and using random decisions to travel trough the board
@@ -226,9 +240,33 @@ namespace pacman {
          */
         void tick() noexcept override;
 
+        /**
+         * @brief Handles pacman eating a dot, to increase ghost counter
+         */
+        void pacmanDotEaten() noexcept;
+
         [[nodiscard]] EntityType entityType() const noexcept override;
 
     };
+
+    template<EntityType T>
+    void Ghost<T>::pacmanDotEaten() noexcept
+    {
+        if (ghostMode() != GhostMode::Home || !m_hasHomeExitPriority) return;
+        m_dotsCounter++;
+
+        if(m_dotsCounter >= m_homeDotsNeededDots) {
+            if(m_lastGhostMode == GhostMode::Scatter)
+            {
+                startScatterMode();
+            } else {
+                startChaseMode();
+            }
+            return;
+        }
+
+        m_homeDotsEatCounter = 0;
+    }
 
     template <EntityType T>
     void Ghost<T>::startEatenMode() noexcept
@@ -274,10 +312,42 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::startHomeMode() noexcept
+    void Ghost<T>::startHomeMode(int p_level, bool p_dead) noexcept
     {
-        if(ghostMode() == GhostMode::Home) return;
         reset();
+
+        m_homeDotsEatTimeout = FRAMERATE * (4 - (p_level >= 5));
+        if constexpr (T == EntityType::Clyde)
+        {
+            if(p_dead) {
+                m_homeDotsNeededDots = 32;
+            } else if (p_level == 1)
+            {
+                m_homeDotsNeededDots = 60;
+            } else if (p_level == 2)
+            {
+                m_homeDotsNeededDots = 50;
+            } else
+            {
+                m_homeDotsNeededDots = 0;
+            }
+        } else if constexpr (T == EntityType::Pinky)
+        {
+            m_homeDotsNeededDots = p_dead ? 7 : 0;
+        } else if constexpr (T == EntityType::Inky)
+        {
+            if(p_dead)
+            {
+                m_homeDotsNeededDots = 17;
+            } else if (p_level == 1)
+            {
+                m_homeDotsNeededDots = 30;
+            } else
+            {
+                m_homeDotsNeededDots = 0;
+            }
+        }
+
     }
 
     template <EntityType T>
@@ -301,6 +371,21 @@ namespace pacman {
     template <EntityType T>
     void Ghost<T>::handleHomeMode() noexcept
     {
+        m_homeDotsEatCounter++;
+
+        if(m_homeDotsEatCounter >= m_homeDotsEatTimeout) {
+            // has prio ?
+            if(m_hasHomeExitPriority) {
+                if(m_lastGhostMode == GhostMode::Scatter)
+                {
+                    startScatterMode();
+                } else {
+                    startChaseMode();
+                }
+                return;
+            }
+        }
+
         // Home mode: ghost going up & down
         if(Board::isCase(position())) {
 
@@ -634,6 +719,11 @@ namespace pacman {
         m_frightenedTimeout = 0;
         m_frightenedFlashes = 0;
         m_ticks = 0;
+        m_dotsCounter = 0;
+        m_hasHomeExitPriority = false;
+        m_homeDotsNeededDots = 0;
+        m_homeDotsEatTimeout = 0;
+        m_homeDotsEatCounter = 0;
 
         if constexpr (T == EntityType::Blinky) {
             position() = getPosition(10, 10);

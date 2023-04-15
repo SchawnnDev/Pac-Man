@@ -15,10 +15,12 @@ namespace pacman {
         int m_eatenFruitsCurrentLevel;
         int m_eatenPowerPelletsCurrentLevel;
         bool m_extraLifeGiven;
+        bool m_deadCurrentLevel; // Player has died once in the current level
         std::unordered_map<size_t, bool> m_map;
     public:
         explicit Player(int p_id) : m_id{p_id}, m_score{0}, m_level{1}, m_lives{3},
-                                    m_eatenFruitsCurrentLevel{0}, m_eatenPowerPelletsCurrentLevel{0}, m_extraLifeGiven{false}, m_map{} {}
+                                    m_eatenFruitsCurrentLevel{0}, m_eatenPowerPelletsCurrentLevel{0},
+                                    m_extraLifeGiven{false}, m_deadCurrentLevel{false}, m_map{} {}
 
         int &id() { return m_id; }
         int &score() { return m_score; }
@@ -26,6 +28,7 @@ namespace pacman {
         int &lives() { return m_lives; }
         int &eatenFruitsCurrentLevel() { return m_eatenFruitsCurrentLevel; }
         int &eatenPowerPelletsCurrentLevel() { return m_eatenPowerPelletsCurrentLevel; }
+        bool &deadCurrentLevel() { return m_deadCurrentLevel; }
         auto &map() { return m_map; }
 
         /**
@@ -72,6 +75,12 @@ namespace pacman {
         [[nodiscard]] bool extraLifeGiven() const { return m_extraLifeGiven; }
 
         /**
+         * @brief Returns whether the player has died in the current level.
+         * @return True if the player has died in the current level, false otherwise.
+         */
+        [[nodiscard]] bool deadCurrentLevel() const { return m_deadCurrentLevel; }
+
+        /**
          * @brief Returns a const reference to the map of collected items.
          * @return A const reference to the map of collected items.
          */
@@ -106,6 +115,7 @@ namespace pacman {
             m_level++;
             m_eatenFruitsCurrentLevel = 0;
             m_eatenPowerPelletsCurrentLevel = 0;
+            m_deadCurrentLevel = false;
             m_map.clear();
         }
     };

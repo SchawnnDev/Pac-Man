@@ -29,7 +29,8 @@ Game::Game()
           m_fruit{m_board, m_spriteHandler.fruitResources()},
           m_loadingScreen{m_spriteHandler.loadingScreenResources(), m_spriteHandler.textResources(), m_credit},
           m_headerScreen{m_spriteHandler.textResources(), m_highScore, m_playerCount, m_currentPlayer},
-          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_currentPlayer, m_spriteHandler.footerScreenResources()},
+          m_footerScreen{m_spriteHandler.textResources(), m_credit, m_state, m_currentPlayer,
+                         m_spriteHandler.footerScreenResources()},
           m_gameScreen{m_spriteHandler.textResources(), m_levelState, m_state, m_currentPlayer}
 {
 
@@ -43,7 +44,7 @@ Game::Game()
     if (Mix_OpenAudio(AUDIO_FREQUENCY, MIX_DEFAULT_FORMAT, AUDIO_CHANNELS, AUDIO_CHUNK_SIZE) < 0)
     {
         std::cerr << "Erreur initialisation SDL_mixer : %s" << Mix_GetError()
-        << std::endl;
+                  << std::endl;
         throw;
     }
 
@@ -64,7 +65,8 @@ Game::Game()
     SDL_SetTextureBlendMode(m_spriteTexture.get(), SDL_BLENDMODE_BLEND);
 
     // Set SDL_mixer min volume
-    for (int i = 0; i < AUDIO_CHANNELS; ++i) {
+    for (int i = 0; i < AUDIO_CHANNELS; ++i)
+    {
         Mix_Volume(i, MIX_MAX_VOLUME * .75);
     }
 
@@ -108,7 +110,7 @@ void Game::start() noexcept
 
         clock.end_frame();
         const auto ms_per_frame = (1000.0 / FRAMERATE);
-        auto wait_ms = (int)(ms_per_frame - std::min(clock.last_delta(), ms_per_frame));
+        auto wait_ms = (int) (ms_per_frame - std::min(clock.last_delta(), ms_per_frame));
         SDL_Delay(wait_ms);
     }
 }
@@ -144,7 +146,7 @@ void Game::handleKeys() noexcept
     if (keys[SDL_SCANCODE_ESCAPE])
         m_state = GameState::End;
 
-    if(m_state != GameState::Playing)
+    if (m_state != GameState::Playing)
         return;
 
     // Check level states
@@ -172,23 +174,26 @@ void Game::handleKeys() noexcept
 void Game::handleLogic() noexcept
 {
 
-    if(m_state == GameState::GameOver) {
+    if (m_state == GameState::GameOver)
+    {
         // handle reset
         if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
         {
             // More than 1 player: maybe other player can continue to play
-            if(m_playerCount > 1)
+            if (m_playerCount > 1)
             {
-                if(m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
+                if (m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
                 {
                     m_board.reset();
                     startLevel(true);
-                } else {
+                } else
+                {
                     // en
                     endPlaying();
                 }
 
-            } else {
+            } else
+            {
                 endPlaying();
             }
 
@@ -201,7 +206,8 @@ void Game::handleLogic() noexcept
     if (m_state != GameState::Playing)
         return;
 
-    if (m_levelState == LevelState::PlayerDisplay && m_ticks == TIMEOUT_PRE_START_GAME) {
+    if (m_levelState == LevelState::PlayerDisplay && m_ticks == TIMEOUT_PRE_START_GAME)
+    {
         m_levelState = LevelState::Ready;
         m_gameScreen.updateState(false);
 
@@ -215,7 +221,8 @@ void Game::handleLogic() noexcept
         freezeEntities();
 
         m_footerScreen.updateLives();
-    } else if (m_levelState == LevelState::Ready && m_ticks == TIMEOUT_START_GAME) {
+    } else if (m_levelState == LevelState::Ready && m_ticks == TIMEOUT_START_GAME)
+    {
         m_levelState = LevelState::Scatter;
         m_gameScreen.updateState(false);
 
@@ -223,29 +230,36 @@ void Game::handleLogic() noexcept
         unfreezeEntities();
 
         m_blinky.startScatterMode();
-        m_clyde.startHomeMode();
-        m_pinky.startHomeMode();
-        m_inky.startHomeMode();
+        m_clyde.startHomeMode(m_currentPlayer->level(), m_currentPlayer->deadCurrentLevel());
+        m_pinky.startHomeMode(m_currentPlayer->level(), m_currentPlayer->deadCurrentLevel());
+        m_inky.startHomeMode(m_currentPlayer->level(), m_currentPlayer->deadCurrentLevel());
 
         m_audioHandler.resumeAudio(2);
 
         m_gameCycle.startTicks() = m_ticks;
-    } else if (isLevelPlaying(m_levelState)) {
+    } else if (isLevelPlaying(m_levelState))
+    {
         handleCycleChange();
+        handleGhostHomePriority();
 
-        if (m_pacman.state() == PacmanState::LIVING) {
+        if (m_pacman.state() == PacmanState::LIVING)
+        {
             checkCollisions();
 
-            if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks) {
+            if (m_freezeTimeout != -1 && m_freezeTimeout < m_ticks)
+            {
                 m_pacman.activated() = true;
                 unfreezeEntities();
 
                 m_freezeTimeout = -1;
             }
-        } else if (m_pacman.state() == PacmanState::DYING) {
-            if (m_freezeTimeout != -1) {
+        } else if (m_pacman.state() == PacmanState::DYING)
+        {
+            if (m_freezeTimeout != -1)
+            {
 
-                if (m_freezeTimeout < m_ticks) {
+                if (m_freezeTimeout < m_ticks)
+                {
                     m_blinky.activated() = false;
                     m_pinky.activated() = false;
                     m_clyde.activated() = false;
@@ -253,30 +267,38 @@ void Game::handleLogic() noexcept
                     m_pacman.die();
                     m_audioHandler.playAudio(Audio::Death);
 
-                    if (m_currentPlayer->lives() == 0) {
+                    if (m_currentPlayer->lives() == 0)
+                    {
                         m_state = GameState::GameOver;
 
                         auto displayGameOverPlay = false;
 
-                        if (m_playerCount > 1) {
-                            if (m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0) {
+                        if (m_playerCount > 1)
+                        {
+                            if (m_players[m_currentPlayer->id() == 1 ? 1 : 0]->lives() > 0)
+                            {
                                 displayGameOverPlay = true;
                             }
                         }
 
                         m_gameScreen.updateState(displayGameOverPlay);
                         m_freezeTimeout = m_ticks + 3 * FRAMERATE;
-                    } else {
+                    } else
+                    {
                         m_freezeTimeout = -1;
                     }
                 }
-            } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated()) {
+            } else if (m_pacman.currentAnimation() && !m_pacman.currentAnimation()->activated())
+            {
                 startLevel(true);
             }
         }
-    } else if (m_levelState == LevelState::End) {
-        if (m_freezeTimeout != -1) {
-            if (m_freezeTimeout < m_ticks) {
+    } else if (m_levelState == LevelState::End)
+    {
+        if (m_freezeTimeout != -1)
+        {
+            if (m_freezeTimeout < m_ticks)
+            {
                 m_blinky.activated() = false;
                 m_pinky.activated() = false;
                 m_clyde.activated() = false;
@@ -285,7 +307,8 @@ void Game::handleLogic() noexcept
                 m_board.startLevelEndAnimation();
                 m_freezeTimeout = -1;
             }
-        } else if (m_board.currentAnimation() && !m_board.currentAnimation()->activated()) {
+        } else if (m_board.currentAnimation() && !m_board.currentAnimation()->activated())
+        {
             // New Level
             m_currentPlayer->nextLevel();
             startLevel(false);
@@ -294,10 +317,12 @@ void Game::handleLogic() noexcept
 
 }
 
-void Game::handleAudio() noexcept {
+void Game::handleAudio() noexcept
+{
 }
 
-void Game::handleTicks() noexcept {
+void Game::handleTicks() noexcept
+{
     m_headerScreen.tick();
     m_footerScreen.tick();
     m_loadingScreen.tick();
@@ -343,7 +368,7 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
     if (m_state != GameState::LoadingScreen || event.key.repeat != 0)
         return;
 
-    if(event.key.keysym.sym == SDLK_c)
+    if (event.key.keysym.sym == SDLK_c)
     {
         updateCredits(m_credit + 1);
         m_audioHandler.playAudio(Audio::Credit, 0);
@@ -359,7 +384,8 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
             startPlaying(1);
             break;
         case SDLK_2:
-            if(m_credit > 1) {
+            if (m_credit > 1)
+            {
                 startPlaying(2);
             }
             break;
@@ -376,7 +402,10 @@ void Game::startPlaying(int p_players) noexcept
     m_state = GameState::Playing;
     m_players[0]->id() = 1; // Reset player id to 1
     updateCredits(m_credit - (p_players == 1 ? 1 : 2));
-    std::for_each(m_players.begin(), m_players.end(), [this](PlayerPtr &m_p) { m_p->reset(); m_headerScreen.updateScore(m_p->id()); });
+    std::for_each(m_players.begin(), m_players.end(), [this](PlayerPtr &m_p) {
+        m_p->reset();
+        m_headerScreen.updateScore(m_p->id());
+    });
     m_gameScreen.updateCurrentPlayer();
     m_footerScreen.updateState();
     m_loadingScreen.activated() = false;
@@ -394,7 +423,8 @@ void Game::startPlaying(int p_players) noexcept
     startLevel(false);
 }
 
-void Game::endPlaying() noexcept {
+void Game::endPlaying() noexcept
+{
     m_state = GameState::LoadingScreen;
     m_pacman.activated() = false;
     m_blinky.activated() = false;
@@ -427,18 +457,20 @@ void Game::updateHighScore(int p_highScore) noexcept
 
 void Game::startLevel(bool p_died) noexcept
 {
-    if(m_state == GameState::GameOver) {
+    if (m_state == GameState::GameOver)
+    {
         m_state = GameState::Playing;
         m_gameScreen.updateState(false);
     } else if (m_state != GameState::Playing) return;
 
-    if(p_died)
+    if (p_died)
     {
         m_currentPlayer->lives()--;
 
-        auto& nextPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
+        auto &nextPlayer = m_players[m_playerCount == 2 && m_currentPlayer->id() == 1 ? 1 : 0];
         // Avoid to switch players if other player has no lifes remaining
-        if(m_playerCount == 2 && nextPlayer->lives() != 0) {
+        if (m_playerCount == 2 && nextPlayer->lives() != 0)
+        {
             m_currentPlayer = nextPlayer;
             m_gameScreen.updateCurrentPlayer();
         }
@@ -449,11 +481,11 @@ void Game::startLevel(bool p_died) noexcept
     m_gameScreen.updateState(false);
     m_pacman.activated() = false;
     m_pacman.reset();
-    m_blinky.reset();
-    m_pinky.reset();
     m_fruit.reset();
     m_fruit.unfreeze();
     m_inky.reset();
+    m_blinky.reset();
+    m_pinky.reset();
     m_clyde.reset();
     m_board.load();
     m_gameCycle.reset();
@@ -500,7 +532,8 @@ void Game::startFrightened() noexcept
     m_clyde.startFrightenedMode(level);
 
     // Handle timeouts
-    if (level <= GHOST_FRIGHTENED_TIMEOUTS_COUNT) {
+    if (level <= GHOST_FRIGHTENED_TIMEOUTS_COUNT)
+    {
         auto const ticks = GHOST_FRIGHTENED_TIMEOUTS[level - 1] / FRAMERATE * 1000;
         m_audioHandler.playAudio(Audio::PowerPellet, 1, ticks, -1);
     }
@@ -510,39 +543,52 @@ void Game::startFrightened() noexcept
 
 void Game::checkCollisions() noexcept
 {
-    if(m_pacman.freezed() || !m_pacman.activated()) return;
+    if (m_pacman.freezed() || !m_pacman.activated()) return;
 
     auto const pacmanPosition = m_pacman.position();
     // Check points eating
-    if(Board::isCase(pacmanPosition))
+    if (Board::isCase(pacmanPosition))
     {
-        try {
-            auto& fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
+        try
+        {
+            auto &fCase = m_board.getBoardCaseAtPixels(pacmanPosition);
 
-            if(fCase.activated()) {
+            if (fCase.activated())
+            {
                 auto isPoint = fCase.type() == BoardCaseType::PointPath;
                 auto isBonus = fCase.type() == BoardCaseType::Bonus;
                 auto dotsEaten = m_currentPlayer->map().size();
 
-                if(isPoint || isBonus) {
+                if (isPoint || isBonus)
+                {
                     fCase.activated() = false;
                     dotsEaten++;
                     updateScore(isPoint ? 10 : 50);
                     m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
 
-                    if(isBonus) {
+                    // handle home dot counter
+                    m_pinky.pacmanDotEaten();
+                    m_inky.pacmanDotEaten();
+                    m_clyde.pacmanDotEaten();
+
+                    if (isBonus)
+                    {
                         startFrightened();
                         m_eatenFrightenedGhosts = 0;
                         m_currentPlayer->eatenPowerPelletsCurrentLevel()++;
-                        m_audioHandler.playAudio(m_audioHandler.getSiren(1 + m_currentPlayer->eatenPowerPelletsCurrentLevel()), 2, -1, -1);
+                        m_audioHandler.playAudio(
+                                m_audioHandler.getSiren(1 + m_currentPlayer->eatenPowerPelletsCurrentLevel()), 2, -1,
+                                -1);
                         m_audioHandler.pauseAudio(2);
-                    } else {
+                    } else
+                    {
                         m_audioHandler.playAudio(m_currentEatSound ? Audio::Munch1 : Audio::Munch2);
                         m_currentEatSound = !m_currentEatSound;
                     }
 
                     // Check win
-                    if(dotsEaten >= DOTS_TO_EAT) {
+                    if (dotsEaten >= DOTS_TO_EAT)
+                    {
                         freezeEntities();
                         m_pacman.currentAnimation()->reset();
                         m_audioHandler.pauseAudio(2);
@@ -563,12 +609,14 @@ void Game::checkCollisions() noexcept
 
             }
 
-        } catch (...){
+        } catch (...)
+        {
             // Should not happen
         }
 
         // Handle fruit eating
-        if(m_fruit.activated() && m_fruit.position() == m_pacman.position()) {
+        if (m_fruit.activated() && m_fruit.position() == m_pacman.position())
+        {
             auto const points = getFruitValueByLevel(m_currentPlayer->level());
             m_fruit.eat(points);
             updateScore(points);
@@ -584,47 +632,51 @@ void Game::checkCollisions() noexcept
             m_blinky.startEatenMode();
             m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_blinky, calculateFrightenedGhostScore());
-        } else {
+        } else
+        {
             performPacmanDying();
         }
         return;
     }
 
-    if(m_pacman.checkCollision(m_pinky) && m_pinky.ghostMode() != GhostMode::Eaten)
+    if (m_pacman.checkCollision(m_pinky) && m_pinky.ghostMode() != GhostMode::Eaten)
     {
-        if(m_pinky.frightened())
+        if (m_pinky.frightened())
         {
             m_pinky.startEatenMode();
             m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_pinky, calculateFrightenedGhostScore());
-        } else {
+        } else
+        {
             performPacmanDying();
         }
         return;
     }
 
-    if(m_pacman.checkCollision(m_clyde) && m_clyde.ghostMode() != GhostMode::Eaten)
+    if (m_pacman.checkCollision(m_clyde) && m_clyde.ghostMode() != GhostMode::Eaten)
     {
-        if(m_clyde.frightened())
+        if (m_clyde.frightened())
         {
             m_clyde.startEatenMode();
             m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_clyde, calculateFrightenedGhostScore());
-        } else {
+        } else
+        {
             performPacmanDying();
         }
         return;
     }
 
 
-    if(m_pacman.checkCollision(m_inky) && m_inky.ghostMode() != GhostMode::Eaten)
+    if (m_pacman.checkCollision(m_inky) && m_inky.ghostMode() != GhostMode::Eaten)
     {
-        if(m_inky.frightened())
+        if (m_inky.frightened())
         {
             m_inky.startEatenMode();
             m_audioHandler.playAudio(Audio::EatGhost);
             freezeDisplayScore(m_inky, calculateFrightenedGhostScore());
-        } else {
+        } else
+        {
             performPacmanDying();
         }
         return;
@@ -634,24 +686,24 @@ void Game::checkCollisions() noexcept
 
 void Game::updateScore(int p_scoreToAdd) noexcept
 {
-    auto& score = m_currentPlayer->score();
+    auto &score = m_currentPlayer->score();
     score += p_scoreToAdd;
     m_headerScreen.updateScore(m_currentPlayer->id());
 
-    if(score > 10000 && !m_currentPlayer->extraLifeGiven())
+    if (score > 10000 && !m_currentPlayer->extraLifeGiven())
     {
         m_currentPlayer->giveExtraLife();
         m_footerScreen.updateLives();
         // TODO: sound
     }
 
-    if(score > *m_highScore)
+    if (score > *m_highScore)
     {
         updateHighScore(score);
     }
 }
 
-void Game::freezeDisplayScore(Entity& p_which, int p_score) noexcept
+void Game::freezeDisplayScore(Entity &p_which, int p_score) noexcept
 {
     m_pacman.activated() = false;
     freezeEntities();
@@ -675,6 +727,7 @@ void Game::performPacmanDying() noexcept
     m_inky.freezeMovement();
     m_fruit.freeze();
     m_pacman.state() = PacmanState::DYING;
+    m_currentPlayer->deadCurrentLevel() = true;
     m_audioHandler.pauseAudio(2);
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
@@ -703,7 +756,8 @@ void Game::unfreezeEntities() noexcept
     m_inky.unfreeze();
 }
 
-void Game::handleCycleChange() noexcept {
+void Game::handleCycleChange() noexcept
+{
     // Check cycle change
     if (m_ticks <= m_gameCycle.getCycleDuration(m_currentPlayer->level())) return;
     m_gameCycle.changeGameState();
@@ -716,4 +770,41 @@ void Game::handleCycleChange() noexcept {
     m_pinky.handleCycleChange(newMode);
     m_inky.handleCycleChange(newMode);
     m_clyde.handleCycleChange(newMode);
+}
+
+void Game::handleGhostHomePriority() noexcept
+{
+
+    if (m_pinky.ghostMode() == GhostMode::Home ||
+        (m_pinky.ghostMode() != GhostMode::Eaten && m_pinky.currentCase() &&
+         m_pinky.currentCase()->type() == BoardCaseType::GhostHome ||
+         m_pinky.currentCase()->type() == BoardCaseType::GhostHomeDoor))
+    {
+        m_pinky.homeExitPriority() = true;
+        m_inky.homeExitPriority() = false;
+        m_clyde.homeExitPriority() = false;
+        return;
+    }
+
+    if (m_inky.ghostMode() == GhostMode::Home ||
+        (m_inky.ghostMode() != GhostMode::Eaten && m_inky.currentCase() &&
+         m_inky.currentCase()->type() == BoardCaseType::GhostHome ||
+         m_inky.currentCase()->type() == BoardCaseType::GhostHomeDoor))
+    {
+        m_pinky.homeExitPriority() = false;
+        m_inky.homeExitPriority() = true;
+        m_clyde.homeExitPriority() = false;
+        return;
+    }
+
+    if (m_clyde.ghostMode() == GhostMode::Home ||
+        (m_clyde.ghostMode() != GhostMode::Eaten && m_clyde.currentCase() &&
+         m_clyde.currentCase()->type() == BoardCaseType::GhostHome ||
+         m_clyde.currentCase()->type() == BoardCaseType::GhostHomeDoor))
+    {
+        m_pinky.homeExitPriority() = false;
+        m_inky.homeExitPriority() = false;
+        m_clyde.homeExitPriority() = true;
+        return;
+    }
 }
