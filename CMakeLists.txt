@@ -109,7 +109,6 @@ add_executable(${PROJECT_NAME} ""
         src/entities/entity.cpp
         src/entities/pacman.cpp
         src/entities/fruit.cpp
-        src/entities/ghost.cpp
         src/screens/screen.cpp
         src/screens/elements/text.cpp
         src/screens/loading-screen.cpp
