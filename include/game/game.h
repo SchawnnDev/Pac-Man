@@ -39,6 +39,7 @@ namespace pacman {
         int64_t m_freezeTimeout;
         int m_eatenFrightenedGhosts;
         bool m_currentEatSound;
+        int m_globalDotsCounter;
 
         // Handlers
         SpriteHandler m_spriteHandler;

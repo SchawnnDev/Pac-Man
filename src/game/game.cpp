@@ -14,6 +14,7 @@ Game::Game()
           m_highScore{0},
           m_freezeTimeout{-1},
           m_eatenFrightenedGhosts{0},
+          m_globalDotsCounter{0},
           m_currentEatSound{false},
           m_state{GameState::LoadingScreen},
           m_levelState{LevelState::PlayerDisplay},
@@ -492,6 +493,7 @@ void Game::startLevel(bool p_died) noexcept
     m_audioHandler.playAudio(m_audioHandler.getSiren(1 + m_currentPlayer->eatenPowerPelletsCurrentLevel()), 2, -1, -1);
     m_audioHandler.pauseAudio(2);
     m_currentEatSound = false;
+    m_globalDotsCounter = 0;
     m_ticks = 0;
     m_freezeTimeout = -1;
 }
@@ -563,6 +565,7 @@ void Game::checkCollisions() noexcept
                 {
                     fCase.activated() = false;
                     dotsEaten++;
+                    if(m_currentPlayer->deadCurrentLevel()) m_globalDotsCounter++;
                     updateScore(isPoint ? 10 : 50);
                     m_currentPlayer->map()[Board::getGridIndex(fCase.position())] = true;
 
@@ -774,6 +777,34 @@ void Game::handleCycleChange() noexcept
 
 void Game::handleGhostHomePriority() noexcept
 {
+
+    if(m_currentPlayer->deadCurrentLevel()) {
+        // handle global ghost counter pinky -> inky -> clyde
+        m_pinky.homeExitPriority() = false;
+        m_inky.homeExitPriority() = false;
+        m_clyde.homeExitPriority() = false;
+
+        if (m_pinky.ghostMode() == GhostMode::Home)
+        {
+            if(m_globalDotsCounter == 7) {
+                m_pinky.startLastGhostMode();
+            }
+        }
+        else if (m_inky.ghostMode() == GhostMode::Home)
+        {
+            if(m_globalDotsCounter == 17) {
+                m_inky.startLastGhostMode();
+            }
+        }
+        else if (m_clyde.ghostMode() == GhostMode::Home && m_globalDotsCounter == 32)
+        {
+            if(m_globalDotsCounter == 32) {
+                m_clyde.startLastGhostMode();
+            }
+        }
+
+        return;
+    }
 
     if (m_pinky.ghostMode() == GhostMode::Home ||
         (m_pinky.ghostMode() != GhostMode::Eaten && m_pinky.currentCase() &&

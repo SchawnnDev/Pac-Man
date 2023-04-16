@@ -207,6 +207,11 @@ namespace pacman {
         void startChaseMode() noexcept;
 
         /**
+         * Start the ghost mode according to m_lastGhostMode
+         */
+        void startLastGhostMode() noexcept;
+
+        /**
          * @brief Starts the home mode, going up and down in the home until mode changes
          */
         void startHomeMode(int p_level, bool p_dead) noexcept;
@@ -250,22 +255,29 @@ namespace pacman {
     };
 
     template<EntityType T>
+    void Ghost<T>::startLastGhostMode() noexcept
+    {
+        if(m_lastGhostMode == GhostMode::Scatter)
+        {
+            startScatterMode();
+        } else {
+            startChaseMode();
+        }
+    }
+
+    template<EntityType T>
     void Ghost<T>::pacmanDotEaten() noexcept
     {
+        m_homeDotsEatCounter = 0;
+
         if (ghostMode() != GhostMode::Home || !m_hasHomeExitPriority) return;
         m_dotsCounter++;
 
         if(m_dotsCounter >= m_homeDotsNeededDots) {
-            if(m_lastGhostMode == GhostMode::Scatter)
-            {
-                startScatterMode();
-            } else {
-                startChaseMode();
-            }
+            startLastGhostMode();
             return;
         }
 
-        m_homeDotsEatCounter = 0;
     }
 
     template <EntityType T>
@@ -317,11 +329,12 @@ namespace pacman {
         reset();
 
         m_homeDotsEatTimeout = FRAMERATE * (4 - (p_level >= 5));
+
+        if(p_dead) return;
+
         if constexpr (T == EntityType::Clyde)
         {
-            if(p_dead) {
-                m_homeDotsNeededDots = 32;
-            } else if (p_level == 1)
+            if (p_level == 1)
             {
                 m_homeDotsNeededDots = 60;
             } else if (p_level == 2)
@@ -333,13 +346,10 @@ namespace pacman {
             }
         } else if constexpr (T == EntityType::Pinky)
         {
-            m_homeDotsNeededDots = p_dead ? 7 : 0;
+            m_homeDotsNeededDots = 0;
         } else if constexpr (T == EntityType::Inky)
         {
-            if(p_dead)
-            {
-                m_homeDotsNeededDots = 17;
-            } else if (p_level == 1)
+            if (p_level == 1)
             {
                 m_homeDotsNeededDots = 30;
             } else
@@ -358,12 +368,7 @@ namespace pacman {
 
         if(Board::isCase(position()) && currCase && currCase->type() == BoardCaseType::GhostHome)
         {
-            if(m_lastGhostMode == GhostMode::Scatter)
-            {
-                startScatterMode();
-            } else {
-                startChaseMode();
-            }
+            startLastGhostMode();
         }
 
     }
@@ -376,12 +381,7 @@ namespace pacman {
         if(m_homeDotsEatCounter >= m_homeDotsEatTimeout) {
             // has prio ?
             if(m_hasHomeExitPriority) {
-                if(m_lastGhostMode == GhostMode::Scatter)
-                {
-                    startScatterMode();
-                } else {
-                    startChaseMode();
-                }
+                startLastGhostMode();
                 return;
             }
         }
