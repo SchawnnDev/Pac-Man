@@ -3,12 +3,25 @@
 This project was developed as part of a university coursework with
 the aim of learning modern C++ programming techniques and applying them to recreate the original 1980 Namco Pac-Man game using the SDL2 library.
 
+## Requirements
+
+To build and run the game, you will need:
+
+- CMake
+- A C++ 20 compiler
+
 ## Installation
 
-To install the game, clone the Git repository and navigate to the `PacMan/build` directory:
+To install the game, clone the Git repository:
 
 ```
 $ git clone https://github.com/SchawnnDev/PacMan.git
+```
+
+The create a build directory and navigate to it:
+
+```
+$ mkdir -p PacMan/build
 $ cd PacMan/build
 ```
 
@@ -26,12 +39,11 @@ $ make
 
 Note that all dependencies are downloaded and compiled during the build process, so there is no need to install anything on the system beforehand.
 
-## Requirements
+## Running the game
+After building the game, you can run it using the executable file that was created. The name of the executable file may vary depending on your platform. For example:
 
-To build and run the game, you will need:
-
-- CMake
-- A C++ 20 compiler
+- Windows: `PacMan.exe`
+- Linux: `./PacMan`
 
 ## Usage
 
