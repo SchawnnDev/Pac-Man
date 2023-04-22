@@ -8,7 +8,7 @@ the aim of learning modern C++ programming techniques and applying them to recre
 To install the game, clone the Git repository and navigate to the `PacMan/build` directory:
 
 ```
-$ git clone https://github.com/<username>/PacMan.git
+$ git clone https://github.com/SchawnnDev/PacMan.git
 $ cd PacMan/build
 ```
 
@@ -31,7 +31,7 @@ Note that all dependencies are downloaded and compiled during the build process,
 To build and run the game, you will need:
 
 - CMake
-- A C++ compiler
+- A C++ 20 compiler
 
 ## Usage
 
