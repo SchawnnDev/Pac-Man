@@ -10,6 +10,10 @@ namespace pacman {
 
     using MixChunkPtr = std::unique_ptr<Mix_Chunk, decltype(&Mix_FreeChunk)>;
 
+    /**
+     * @enum Audio
+     * @brief Represents the available audio clips that can be played by the AudioHandler
+     */
     enum class Audio {
         None,
         Credit,
@@ -31,8 +35,9 @@ namespace pacman {
     };
     /**
      * @class AudioHandler
+     * @brief Manages audio clips and provides methods to play and pause them
      *
-     * Actually, there are 2 audio channels
+     * Actually, there are 3 audio channels
      * Therefore, when more than two sounds are played at the same time,
      * one channel will be overwritten.
      *
@@ -68,25 +73,73 @@ namespace pacman {
         std::array<Audio, AUDIO_CHANNELS> m_lastKnownAudio;
 
     public:
+      /**
+       * @brief Constructs an AudioHandler object.
+       */
         AudioHandler();
 
+        /**
+         * @brief Plays the specified audio on the specified channel.
+         *
+         * @param p_audio The audio to play.
+         * @param p_channel The channel to play the audio on. Defaults to 0.
+         * @param p_duration The duration of the audio in milliseconds. Defaults to -1 (play indefinitely).
+         * @param p_loops The number of times to loop the audio. Defaults to 0 (play once).
+         */
         void playAudio(Audio p_audio, int p_channel = 0, int p_duration = -1, int p_loops = 0) noexcept;
 
+        /**
+         * @brief Pauses the audio on the specified channel.
+         *
+         * @param p_channel The channel to pause the audio on. Defaults to 0.
+         */
         void pauseAudio(int p_channel = 0) noexcept;
 
+        /**
+         * @brief Resumes playing the audio on the specified channel.
+         *
+         * @param p_channel The channel to resume playing the audio on. Defaults to 0.
+         */
         void resumeAudio(int p_channel = 0) noexcept;
 
+        /**
+         * @brief Pauses all audio on all channels.
+         */
         void pauseAll() noexcept;
 
+        /**
+         * @brief Returns a reference to the MixChunkPtr associated with the specified audio.
+         *
+         * @param p_audio The audio to find.
+         * @return A reference to the MixChunkPtr associated with the specified audio.
+         */
         MixChunkPtr& find(Audio p_audio) noexcept;
 
+        /**
+        * @brief Returns the file path for a given audio effect.
+        *
+        * @param p_audio The audio effect to get the file path for.
+        * @return The file path for the given audio effect.
+        */
         static std::string getFilePath(Audio p_audio) noexcept;
 
+        /**
+        * @brief Returns the last known audio played on a given channel.
+        *
+        * @param p_channel The channel to get the last known audio for.
+        * @return The last known audio played on the given channel.
+        */
         [[nodiscard]] inline Audio getLastKnownAudioPlayed(int p_channel) const noexcept
         {
             return m_lastKnownAudio[p_channel];
         }
 
+        /**
+        * @brief Returns the siren sound effect for a given siren number.
+        *
+        * @param p_sirenNb The siren number to get the sound effect for.
+        * @return The sound effect for the given siren number.
+        */
         inline Audio getSiren(int p_sirenNb) {
             if(p_sirenNb < 1 || p_sirenNb > 5) return Audio::Siren1;
             return (Audio) (static_cast<int>(Audio::Siren1) + (p_sirenNb - 1));
