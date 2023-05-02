@@ -1,17 +1,18 @@
 #pragma once
 
 #include <memory>
-#include <concepts>
+#include <type_traits>
 
 namespace pacman {
-    template<std::semiregular T>
-    requires std::is_scalar_v<T>
+    template<typename T>
     /**
      * Wrapper for a shared_ptr
      * @tparam T type to wrap
      */
     class shared_value
     {
+        static_assert(std::is_scalar_v<T>, "shared_value<T> requires T to be a scalar type.");
+
         std::shared_ptr<T> m_sharedValue;
 
     public:
@@ -19,7 +20,7 @@ namespace pacman {
          * @brief Constructs a new shared_value object with the default value of T.
          * @param value The default value of T to use.
          */
-        [[nodiscard]] explicit shared_value(T value = T{})
+        explicit shared_value(T value = T{})
                 : m_sharedValue{std::make_shared<T>(value)}
         {}
 
@@ -41,7 +42,7 @@ namespace pacman {
         operator T &()
         { return value(); }
 
-        inline shared_value<T> &operator=(T newValue)
+        inline std::enable_if_t<std::is_scalar_v<T>, shared_value<T> &> operator=(T newValue)
         {
             value() = newValue;
             return *this;
@@ -50,7 +51,7 @@ namespace pacman {
         [[nodiscard]] inline T operator+(T v) const
         { return value() + v; }
 
-        inline T &operator+=(T newValue)
+        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator+=(T newValue)
         {
             value() += newValue;
             return value();
@@ -59,25 +60,25 @@ namespace pacman {
         [[nodiscard]] inline T operator-(T v) const
         { return value() - v; }
 
-        inline T &operator-=(T newValue)
+        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator-=(T newValue)
         {
             value() -= newValue;
             return value();
         }
 
-        inline T &operator++()
+        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator++()
         {
             value() += 1;
             return value();
         }
 
-        inline T &operator--()
+        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator--()
         {
             value() -= 1;
             return value();
         }
 
-        inline std::weak_ordering operator<=>(T rhs) const
+        inline std::enable_if_t<std::is_scalar_v<T>, std::strong_ordering> operator<=>(T rhs) const
         {
             return value() <=> rhs;
         }
