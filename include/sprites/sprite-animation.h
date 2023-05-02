@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <optional>
-#include <span>
 #include <vector>
 
 #include "sprite.h"
@@ -67,7 +66,7 @@ namespace pacman {
         /**
          * @return Span of the sprites contained in animation
          */
-        [[nodiscard]] std::span<const Sprite> sprites() const { return std::span<const Sprite>{m_sprites}; }
+        [[nodiscard]] auto sprites() const { return m_sprites; }
 
         /**
          * @return Boolean indicating whether the animation is activated.

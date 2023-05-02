@@ -132,8 +132,14 @@ namespace pacman {
 
     using DirectionBoardCasePair = std::pair<Direction, std::optional<BoardCase>>;
 
+    /**
+     * @param p_target Target of entity that want to get to closest board
+     * @param p_boardCases List of possible cases
+     * @param p_acceptHomeDoor Can go into case that is marked as home
+     * @return Closest board case to get to
+     */
     [[nodiscard]] DirectionBoardCasePair
-    getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases,
+    getClosestBoardCase(Position p_target, const std::vector<DirectionBoardCasePair>& p_boardCases,
                         bool p_acceptHomeDoor = false);
 
 

@@ -22,7 +22,7 @@ void BoardCase::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
 }
 
 DirectionBoardCasePair
-pacman::getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases,
+pacman::getClosestBoardCase(Position p_target, const std::vector<DirectionBoardCasePair>& p_boardCases,
                             bool p_acceptHomeDoor) {
     DirectionBoardCasePair result{Direction::DOWN, std::nullopt};
     int distanceTo = -1;

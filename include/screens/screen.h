@@ -55,9 +55,9 @@ namespace pacman {
         }
 
         /**
-         * @return A span of the Drawable objects that are drawn on the screen.
+         * @return A vector of the Drawable objects that are drawn on the screen.
          */
-        [[nodiscard]] std::span<const DrawablePtr> elements() const { return std::span{m_elements}; }
+        [[nodiscard]] auto elements() const { return m_elements; }
 
         /**
          * @return The text resources used for rendering text.
@@ -73,10 +73,10 @@ namespace pacman {
         }
 
         /**
-         * @brief Adds a span of Drawable objects to the list of objects that are drawn on the screen.
+         * @brief Adds a vector of Drawable objects to the list of objects that are drawn on the screen.
          * @param p_elements The span of Drawable objects to add.
          */
-        inline void addElements(std::span<const DrawablePtr> p_elements)
+        inline void addElements(std::vector<DrawablePtr> p_elements)
         {
             m_elements.insert(m_elements.end(), p_elements.begin(), p_elements.end());
         }

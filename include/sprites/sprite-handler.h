@@ -96,7 +96,7 @@ namespace pacman {
         [[nodiscard]] GhostAnimations const &blinkyAnimations() const { return m_blinkyAnimations; }
 
         /**
-         * @return An instance for cylde animations
+         * @return An instance for clyde animations
          */
         [[nodiscard]] GhostAnimations const &clydeAnimations() const { return m_clydeAnimations; }
 
