@@ -36,10 +36,10 @@ namespace pacman {
         [[nodiscard]] inline T &operator*()
         { return value(); }
 
-        operator T() const
+        explicit operator T() const
         { return value(); }
 
-        operator T &()
+        explicit operator T &()
         { return value(); }
 
         inline std::enable_if_t<std::is_scalar_v<T>, shared_value<T> &> operator=(T newValue)
@@ -78,9 +78,21 @@ namespace pacman {
             return value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, std::strong_ordering> operator<=>(T rhs) const
-        {
-            return value() <=> rhs;
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<(const T &rhs) const {
+            return m_sharedValue < rhs.m_sharedValue;
         }
+
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>(const T &rhs) const {
+            return rhs < *this;
+        }
+
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<=(const T &rhs) const {
+            return rhs >= *this;
+        }
+
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>=(const shared_value &rhs) const {
+            return *this >= rhs;
+        }
+
     };
 }
