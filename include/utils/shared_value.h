@@ -79,27 +79,27 @@ namespace pacman {
         }
 
         inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<(const T &rhs) const {
-            return m_sharedValue < rhs.m_sharedValue;
+            return value() < rhs;
         }
 
         inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>(const T &rhs) const {
-            return rhs < *this;
+            return rhs < value();
         }
 
         inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<=(const T &rhs) const {
-            return rhs >= *this;
+            return rhs >= value();
         }
 
         inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>=(const T &rhs) const {
-            return *this >= rhs;
+            return value() >= rhs;
         }
 
-        bool operator==(const T &rhs) const {
-            return m_sharedValue == rhs.m_sharedValue;
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator==(const T &rhs) const {
+            return value() == rhs;
         }
 
-        bool operator!=(const T &rhs) const {
-            return rhs != *this;
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator!=(const T &rhs) const {
+            return rhs != value();
         }
 
     };
