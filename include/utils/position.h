@@ -6,7 +6,6 @@
 #include <SDL_rect.h>
 #include <ostream>
 #include <cmath>
-#include <numbers>
 
 namespace pacman {
 
@@ -67,7 +66,7 @@ namespace pacman {
          */
         [[nodiscard]] Position rotateVec(const Position pivot, int angle) const
         {
-            auto angleDegrees = (angle * (std::numbers::pi / 180));
+            auto angleDegrees = (angle * (M_PI / 180));
             auto const sn = std::sin(angleDegrees);
             auto const cn = std::cos(angleDegrees);
             Position result{m_x, m_y};
