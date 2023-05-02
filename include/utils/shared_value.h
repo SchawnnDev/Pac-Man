@@ -42,7 +42,7 @@ namespace pacman {
         explicit operator T &()
         { return value(); }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, shared_value<T> &> operator=(T newValue)
+        inline shared_value<T> &operator=(T newValue)
         {
             value() = newValue;
             return *this;
@@ -78,20 +78,28 @@ namespace pacman {
             return value();
         }
 
-        inline bool operator<(const T &rhs) const {
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<(const T &rhs) const {
             return m_sharedValue < rhs.m_sharedValue;
         }
 
-        inline bool operator>(const T &rhs) const {
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>(const T &rhs) const {
             return rhs < *this;
         }
 
-        inline bool operator<=(const T &rhs) const {
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<=(const T &rhs) const {
             return rhs >= *this;
         }
 
-        inline bool operator>=(const shared_value &rhs) const {
+        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>=(const T &rhs) const {
             return *this >= rhs;
+        }
+
+        bool operator==(const T &rhs) const {
+            return m_sharedValue == rhs.m_sharedValue;
+        }
+
+        bool operator!=(const T &rhs) const {
+            return rhs != *this;
         }
 
     };
