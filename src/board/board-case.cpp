@@ -2,7 +2,7 @@
 
 using namespace pacman;
 
-void BoardCase::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept
+void BoardCase::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
 {
     if(!activated()) return;
     if (m_currentAnimation) {
@@ -23,7 +23,7 @@ void BoardCase::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) no
 
 DirectionBoardCasePair
 pacman::getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases,
-                            bool p_acceptHomeDoor) noexcept {
+                            bool p_acceptHomeDoor) {
     DirectionBoardCasePair result{Direction::DOWN, std::nullopt};
     int distanceTo = -1;
 

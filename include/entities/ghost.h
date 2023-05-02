@@ -59,49 +59,49 @@ namespace pacman {
          * @brief Handles chase target and logic (specific to blinky, clyde & pinky)
          * Executes m_targetHandlingFct function
          */
-        void handleChaseTarget() noexcept;
+        void handleChaseTarget();
 
         /**
          * @brief Handles scatter mode target and logic
          */
-        void handleScatterMode() noexcept;
+        void handleScatterMode();
 
         /**
          * @brief Handles home mode target and logic
          */
-        void handleHomeMode() noexcept;
+        void handleHomeMode();
 
         /**
          * @brief Handles eaten mode target and logic
          */
-        void handleEatenMode() noexcept;
+        void handleEatenMode();
 
         /**
          * @brief Handles frightened mode (timeout and flashes)
          */
-         void handleFrightenedMode() noexcept;
+         void handleFrightenedMode();
 
         /**
          * @brief Moves the ghost according to direction & speed
          */
-        void handleMovement() noexcept;
+        void handleMovement();
 
         /**
          * @brief Changes animations according to direction, ghostMode
          * @override
          */
-        void changeAnimation() noexcept override;
+        void changeAnimation() override;
 
         /**
          * Changes the ghost direction to a practicable case (taking care of targets and other options)
          * @return The actual BoardCase the ghost is standing on
          */
-        std::optional<BoardCase> handlePathFinding() noexcept;
+        std::optional<BoardCase> handlePathFinding();
 
         /**
          * @brief Turns the ghost 180 degrees (opposite direction)
          */
-        void turnAround() noexcept;
+        void turnAround();
 
         /**
          * @param withOpposite Add the opposite direction to the possible directions
@@ -109,7 +109,7 @@ namespace pacman {
          * @param homeDoorPracticable Check if possible directions are practicable or not
          * @return A vector of DirectionBoardCasePair including direction and BoardCase that are possible to travel to
          */
-        auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false) noexcept;
+        auto getPossibleDirections(bool withOpposite = false, bool noUp = true, bool homeDoorPracticable = false);
 
     public:
         Ghost(Board const &p_board, Pacman const &p_pacman, GhostAnimations const &p_ghostAnimations)
@@ -199,33 +199,33 @@ namespace pacman {
         /**
          * @brief Starts the scatter mode, changing target to a corner
          */
-        void startScatterMode() noexcept;
+        void startScatterMode();
 
         /**
          * @brief Starts the chase mode, changing target to pacman
          */
-        void startChaseMode() noexcept;
+        void startChaseMode();
 
         /**
          * Start the ghost mode according to m_lastGhostMode
          */
-        void startLastGhostMode() noexcept;
+        void startLastGhostMode();
 
         /**
          * @brief Starts the home mode, going up and down in the home until mode changes
          */
-        void startHomeMode(int p_level, bool p_dead) noexcept;
+        void startHomeMode(int p_level, bool p_dead);
 
         /**
          * @brief Start frightened mode, disabling path finding algorithm and using random decisions to travel trough the board
          * @param p_level Current player level to know timeouts
          */
-        void startFrightenedMode(int p_level) noexcept;
+        void startFrightenedMode(int p_level);
 
         /**
          * @brief Start eaten mode, changing target to home and animations to eyes
          */
-        void startEatenMode() noexcept;
+        void startEatenMode();
 
         /**
          * Cycles changes, scatter => chase or chase => scatter
@@ -237,25 +237,25 @@ namespace pacman {
          * @brief Reset all variables to default
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
          * @brief Tick logic, handles intern entities logic
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Handles pacman eating a dot, to increase ghost counter
          */
-        void pacmanDotEaten() noexcept;
+        void pacmanDotEaten();
 
-        [[nodiscard]] EntityType entityType() const noexcept override;
+        [[nodiscard]] EntityType entityType() const override;
 
     };
 
     template<EntityType T>
-    void Ghost<T>::startLastGhostMode() noexcept
+    void Ghost<T>::startLastGhostMode()
     {
         if(m_lastGhostMode == GhostMode::Scatter)
         {
@@ -266,7 +266,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    void Ghost<T>::pacmanDotEaten() noexcept
+    void Ghost<T>::pacmanDotEaten()
     {
         m_homeDotsEatCounter = 0;
 
@@ -281,7 +281,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::startEatenMode() noexcept
+    void Ghost<T>::startEatenMode()
     {
         if(m_ghostMode == GhostMode::Eaten) return;
         m_lastGhostMode = m_ghostMode;
@@ -292,7 +292,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::startFrightenedMode(int p_level) noexcept
+    void Ghost<T>::startFrightenedMode(int p_level)
     {
         if(m_ghostMode == GhostMode::Eaten) return;
 
@@ -316,7 +316,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::startChaseMode() noexcept
+    void Ghost<T>::startChaseMode()
     {
         if (ghostMode() == GhostMode::Chase) return;
         ghostMode() = GhostMode::Chase;
@@ -324,7 +324,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::startHomeMode(int p_level, bool p_dead) noexcept
+    void Ghost<T>::startHomeMode(int p_level, bool p_dead)
     {
         reset();
 
@@ -361,7 +361,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::handleEatenMode() noexcept
+    void Ghost<T>::handleEatenMode()
     {
         if(ghostMode() != GhostMode::Eaten) return;
         auto const& currCase = currentCase();
@@ -374,7 +374,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::handleHomeMode() noexcept
+    void Ghost<T>::handleHomeMode()
     {
         m_homeDotsEatCounter++;
 
@@ -408,10 +408,10 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::handleScatterMode() noexcept {}
+    void Ghost<T>::handleScatterMode() {}
 
     template<EntityType T>
-    void Ghost<T>::handleChaseTarget() noexcept {
+    void Ghost<T>::handleChaseTarget() {
 
         if constexpr (T == EntityType::Blinky) {
             target() = Board::findCase(pacman().position());
@@ -455,7 +455,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::handleFrightenedMode() noexcept {
+    void Ghost<T>::handleFrightenedMode() {
         if(!m_frightened) return;
 
         m_ticks++;
@@ -484,7 +484,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    auto Ghost<T>::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable) noexcept
+    auto Ghost<T>::getPossibleDirections(bool withOpposite, bool noUp, bool homeDoorPracticable)
     {
         // Ghost is on a tile, and he must choose a direction
         auto pairs = std::vector<DirectionBoardCasePair>{};
@@ -518,7 +518,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    std::optional<BoardCase> Ghost<T>::handlePathFinding() noexcept
+    std::optional<BoardCase> Ghost<T>::handlePathFinding()
     {
         if(!currentCase()) return std::nullopt;
         auto const& actualCase = currentCase();
@@ -564,7 +564,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::handleMovement() noexcept
+    void Ghost<T>::handleMovement()
     {
         if(!currentCase()) return;
         auto const& actualCase = currentCase();
@@ -613,7 +613,7 @@ namespace pacman {
     }
 
     template <EntityType T>
-    void Ghost<T>::changeAnimation() noexcept
+    void Ghost<T>::changeAnimation()
     {
         currentAnimation()->freeze() = false;
 
@@ -650,7 +650,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    void Ghost<T>::turnAround() noexcept
+    void Ghost<T>::turnAround()
     {
         auto const opposite = getOpposite(direction());
 
@@ -685,7 +685,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    void Ghost<T>::tick() noexcept {
+    void Ghost<T>::tick() {
 
         if(freezed() || !activated()) return;
         currentCase() = board().getBoardCaseAtPixels(position());
@@ -713,7 +713,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    void Ghost<T>::reset() noexcept {
+    void Ghost<T>::reset() {
         m_frightened = false;
         m_frightenedFlashing = false;
         m_frightenedTimeout = 0;
@@ -752,7 +752,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    void Ghost<T>::startScatterMode() noexcept {
+    void Ghost<T>::startScatterMode() {
         if (ghostMode() == GhostMode::Scatter) return;
         ghostMode() = GhostMode::Scatter;
 
@@ -769,7 +769,7 @@ namespace pacman {
     }
 
     template<EntityType T>
-    EntityType Ghost<T>::entityType() const noexcept {
+    EntityType Ghost<T>::entityType() const {
         return T;
     }
 

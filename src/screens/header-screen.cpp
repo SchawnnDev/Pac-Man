@@ -25,7 +25,7 @@ HeaderScreen::HeaderScreen(TextResources p_textResources, shared_value<int> cons
     HeaderScreen::reset();
 }
 
-void HeaderScreen::tick() noexcept
+void HeaderScreen::tick()
 {
     if (!activated() || m_currentPlayer->id() == -1) return;
 
@@ -47,7 +47,7 @@ void HeaderScreen::tick() noexcept
     ticks()++;
 }
 
-void HeaderScreen::reset() noexcept
+void HeaderScreen::reset()
 {
     m_oneUp->activated() = true;
     m_twoUp->activated() = true;
@@ -60,7 +60,7 @@ void HeaderScreen::reset() noexcept
     ticks() = 0;
 }
 
-void HeaderScreen::updateHighScore() noexcept
+void HeaderScreen::updateHighScore()
 {
     m_highScoreText->text() = std::to_string(m_highScore);
     // Handle new position (when text gets greater, moved from one char x size)
@@ -74,7 +74,7 @@ void HeaderScreen::updateHighScore() noexcept
     m_highScoreText->activated() = m_highScore > 0;
 }
 
-void HeaderScreen::updateScore(int p_playerId) noexcept
+void HeaderScreen::updateScore(int p_playerId)
 {
     auto const score = m_currentPlayer->score();
     (p_playerId == 2 ? m_score2up : m_score1up)->text() = score == 0 ? "00" : std::to_string(m_currentPlayer->score());
@@ -89,7 +89,7 @@ void HeaderScreen::updateScore(int p_playerId) noexcept
     (p_playerId == 2 ? m_score2up : m_score1up)->position().x() = x;
 }
 
-void HeaderScreen::updatePlayerCount() noexcept
+void HeaderScreen::updatePlayerCount()
 {
     auto const isMultiplayer = m_playerCount > 1;
     m_twoUp->activated() = isMultiplayer;

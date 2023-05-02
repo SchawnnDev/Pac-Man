@@ -25,40 +25,40 @@ namespace pacman {
          * @brief Tick logic, handles intern entities logic
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Changes animations according to direction, state
          * @override
          */
-        void changeAnimation() noexcept override;
+        void changeAnimation() override;
 
         /**
          * @brief Reset all variables to default
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
          * @return Type of entity
          * @override
          */
-        [[nodiscard]] inline EntityType entityType() const noexcept override { return EntityType::Pacman; };
+        [[nodiscard]] inline EntityType entityType() const override { return EntityType::Pacman; };
 
         /**
          * @return Current Pacman state
          */
-        [[nodiscard]] PacmanState state() const noexcept { return m_state; }
+        [[nodiscard]] PacmanState state() const { return m_state; }
 
         /**
          * @return Reference to current pacman state
          */
-        PacmanState &state() noexcept { return m_state; }
+        PacmanState &state() { return m_state; }
 
         /**
          * @brief Start die animation
          */
-        void die() noexcept;
+        void die();
     };
 
 }

@@ -5,7 +5,7 @@
 
 using namespace pacman;
 
-void Text::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept
+void Text::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
 {
     if (!activated()) return;
     auto pos = position();

@@ -79,7 +79,7 @@ Game::~Game()
     SDL_Quit();
 }
 
-void Game::start() noexcept
+void Game::start()
 {
     if (m_state != GameState::LoadingScreen)
         return;
@@ -116,12 +116,12 @@ void Game::start() noexcept
     }
 }
 
-void Game::end() noexcept
+void Game::end()
 {
     m_state = GameState::End;
 }
 
-void Game::handleEvents() noexcept
+void Game::handleEvents()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -140,7 +140,7 @@ void Game::handleEvents() noexcept
     }
 }
 
-void Game::handleKeys() noexcept
+void Game::handleKeys()
 {
     int nbk;
     const Uint8 *keys = SDL_GetKeyboardState(&nbk);
@@ -172,7 +172,7 @@ void Game::handleKeys() noexcept
     }
 }
 
-void Game::handleLogic() noexcept
+void Game::handleLogic()
 {
 
     if (m_state == GameState::GameOver)
@@ -318,11 +318,11 @@ void Game::handleLogic() noexcept
 
 }
 
-void Game::handleAudio() noexcept
+void Game::handleAudio()
 {
 }
 
-void Game::handleTicks() noexcept
+void Game::handleTicks()
 {
     m_headerScreen.tick();
     m_footerScreen.tick();
@@ -337,7 +337,7 @@ void Game::handleTicks() noexcept
     m_fruit.tick();
 }
 
-void Game::handleDrawing() noexcept
+void Game::handleDrawing()
 {
     SDL_RenderClear(m_windowRenderer.get());
     SDL_SetRenderDrawColor(m_windowRenderer.get(), 0, 0, 0, 255);
@@ -364,7 +364,7 @@ void Game::handleDrawing() noexcept
     SDL_UpdateWindowSurface(m_window.get());
 }
 
-void Game::handleSpecialKeys(const SDL_Event &event) noexcept
+void Game::handleSpecialKeys(const SDL_Event &event)
 {
     if (m_state != GameState::LoadingScreen || event.key.repeat != 0)
         return;
@@ -396,7 +396,7 @@ void Game::handleSpecialKeys(const SDL_Event &event) noexcept
 
 }
 
-void Game::startPlaying(int p_players) noexcept
+void Game::startPlaying(int p_players)
 {
     m_playerCount = p_players;
     m_headerScreen.updatePlayerCount();
@@ -424,7 +424,7 @@ void Game::startPlaying(int p_players) noexcept
     startLevel(false);
 }
 
-void Game::endPlaying() noexcept
+void Game::endPlaying()
 {
     m_state = GameState::LoadingScreen;
     m_pacman.activated() = false;
@@ -443,20 +443,20 @@ void Game::endPlaying() noexcept
     m_audioHandler.pauseAll();
 }
 
-void Game::updateCredits(int p_credits) noexcept
+void Game::updateCredits(int p_credits)
 {
     m_credit = p_credits;
     m_loadingScreen.updateCredit();
     m_footerScreen.updateCredit();
 }
 
-void Game::updateHighScore(int p_highScore) noexcept
+void Game::updateHighScore(int p_highScore)
 {
     m_highScore = p_highScore;
     m_headerScreen.updateHighScore();
 }
 
-void Game::startLevel(bool p_died) noexcept
+void Game::startLevel(bool p_died)
 {
     if (m_state == GameState::GameOver)
     {
@@ -498,7 +498,7 @@ void Game::startLevel(bool p_died) noexcept
     m_freezeTimeout = -1;
 }
 
-void Game::endLevel() noexcept
+void Game::endLevel()
 {
     m_levelState = LevelState::End;
     m_gameScreen.updateState(false);
@@ -509,7 +509,7 @@ void Game::endLevel() noexcept
     m_clyde.activated() = false;
 }
 
-void Game::startScatter() noexcept
+void Game::startScatter()
 {
     m_blinky.startScatterMode();
     m_pinky.startScatterMode();
@@ -517,7 +517,7 @@ void Game::startScatter() noexcept
     m_clyde.startScatterMode();
 }
 
-void Game::startChase() noexcept
+void Game::startChase()
 {
     m_blinky.startChaseMode();
     m_pinky.startChaseMode();
@@ -525,7 +525,7 @@ void Game::startChase() noexcept
     m_clyde.startChaseMode();
 }
 
-void Game::startFrightened() noexcept
+void Game::startFrightened()
 {
     auto const level = m_currentPlayer->level();
     m_blinky.startFrightenedMode(level);
@@ -543,7 +543,7 @@ void Game::startFrightened() noexcept
 }
 
 
-void Game::checkCollisions() noexcept
+void Game::checkCollisions()
 {
     if (m_pacman.freezed() || !m_pacman.activated()) return;
 
@@ -687,7 +687,7 @@ void Game::checkCollisions() noexcept
 
 }
 
-void Game::updateScore(int p_scoreToAdd) noexcept
+void Game::updateScore(int p_scoreToAdd)
 {
     auto &score = m_currentPlayer->score();
     score += p_scoreToAdd;
@@ -706,7 +706,7 @@ void Game::updateScore(int p_scoreToAdd) noexcept
     }
 }
 
-void Game::freezeDisplayScore(Entity &p_which, int p_score) noexcept
+void Game::freezeDisplayScore(Entity &p_which, int p_score)
 {
     m_pacman.activated() = false;
     freezeEntities();
@@ -721,7 +721,7 @@ void Game::freezeDisplayScore(Entity &p_which, int p_score) noexcept
     updateScore(p_score);
 }
 
-void Game::performPacmanDying() noexcept
+void Game::performPacmanDying()
 {
     m_pacman.freeze();
     m_blinky.freezeMovement();
@@ -735,13 +735,13 @@ void Game::performPacmanDying() noexcept
     m_freezeTimeout = m_ticks + FRAMERATE;
 }
 
-int Game::calculateFrightenedGhostScore() noexcept
+int Game::calculateFrightenedGhostScore()
 {
     m_eatenFrightenedGhosts++;
     return static_cast<int>(std::pow(2, m_eatenFrightenedGhosts) * 100);
 }
 
-void Game::freezeEntities() noexcept
+void Game::freezeEntities()
 {
     m_pacman.freeze();
     m_blinky.freeze();
@@ -750,7 +750,7 @@ void Game::freezeEntities() noexcept
     m_inky.freeze();
 }
 
-void Game::unfreezeEntities() noexcept
+void Game::unfreezeEntities()
 {
     m_pacman.unfreeze();
     m_blinky.unfreeze();
@@ -759,7 +759,7 @@ void Game::unfreezeEntities() noexcept
     m_inky.unfreeze();
 }
 
-void Game::handleCycleChange() noexcept
+void Game::handleCycleChange()
 {
     // Check cycle change
     if (m_ticks <= m_gameCycle.getCycleDuration(m_currentPlayer->level())) return;
@@ -775,7 +775,7 @@ void Game::handleCycleChange() noexcept
     m_clyde.handleCycleChange(newMode);
 }
 
-void Game::handleGhostHomePriority() noexcept
+void Game::handleGhostHomePriority()
 {
 
     if(m_currentPlayer->deadCurrentLevel()) {

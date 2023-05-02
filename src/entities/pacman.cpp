@@ -11,7 +11,7 @@ Pacman::Pacman(const Board &p_board, PacmanAnimations p_pacmanAnimations)
     speed() = 4;
 }
 
-void Pacman::tick() noexcept
+void Pacman::tick()
 {
     if (freezed() || !activated()) return;
 
@@ -49,7 +49,7 @@ void Pacman::tick() noexcept
 
 }
 
-void Pacman::changeAnimation() noexcept
+void Pacman::changeAnimation()
 {
     currentAnimation()->freeze() = false;
 
@@ -70,7 +70,7 @@ void Pacman::changeAnimation() noexcept
     }
 }
 
-void Pacman::reset() noexcept
+void Pacman::reset()
 {
     position() = getPosition(10, 20);
     direction() = Direction::LEFT;
@@ -79,7 +79,7 @@ void Pacman::reset() noexcept
     speed() = 4;
 }
 
-void Pacman::die() noexcept
+void Pacman::die()
 {
     currentAnimation() = m_animations.dyingAnimation;
     currentAnimation()->reset();

@@ -40,7 +40,7 @@ namespace pacman {
         /**
           * @return A reference to the color used to render the image.
           */
-        SDL_Color &color() noexcept { return m_color; }
+        SDL_Color &color() { return m_color; }
 
         /**
          * @brief Draws the image on the screen.
@@ -48,7 +48,7 @@ namespace pacman {
          * @param p_texture The SDL_Texture used to render the image.
          * @override
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
 
     };
 

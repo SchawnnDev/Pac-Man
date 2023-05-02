@@ -37,12 +37,12 @@ namespace pacman {
         /**
          * @return int The number of ticks that have occurred since the screen was activated.
          */
-        [[nodiscard]] int ticks() const noexcept { return m_ticks; }
+        [[nodiscard]] int ticks() const { return m_ticks; }
 
         /**
          * @return A reference to the number of ticks that have occurred since the screen was activated.
          */
-        int &ticks() noexcept { return m_ticks; }
+        int &ticks() { return m_ticks; }
 
         /**
          * @brief Calculates the width of a string in pixels.
@@ -88,7 +88,7 @@ namespace pacman {
          * of the screen by one tick. The exact behavior of the tick function is
          * specific to the particular screen.
          */
-        virtual void tick() noexcept = 0;
+        virtual void tick() = 0;
 
         /**
          * @brief Reset the screen to its initial state.
@@ -97,7 +97,7 @@ namespace pacman {
          * the screen to its initial state. The exact behavior of the reset function
          * is specific to the particular screen.
          */
-        virtual void reset() noexcept = 0;
+        virtual void reset() = 0;
 
         /**
          * @brief Draw the screen.
@@ -110,7 +110,7 @@ namespace pacman {
          * @param p_texture The SDL texture to use for rendering.
          * @override
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
 
     };
 

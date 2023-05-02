@@ -7,7 +7,7 @@ AudioHandler::AudioHandler()
     : m_lastKnownAudio{}
 {}
 
-MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
+MixChunkPtr& AudioHandler::find(Audio p_audio) {
     switch (p_audio) {
         case Audio::Credit:
             return m_credit;
@@ -44,7 +44,7 @@ MixChunkPtr& AudioHandler::find(Audio p_audio) noexcept {
     }
 }
 
-void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p_loops) noexcept
+void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p_loops)
 {
     if(p_audio == Audio::None) return;
     auto& found = find(p_audio);
@@ -60,23 +60,23 @@ void AudioHandler::playAudio(Audio p_audio, int p_channel, int p_duration, int p
     Mix_PlayChannelTimed(p_channel, found.get(), p_loops, p_duration);
 }
 
-void AudioHandler::pauseAudio(int p_channel) noexcept
+void AudioHandler::pauseAudio(int p_channel)
 {
     Mix_Pause(p_channel);
 }
 
-void AudioHandler::resumeAudio(int p_channel) noexcept
+void AudioHandler::resumeAudio(int p_channel)
 {
     Mix_Resume(p_channel);
 }
 
-void AudioHandler::pauseAll() noexcept
+void AudioHandler::pauseAll()
 {
     for (int i = 0; i < AUDIO_CHANNELS; ++i) {
         pauseAudio(i);
     }
 }
 
-std::string AudioHandler::getFilePath(Audio p_audio) noexcept {
+std::string AudioHandler::getFilePath(Audio p_audio) {
     return AUDIO_FOLDER_PATH + std::string{AUDIO_FILES[static_cast<int>(p_audio) - 1]} + AUDIO_EXTENSION;
 }

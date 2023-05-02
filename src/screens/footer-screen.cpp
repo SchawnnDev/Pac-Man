@@ -37,13 +37,13 @@ FooterScreen::FooterScreen(TextResources p_textResources, shared_value<int> p_cr
 }
 
 
-void FooterScreen::tick() noexcept
+void FooterScreen::tick()
 {
     if(!activated()) return;
     //todo:
 }
 
-void FooterScreen::reset() noexcept
+void FooterScreen::reset()
 {
     m_creditText->activated() = true;
 
@@ -53,12 +53,12 @@ void FooterScreen::reset() noexcept
         level->activated() = false;
 }
 
-void FooterScreen::updateCredit() noexcept
+void FooterScreen::updateCredit()
 {
     m_creditText->text() = "credit  " + std::to_string(m_credit);
 }
 
-void FooterScreen::updateState() noexcept
+void FooterScreen::updateState()
 {
     m_creditText->activated() = m_gameState == GameState::LoadingScreen;
 
@@ -66,7 +66,7 @@ void FooterScreen::updateState() noexcept
     updateLevels();
 }
 
-void FooterScreen::updateLives() noexcept
+void FooterScreen::updateLives()
 {
     auto const playing = m_gameState == GameState::Playing;
     auto const lives = m_currentPlayer->lives();
@@ -75,7 +75,7 @@ void FooterScreen::updateLives() noexcept
         m_livesImages[i]->activated() = playing && i < lives;
 }
 
-void FooterScreen::updateLevels() noexcept
+void FooterScreen::updateLevels()
 {
     auto const loading = m_gameState == GameState::LoadingScreen;
     auto const fruits = Fruit::getFruitsByLevel(m_currentPlayer->level());

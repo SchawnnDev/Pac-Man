@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <concepts>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -43,7 +42,7 @@ namespace pacman {
          * @brief Constructs a SpriteHandler object with the given file path.
          * @param path The file path to load the sprites from.
          */
-        explicit SpriteHandler(std::string_view path) noexcept;
+        explicit SpriteHandler(std::string_view path);
 
         /**
          * @brief Get a sprite by name.
@@ -51,31 +50,31 @@ namespace pacman {
          * @param name the name of the sprite
          * @return an optional containing the sprite if found, or an empty optional if not
          */
-        std::optional<Sprite> getSprite(std::string_view name) const noexcept;
+        [[nodiscard]] std::optional<Sprite> getSprite(std::string_view name) const;
 
         /**
          * @brief Import sprites from a file.
          *
          * @param path the path to the file
          */
-        void importSprites(std::string_view path) noexcept;
+        void importSprites(std::string_view path);
 
         /**
          * Initialize animations.
          */
-        void initAnimations() noexcept;
+        void initAnimations();
 
         /**
          * Initialize structs.
          */
-        void initStructs() noexcept;
+        void initStructs();
 
         /**
          * Initialize ghost animations by name.
          *
          * @param name the name of the ghost
          */
-        void initGhostAnimations(const std::string &name) noexcept;
+        void initGhostAnimations(const std::string &name);
 
         /**
          * Get a sprite animation by name.
@@ -83,60 +82,60 @@ namespace pacman {
          * @param name the name of the animation
          * @return an optional containing the animation if found, or an empty optional if not
          */
-        std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name) noexcept;
+        std::optional<SpriteAnimation> getSpriteAnimation(std::string_view name);
 
         /**
          * @return An instance for pacman animations
          */
-        [[nodiscard]] PacmanAnimations const &pacmanAnimations() const noexcept { return m_pacmanAnimations; }
+        [[nodiscard]] PacmanAnimations const &pacmanAnimations() const { return m_pacmanAnimations; }
 
         // Ghosts
         /**
          * @return An instance for blinky animations
          */
-        [[nodiscard]] GhostAnimations const &blinkyAnimations() const noexcept { return m_blinkyAnimations; }
+        [[nodiscard]] GhostAnimations const &blinkyAnimations() const { return m_blinkyAnimations; }
 
         /**
          * @return An instance for cylde animations
          */
-        [[nodiscard]] GhostAnimations const &clydeAnimations() const noexcept { return m_clydeAnimations; }
+        [[nodiscard]] GhostAnimations const &clydeAnimations() const { return m_clydeAnimations; }
 
         /**
          * @return An instance for inky animations
          */
-        [[nodiscard]] GhostAnimations const &inkyAnimations() const noexcept { return m_inkyAnimations; }
+        [[nodiscard]] GhostAnimations const &inkyAnimations() const { return m_inkyAnimations; }
 
         /**
          * @return An instance for pinky animations
          */
-        [[nodiscard]] GhostAnimations const &pinkyAnimations() const noexcept { return m_pinkyAnimations; }
+        [[nodiscard]] GhostAnimations const &pinkyAnimations() const { return m_pinkyAnimations; }
 
         /**
          * @return An instance for fruit resources
          */
-        [[nodiscard]] FruitResources const& fruitResources() const noexcept { return m_fruitResources; }
+        [[nodiscard]] FruitResources const& fruitResources() const { return m_fruitResources; }
 
         // Screens
         /**
          * @return An instance for text resources
          */
-        [[nodiscard]] TextResources const &textResources() const noexcept { return m_textResources; }
+        [[nodiscard]] TextResources const &textResources() const { return m_textResources; }
 
         /**
          * @return An instance for loading screen resources
          */
-        [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const noexcept { return m_loadingScreenResources; }
+        [[nodiscard]] LoadingScreenResources const &loadingScreenResources() const { return m_loadingScreenResources; }
 
         /**
          * @return An instance for footer screen resources
          */
-        [[nodiscard]] FooterScreenResources const &footerScreenResources() const noexcept { return m_footerScreenResources; }
+        [[nodiscard]] FooterScreenResources const &footerScreenResources() const { return m_footerScreenResources; }
 
         // Board
         /**
          * @return An instance for board resources
          */
-        [[nodiscard]] BoardResources const &boardResources() const noexcept { return m_boardResources; }
+        [[nodiscard]] BoardResources const &boardResources() const { return m_boardResources; }
 
         /**
          * @return A map that contains sprites for scores
@@ -152,7 +151,7 @@ namespace pacman {
         template<typename... Args>
         requires (... && std::convertible_to<Args, std::string_view>)
         [[nodiscard]]
-        std::vector<Sprite> getSprites(Args... p_sprites) const noexcept {
+        std::vector<Sprite> getSprites(Args... p_sprites) const {
             std::array<std::string_view, sizeof...(p_sprites)> sprite_names = {{p_sprites...}};
 
             auto result = std::vector<Sprite>();

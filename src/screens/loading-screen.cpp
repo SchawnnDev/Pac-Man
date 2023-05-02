@@ -66,7 +66,7 @@ LoadingScreen::LoadingScreen(const LoadingScreenResources &p_resources, TextReso
 }
 
 
-void LoadingScreen::tick() noexcept {
+void LoadingScreen::tick() {
     if(!activated()) return;
 
     if(m_credit != 0)
@@ -100,7 +100,7 @@ void LoadingScreen::tick() noexcept {
     ticks()++;
 }
 
-void LoadingScreen::reset() noexcept {
+void LoadingScreen::reset() {
     ticks() = 0;
     m_charNick->activated() = true;
     m_startButton->activated() = false;
@@ -110,7 +110,7 @@ void LoadingScreen::reset() noexcept {
     disable();
 }
 
-void LoadingScreen::disable() noexcept {
+void LoadingScreen::disable() {
     m_blinky->activated() = false;
     m_blinkyImage->activated() = false;
     m_pinky->activated() = false;
@@ -128,7 +128,7 @@ void LoadingScreen::disable() noexcept {
     m_bonusImage->activated() = false;
 }
 
-void LoadingScreen::updateCredit() noexcept
+void LoadingScreen::updateCredit()
 {
     if(m_credit > 0)
     {

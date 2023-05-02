@@ -47,30 +47,30 @@ namespace pacman {
          * @brief Performs a tick of the screen.
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Resets the screen to its initial state.
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
          * @brief Updates the high score on the screen.
          */
-        void updateHighScore() noexcept;
+        void updateHighScore();
 
         /**
          * @brief Updates the score for the given player on the screen.
          *
          * @param p_playerId The ID of the player whose score to update.
          */
-        void updateScore(int p_playerId) noexcept;
+        void updateScore(int p_playerId);
 
         /**
          * @brief Updates the players shown on the screen (1UP or 1UP + 2UP)
          */
-        void updatePlayerCount() noexcept;
+        void updatePlayerCount();
     };
 
 }

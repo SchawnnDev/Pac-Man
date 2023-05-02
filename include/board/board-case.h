@@ -42,12 +42,12 @@ namespace pacman {
         /**
          * @return X index
          */
-        [[nodiscard]] constexpr int x() const noexcept { return m_x; }
+        [[nodiscard]] constexpr int x() const { return m_x; }
 
         /**
          * @return Reference to X index
          */
-        constexpr int &x() noexcept { return m_x; }
+        constexpr int &x() { return m_x; }
 
         /**
          * @return Y index
@@ -57,7 +57,7 @@ namespace pacman {
         /**
          * @return Reference to y index
          */
-        constexpr int &y() noexcept { return m_y; }
+        constexpr int &y() { return m_y; }
 
         /**
          * @brief Flags represent some infos about cases, like no_up or tunnel_slowdown
@@ -74,27 +74,27 @@ namespace pacman {
         /**
          * @return Type of this case
          */
-        [[nodiscard]] BoardCaseType type() const noexcept { return m_type; }
+        [[nodiscard]] BoardCaseType type() const { return m_type; }
 
         /**
          * @return Reference to the type of this case
          */
-        BoardCaseType &type() noexcept { return m_type; }
+        BoardCaseType &type() { return m_type; }
 
         /**
          * @return Current sprite currentAnimation of this case (optional)
          */
-        [[nodiscard]] std::optional<SpriteAnimation> const &currentAnimation() const noexcept { return m_currentAnimation; }
+        [[nodiscard]] std::optional<SpriteAnimation> const &currentAnimation() const { return m_currentAnimation; }
 
         /**
          * @return Reference to the current sprite currentAnimation of this case (optional)
          */
-        std::optional<SpriteAnimation> &currentAnimation() noexcept { return m_currentAnimation; };
+        std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
         /**
          * @return (x, y) position of case on board (not pixels)
          */
-        [[nodiscard]] Position position() const noexcept { return {m_x, m_y}; }
+        [[nodiscard]] Position position() const { return {m_x, m_y}; }
 
         /**
          * @brief Draw boardcase to screen
@@ -102,14 +102,14 @@ namespace pacman {
          * @param p_texture Texture to get sprite from
          * @override
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
 
         /**
          * @param p_boardCase BoardCase to check
          * @param p_homeDoorIncluded Add GhostHomeDoor type to check
          * @return BoardCaseType of p_boardCase is practicable by an entity (to avoid going in walls cases)
          */
-        static inline bool isPracticable(BoardCase p_boardCase, bool p_homeDoorIncluded) noexcept {
+        static inline bool isPracticable(BoardCase p_boardCase, bool p_homeDoorIncluded) {
             return isTypePracticable(p_boardCase.type(), p_homeDoorIncluded);
         }
 
@@ -118,7 +118,7 @@ namespace pacman {
          * @param p_homeDoorIncluded Add GhostHomeDoor type to check
          * @return BoardCaseType is practicable by an entity (to avoid going in walls cases)
          */
-        static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType, bool p_homeDoorIncluded = false) noexcept {
+        static constexpr bool isTypePracticable(BoardCaseType p_boardCaseType, bool p_homeDoorIncluded = false) {
             if(p_boardCaseType == BoardCaseType::PointPath
                    || p_boardCaseType == BoardCaseType::BasicPath
                    || p_boardCaseType == BoardCaseType::Bonus
@@ -134,7 +134,7 @@ namespace pacman {
 
     [[nodiscard]] DirectionBoardCasePair
     getClosestBoardCase(Position p_target, std::span<const DirectionBoardCasePair> p_boardCases,
-                        bool p_acceptHomeDoor = false) noexcept;
+                        bool p_acceptHomeDoor = false);
 
 
 }

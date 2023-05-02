@@ -74,18 +74,18 @@ namespace pacman {
         /**
          * @brief Handles all the SDL events.
          */
-        void handleEvents() noexcept;
+        void handleEvents();
 
         /**
          * @brief Handles the input keys.
          */
-        void handleKeys() noexcept;
+        void handleKeys();
 
         /**
          * @brief Handles the special input keys.
          * @param event The SDL event.
          */
-        void handleSpecialKeys(SDL_Event const& event) noexcept;
+        void handleSpecialKeys(SDL_Event const& event);
 
         /**
          * @brief Handle game logic.
@@ -93,88 +93,88 @@ namespace pacman {
          * This method updates the game state, such as the position of entities, based on the elapsed time and the current state.
          * It also checks for collisions and performs actions based on the current state.
          */
-        void handleLogic() noexcept;
+        void handleLogic();
 
         /**
          * @brief Handle audios
          *
          * This method checks the game/level state, and updates the audio when a specific state changes
          */
-        void handleAudio() noexcept;
+        void handleAudio();
 
         /**
          * @brief Handle game ticks.
          *
          * This method updates the game tick count and resets it if necessary.
          */
-        void handleTicks() noexcept;
+        void handleTicks();
 
         /**
          * @brief Handle game drawing.
          *
          * This method draws the game screen using the SDL_Renderer.
          */
-        void handleDrawing() noexcept;
+        void handleDrawing();
 
         /**
          * @brief Update the number of credits.
          *
          * @param p_credits The new number of credits.
          */
-        void updateCredits(int p_credits) noexcept;
+        void updateCredits(int p_credits);
 
         /**
          * @brief Update the score of the current player.
          *
          * @param p_scoreToAdd The score to add to the current score.
          */
-        void updateScore(int p_scoreToAdd) noexcept;
+        void updateScore(int p_scoreToAdd);
 
         /**
          * @brief Update the high score.
          *
          * @param p_highScore The new high score.
          */
-        void updateHighScore(int p_highScore) noexcept;
+        void updateHighScore(int p_highScore);
 
         /**
          * @brief Start playing the game.
          *
          * @param p_players The number of players (1 or 2).
          */
-        void startPlaying(int p_players) noexcept;
+        void startPlaying(int p_players);
 
         /**
          * @brief Start a new level.
          *
          * @param p_died True if the current player died in the previous level.
          */
-        void startLevel(bool p_died) noexcept;
+        void startLevel(bool p_died);
 
         /**
          * @brief End the current level.
          */
-        void endLevel() noexcept;
+        void endLevel();
 
         /**
          * @brief Start the scatter mode for the ghosts.
          */
-        void startScatter() noexcept;
+        void startScatter();
 
         /**
          * @brief Start the chase mode for the ghosts.
          */
-        void startChase() noexcept;
+        void startChase();
 
         /**
          * @brief Start the frightened mode for the ghosts.
          */
-        void startFrightened() noexcept;
+        void startFrightened();
 
         /**
          * @brief Check for collisions between entities.
          */
-        void checkCollisions() noexcept;
+        void checkCollisions();
 
         /**
          * @brief Display the score and freeze the given entity.
@@ -182,46 +182,46 @@ namespace pacman {
          * @param p_which The entity to freeze.
          * @param p_score The score to display.
          */
-        void freezeDisplayScore(Entity& p_which, int p_score) noexcept;
+        void freezeDisplayScore(Entity& p_which, int p_score);
 
         /**
          * @brief Perform the dying sequence for Pacman.
          */
-        void performPacmanDying() noexcept;
+        void performPacmanDying();
 
         /**
          * @brief Calculate the score to add when a frightened ghost is eaten.
          *
          * @return The score to add.
          */
-        int calculateFrightenedGhostScore() noexcept;
+        int calculateFrightenedGhostScore();
 
         /**
          * @brief End playing the game.
          */
-        void endPlaying() noexcept;
+        void endPlaying();
 
         /**
          * @brief Freeze all entities in the game.
          *
          */
-        void freezeEntities() noexcept;
+        void freezeEntities();
 
         /**
          * @brief Unfreeze all entities in the game.
          *
          */
-        void unfreezeEntities() noexcept;
+        void unfreezeEntities();
 
         /**
          * @brief Check cycle change and do actions if a change occurs
          */
-        void handleCycleChange() noexcept;
+        void handleCycleChange();
 
         /**
          * Handle ghost mode, exit, ghost counters etc
          */
-        void handleGhostHomePriority() noexcept;
+        void handleGhostHomePriority();
     public:
         /**
          * @brief Constructs a new Game object.
@@ -239,13 +239,13 @@ namespace pacman {
          * @brief Starts the game loop.
          *
          */
-        void start() noexcept;
+        void start();
 
         /**
          * @brief Ends the game loop and exits the game.
          *
          */
-        void end() noexcept;
+        void end();
 
     };
 

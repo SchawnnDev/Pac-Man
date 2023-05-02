@@ -11,7 +11,7 @@ Fruit::Fruit(Board const &p_board, FruitResources p_fruitResources)
     Fruit::reset();
 }
 
-void Fruit::tick() noexcept
+void Fruit::tick()
 {
     if(!activated()) return;
 
@@ -26,12 +26,12 @@ void Fruit::tick() noexcept
     m_ticks++;
 }
 
-void Fruit::changeAnimation() noexcept
+void Fruit::changeAnimation()
 {
 
 }
 
-void Fruit::reset() noexcept
+void Fruit::reset()
 {
     currentAnimation() = std::nullopt;
     activated() = false;

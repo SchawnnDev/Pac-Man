@@ -8,7 +8,7 @@ namespace pacman {
      * @param n
      * @return i modulo n
      */
-    constexpr int positiveModulo(int i, int n) noexcept {
+    constexpr int positiveModulo(int i, int n) {
         return (i % n + n) % n;
     }
 

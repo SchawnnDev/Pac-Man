@@ -23,61 +23,61 @@ namespace pacman {
                 : m_sharedValue{std::make_shared<T>(value)}
         {}
 
-        [[nodiscard]] inline T value() const noexcept
+        [[nodiscard]] inline T value() const
         { return *m_sharedValue; }
 
-        [[nodiscard]] inline T &value() noexcept
+        [[nodiscard]] inline T &value()
         { return *m_sharedValue; }
 
-        [[nodiscard]] inline T operator*() const noexcept
+        [[nodiscard]] inline T operator*() const
         { return value(); }
 
-        [[nodiscard]] inline T &operator*() noexcept
+        [[nodiscard]] inline T &operator*()
         { return value(); }
 
-        operator T() const noexcept
+        operator T() const
         { return value(); }
 
-        operator T &() noexcept
+        operator T &()
         { return value(); }
 
-        inline shared_value<T> &operator=(T newValue) noexcept
+        inline shared_value<T> &operator=(T newValue)
         {
             value() = newValue;
             return *this;
         }
 
-        [[nodiscard]] inline T operator+(T v) const noexcept
+        [[nodiscard]] inline T operator+(T v) const
         { return value() + v; }
 
-        inline T &operator+=(T newValue) noexcept
+        inline T &operator+=(T newValue)
         {
             value() += newValue;
             return value();
         }
 
-        [[nodiscard]] inline T operator-(T v) const noexcept
+        [[nodiscard]] inline T operator-(T v) const
         { return value() - v; }
 
-        inline T &operator-=(T newValue) noexcept
+        inline T &operator-=(T newValue)
         {
             value() -= newValue;
             return value();
         }
 
-        inline T &operator++() noexcept
+        inline T &operator++()
         {
             value() += 1;
             return value();
         }
 
-        inline T &operator--() noexcept
+        inline T &operator--()
         {
             value() -= 1;
             return value();
         }
 
-        inline std::weak_ordering operator<=>(T rhs) const noexcept
+        inline std::weak_ordering operator<=>(T rhs) const
         {
             return value() <=> rhs;
         }

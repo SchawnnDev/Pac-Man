@@ -41,18 +41,18 @@ namespace pacman {
          * @brief Performs a tick of the screen.
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Resets the screen to its initial state.
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
           * @brief Disables the screen.
           */
-        void disable() noexcept;
+        void disable();
 
         /**
          * @brief Updates the game state on the screen.

@@ -49,33 +49,33 @@ namespace pacman {
          * @brief Performs a tick of the screen.
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Resets the screen to its initial state.
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
          * @brief Updates the credit count on the screen.
          */
-        void updateCredit() noexcept;
+        void updateCredit();
 
         /**
          * @brief Updates the game state on the screen.
          */
-        void updateState() noexcept;
+        void updateState();
 
         /**
          * @brief Updates the remaining lives on the screen.
          */
-        void updateLives() noexcept;
+        void updateLives();
 
         /**
          * @brief Updates the current level on the screen.
          */
-        void updateLevels() noexcept;
+        void updateLevels();
 
     };
 

@@ -58,15 +58,15 @@ namespace pacman {
         LoadingScreen(const LoadingScreenResources &p_resources, TextResources p_textResources,
                       shared_value<int> p_credit);
 
-        void tick() noexcept override;
-        void reset() noexcept override;
-        void disable() noexcept;
+        void tick() override;
+        void reset() override;
+        void disable();
 
         /**
          * @brief Updates the credit count displayed on the screen.
          * Also switches the screen from "no credit" to "player select"
          */
-        void updateCredit() noexcept;
+        void updateCredit();
 
     };
 

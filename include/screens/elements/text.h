@@ -72,47 +72,47 @@ namespace pacman {
         /**
          * @return The content of the text.
          */
-        [[nodiscard]] std::string const& text() const noexcept { return m_text; }
+        [[nodiscard]] std::string const& text() const { return m_text; }
 
         /**
          * @return A reference to the content of the text.
          */
-        std::string &text() noexcept { return m_text; }
+        std::string &text() { return m_text; }
 
         /**
          * @return The spacing between characters in pixels.
          */
-        [[nodiscard]] int spacing() const noexcept { return m_spacing; }
+        [[nodiscard]] int spacing() const { return m_spacing; }
 
        /**
         * @return Reference to the spacing.
         */
-        int& spacing() noexcept { return m_spacing; }
+        int& spacing() { return m_spacing; }
 
         /**
          * @return The size of the font.
          */
-        [[nodiscard]] int size() const noexcept { return m_size; }
+        [[nodiscard]] int size() const { return m_size; }
 
         /**
          * @return Reference to the size of the font.
          */
-        int& size() noexcept { return m_size; }
+        int& size() { return m_size; }
 
         /**
          * @return The position of the text.
          */
-        [[nodiscard]] Position const& position() const noexcept { return m_position; }
+        [[nodiscard]] Position const& position() const { return m_position; }
 
         /**
          * @return Reference to the position of the text.
          */
-        Position &position() noexcept { return m_position; }
+        Position &position() { return m_position; }
 
         /**
          * @return Reference to the color of the text.
          */
-        SDL_Color &color() noexcept { return m_color; }
+        SDL_Color &color() { return m_color; }
 
         /**
          * @brief Calculates and returns the total size of the text.
@@ -130,7 +130,7 @@ namespace pacman {
          * @param p_texture The texture to draw to.
          * @override
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
     };
 
     /**

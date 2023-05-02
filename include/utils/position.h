@@ -35,12 +35,12 @@ namespace pacman {
 
         constexpr int &y() { return m_y; };
 
-        inline bool operator==(const Position &rhs) const noexcept {
+        inline bool operator==(const Position &rhs) const {
             return m_x == rhs.m_x &&
                    m_y == rhs.m_y;
         }
 
-        inline bool operator!=(const Position &rhs) const noexcept {
+        inline bool operator!=(const Position &rhs) const {
             return !(rhs == *this);
         }
 
@@ -48,7 +48,7 @@ namespace pacman {
          * @param position Position to add
          * @return Added position
          */
-        [[nodiscard]] constexpr Position add(Position position) const noexcept {
+        [[nodiscard]] constexpr Position add(Position position) const {
             return {m_x + position.x(), m_y + position.y()};
         }
 
@@ -56,7 +56,7 @@ namespace pacman {
          * @param position Position to subtract
          * @return Subtracted position
          */
-        [[nodiscard]] constexpr Position subtract(Position position) const noexcept {
+        [[nodiscard]] constexpr Position subtract(Position position) const {
             return {m_x - position.x(), m_y - position.y()};
         }
 
@@ -91,7 +91,7 @@ namespace pacman {
          * @param count Pixels to move to
          * @return Position calculated from direction and count to move
          */
-        [[nodiscard]] constexpr Position getPositionAt(Direction p_direction, int count) const noexcept {
+        [[nodiscard]] constexpr Position getPositionAt(Direction p_direction, int count) const {
             switch (p_direction) {
                 case Direction::UP:
                     return {m_x, m_y - count};
@@ -110,7 +110,7 @@ namespace pacman {
          * @param p_direction Direction to move to
          * @param p_pixels Number of pixels to move to
          */
-        constexpr void moveAt(Direction p_direction, int p_pixels) noexcept {
+        constexpr void moveAt(Direction p_direction, int p_pixels) {
             switch (p_direction) {
                 case Direction::UP:
                     m_y -= p_pixels;
@@ -131,7 +131,7 @@ namespace pacman {
          * @param p_target Target
          * @return Calculated distance between this position and target
          */
-        [[nodiscard]] constexpr int distanceTo(Position p_target) const noexcept {
+        [[nodiscard]] constexpr int distanceTo(Position p_target) const {
             auto x = p_target.x() - m_x;
             auto y = p_target.y() - m_y;
             return x * x + y * y;
@@ -140,7 +140,7 @@ namespace pacman {
         /**
          * @return Grid position to pixels
          */
-        constexpr void toPixels() noexcept {
+        constexpr void toPixels() {
             m_x *= BOARD_CASE_SIZE_WIDTH;
             m_y *= BOARD_CASE_SIZE_HEIGHT;
         }
@@ -148,7 +148,7 @@ namespace pacman {
         /**
          * @return SDL_Rect form position with width and height = 0
          */
-        constexpr SDL_Rect toSDLRect() noexcept {
+        constexpr SDL_Rect toSDLRect() {
             return {m_x, m_y, 0, 0};
         }
 
@@ -159,7 +159,7 @@ namespace pacman {
      * @param p_y y position (grid position)
      * @return Calculates pixel position of x & y
      */
-    constexpr Position getPosition(int p_x, int p_y) noexcept {
+    constexpr Position getPosition(int p_x, int p_y) {
         return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
@@ -168,7 +168,7 @@ namespace pacman {
      * @param p_y y position (grid position)
      * @return Calculates pixel position of x & y (sdl rect)
      */
-    constexpr SDL_Rect getRectPosition(int p_x, int p_y) noexcept {
+    constexpr SDL_Rect getRectPosition(int p_x, int p_y) {
         return {p_x * BOARD_CASE_SIZE_WIDTH, p_y * BOARD_CASE_SIZE_HEIGHT + BOARD_OFFSET_Y};
     }
 
@@ -177,7 +177,7 @@ namespace pacman {
      * @param p_y y position
      * @return Calculates center position of x & y
      */
-    constexpr Position getCenteredPosition(int p_x, int p_y) noexcept {
+    constexpr Position getCenteredPosition(int p_x, int p_y) {
         Position pos = getPosition(p_x, p_y);
         pos.x() += BOARD_CASE_SIZE_WIDTH / 2;
         pos.y() += BOARD_CASE_SIZE_HEIGHT / 2;
@@ -189,7 +189,7 @@ namespace pacman {
      * @param p_y y position
      * @return Calculates center position of x & y (sdl rect)
      */
-    constexpr SDL_Rect getRectCenteredPosition(int p_x, int p_y) noexcept {
+    constexpr SDL_Rect getRectCenteredPosition(int p_x, int p_y) {
         auto pos = getCenteredPosition(p_x, p_y);
         return {pos.x(), pos.y()};
     }
@@ -199,7 +199,7 @@ namespace pacman {
      * @param p_direction direction to get opposite from
      * @return opposite direction
      */
-    constexpr Direction getOpposite(Direction p_direction) noexcept {
+    constexpr Direction getOpposite(Direction p_direction) {
         switch (p_direction) {
             case Direction::UP:
                 return Direction::DOWN;
@@ -219,7 +219,7 @@ namespace pacman {
      * @param angle angle
      * @return direction get from start direction + angle
      */
-    constexpr Direction getDirectionByAngle(Direction p_direction, int angle) noexcept {
+    constexpr Direction getDirectionByAngle(Direction p_direction, int angle) {
         return Direction(positiveModulo(static_cast<int>(p_direction) - angle / 90, 4));
     }
 
@@ -228,7 +228,7 @@ namespace pacman {
      * @param p_direction direction to get priority from
      * @return priority of given direction
      */
-    constexpr int getDirectionPriority(Direction p_direction) noexcept {
+    constexpr int getDirectionPriority(Direction p_direction) {
         switch (p_direction) {
             case Direction::UP:
                 return 3;
@@ -246,7 +246,7 @@ namespace pacman {
      * @param p_direction direction to get the name from
      * @return name of given direction
      */
-    inline std::string getDirectionName(Direction p_direction) noexcept {
+    inline std::string getDirectionName(Direction p_direction) {
         switch (p_direction) {
             case Direction::UP:
                 return "up";

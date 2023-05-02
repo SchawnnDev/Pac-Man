@@ -7,7 +7,7 @@
 
 using namespace pacman;
 
-SpriteHandler::SpriteHandler(std::string_view path) noexcept
+SpriteHandler::SpriteHandler(std::string_view path)
         // Nothing sprite is a utility sprite that is used in animations to display "nothing"
         : m_sprites{Sprite{"nothing"}}
         , m_textResources{m_alphabetSprites}
@@ -21,7 +21,7 @@ SpriteHandler::SpriteHandler(std::string_view path) noexcept
     initStructs();
 }
 
-void SpriteHandler::importSprites(std::string_view path) noexcept
+void SpriteHandler::importSprites(std::string_view path)
 {
     std::cout << "Importing sprite positions: " << path << std::endl;
     pugi::xml_document doc;
@@ -51,7 +51,7 @@ void SpriteHandler::importSprites(std::string_view path) noexcept
 }
 
 std::optional<Sprite>
-SpriteHandler::getSprite(std::string_view name) const noexcept
+SpriteHandler::getSprite(std::string_view name) const
 {
     for (auto sprite: SpriteHandler::m_sprites)
     {
@@ -61,7 +61,7 @@ SpriteHandler::getSprite(std::string_view name) const noexcept
     return std::nullopt;
 }
 
-void SpriteHandler::initAnimations() noexcept
+void SpriteHandler::initAnimations()
 {
     std::cout << "Initializing sprite animations..." << std::endl;
 
@@ -107,7 +107,7 @@ void SpriteHandler::initAnimations() noexcept
 }
 
 std::optional<SpriteAnimation>
-SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
+SpriteHandler::getSpriteAnimation(std::string_view name)
 {
     if (auto it = m_spriteAnimations.find(std::string{name}); it != std::end(
             m_spriteAnimations))
@@ -116,7 +116,7 @@ SpriteHandler::getSpriteAnimation(std::string_view name) noexcept
         return std::nullopt;
 }
 
-void SpriteHandler::initStructs() noexcept
+void SpriteHandler::initStructs()
 {
     auto nothing = Sprite{"nothing"};
     // Pacman
@@ -221,7 +221,7 @@ void SpriteHandler::initStructs() noexcept
 
 }
 
-void SpriteHandler::initGhostAnimations(const std::string& name) noexcept
+void SpriteHandler::initGhostAnimations(const std::string& name)
 {
     m_spriteAnimations[name + "-down"] = SpriteAnimation{getSprites(name + "_down_1", name + "_down_2"), false, 3};
     m_spriteAnimations[name + "-up"] = SpriteAnimation{getSprites(name + "_up_1", name + "_up_2"), false, 3};

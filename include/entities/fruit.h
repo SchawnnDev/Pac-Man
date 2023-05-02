@@ -41,19 +41,19 @@ namespace pacman {
          * @brief Tick logic, handles intern entities logic
          * @override
          */
-        void tick() noexcept override;
+        void tick() override;
 
         /**
          * @brief Changes animations according to fruit mode or score mode
          * @override
          */
-        void changeAnimation() noexcept override;
+        void changeAnimation() override;
 
         /**
          * @brief Reset all variables to default
          * @override
          */
-        void reset() noexcept override;
+        void reset() override;
 
         /**
          * @brief Displays fruit for given level (for 10 seconds)
@@ -71,7 +71,7 @@ namespace pacman {
          * @return Type of entity
          * @override
          */
-        [[nodiscard]] inline EntityType entityType() const noexcept override
+        [[nodiscard]] inline EntityType entityType() const override
         { return EntityType::Fruit; }
     };
 

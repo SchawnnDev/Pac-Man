@@ -22,14 +22,14 @@ GameScreen::GameScreen(TextResources p_textResources, shared_value<LevelState> c
     GameScreen::reset();
 }
 
-void GameScreen::tick() noexcept {}
+void GameScreen::tick() {}
 
-void GameScreen::reset() noexcept
+void GameScreen::reset()
 {
     disable();
 }
 
-void GameScreen::disable() noexcept
+void GameScreen::disable()
 {
     m_player->activated() = false;
     m_ready->activated() = false;

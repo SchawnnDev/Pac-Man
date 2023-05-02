@@ -2,7 +2,7 @@
 
 using namespace pacman;
 
-void Image::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept
+void Image::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture)
 {
     if (!activated()) return;
     SDL_SetTextureColorMod(p_texture, m_color.r, m_color.g, m_color.b);

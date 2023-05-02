@@ -35,7 +35,7 @@ namespace pacman {
          * @param p_bottomRight Bottom right position of rectangle
          * @return Checks collisions between this entity and (p_topLeft, p_bottomRight) rectangle
          */
-        [[nodiscard]] bool checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept;
+        [[nodiscard]] bool checkCollision(Position p_topLeft, Position p_bottomRight) const;
 
     public:
 
@@ -50,139 +50,139 @@ namespace pacman {
         /**
          * @brief Tick logic, handles intern entities logic
          */
-        virtual void tick() noexcept = 0;
+        virtual void tick() = 0;
 
         /**
          * @brief Changes currentAnimation corresponding to current state
          */
-        virtual void changeAnimation() noexcept = 0;
+        virtual void changeAnimation() = 0;
 
         /**
          * @brief Reset all variables to default
          */
-        virtual void reset() noexcept = 0;
+        virtual void reset() = 0;
 
 
         /**
          * @return Type of entity
          */
-        [[nodiscard]] virtual EntityType entityType() const noexcept = 0; // wow, modern (uses cpp move semantics)
+        [[nodiscard]] virtual EntityType entityType() const = 0; // wow, modern (uses cpp move semantics)
 
         /**
          * @return Current sprite animation of entity
          */
-        [[nodiscard]] std::optional<SpriteAnimation> const &currentAnimation() const noexcept { return m_currentAnimation; };
+        [[nodiscard]] std::optional<SpriteAnimation> const &currentAnimation() const { return m_currentAnimation; };
 
         /**
          * @return Reference to the current sprite animation of entity (optional)
          */
-        std::optional<SpriteAnimation> &currentAnimation() noexcept { return m_currentAnimation; };
+        std::optional<SpriteAnimation> &currentAnimation() { return m_currentAnimation; };
 
         /**
          * @return Board instance reference
          */
-        [[nodiscard]] Board const &board() const noexcept { return m_board; };
+        [[nodiscard]] Board const &board() const { return m_board; };
 
         /**
          * @return Reference to the board instance
          */
-        Board &board() noexcept { return m_board; };
+        Board &board() { return m_board; };
 
         /**
          * @return Direction of the entity
          */
-        [[nodiscard]] Direction direction() const noexcept { return m_direction; };
+        [[nodiscard]] Direction direction() const { return m_direction; };
 
         /**
          * @return Reference to the direction of the entity
          */
-        Direction &direction() noexcept { return m_direction; };
+        Direction &direction() { return m_direction; };
 
         /**
          * @return Position of the entity
          */
-        [[nodiscard]] Position position() const noexcept { return m_position; };
+        [[nodiscard]] Position position() const { return m_position; };
 
         /**
          * @return Reference to the position of the entity
          */
-        Position &position() noexcept { return m_position; };
+        Position &position() { return m_position; };
 
         /**
          * @return Current case the entity is staying on
          */
-        [[nodiscard]] std::optional<BoardCase> const &currentCase() const noexcept { return m_currentCase; };
+        [[nodiscard]] std::optional<BoardCase> const &currentCase() const { return m_currentCase; };
 
         /**
          * @return Reference to current case the entity is staying on
          */
-        std::optional<BoardCase> &currentCase() noexcept { return m_currentCase; };
+        std::optional<BoardCase> &currentCase() { return m_currentCase; };
 
         /**
          * @return Speed of entity in pixels per tick
          */
-        [[nodiscard]] int speed() const noexcept { return m_speed; }
+        [[nodiscard]] int speed() const { return m_speed; }
 
         /**
          * @brief Speed of entity in pixels per tick
          * @return Reference to speed
          */
-        int &speed() noexcept { return m_speed; }
+        int &speed() { return m_speed; }
 
         /**
          * @return Entity is freezed or not
          */
-        [[nodiscard]] bool freezed() const noexcept { return m_freeze; }
+        [[nodiscard]] bool freezed() const { return m_freeze; }
 
         /**
          * @brief Move this entity to a new direction
          * @param newDirection The new direction to move to
          */
-        void move(Direction newDirection) noexcept;
+        void move(Direction newDirection);
 
         /**
          * @brief Draw this entity to screen
          * @param p_window_renderer Window renderer
          * @param p_texture Texture to get sprite from
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
 
         /**
          * @param p_direction Direction to move to
          * @return Checks whether this entity can move in p_direction or not
          */
-        [[nodiscard]] bool canMoveTo(Direction p_direction) const noexcept;
+        [[nodiscard]] bool canMoveTo(Direction p_direction) const;
 
         /**
          * @return Checks whether the entity is a ghost or not
          */
-        [[nodiscard]] bool isGhost() const noexcept;
+        [[nodiscard]] bool isGhost() const;
 
         /**
          * @brief Freeze entity (movement + animations + logic)
          */
-        void freeze() noexcept;
+        void freeze();
 
         /**
          * @brief Unfreeze entity (movement + animations + logic)
          */
-        void unfreeze() noexcept;
+        void unfreeze();
 
         /**
          * @brief Freezes entities movement (currentAnimation still activated)
          */
-        void freezeMovement() noexcept;
+        void freezeMovement();
 
         /**
          * @brief Unfreeze entities movement
          */
-        void unfreezeMovement() noexcept;
+        void unfreezeMovement();
 
         /**
          * @param p_with Entity to check collision with
          * @return Checks if this entity collides p_with entity
          */
-        [[nodiscard]] bool checkCollision(Entity const& p_with) const noexcept;
+        [[nodiscard]] bool checkCollision(Entity const& p_with) const;
 
     };
 

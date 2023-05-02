@@ -31,17 +31,17 @@ namespace pacman {
         size_t m_homeDoorIndex;
     public:
 
-        Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources) noexcept;
+        Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources);
 
         /**
          * @return BoardCase grid, covering the whole board
          */
-        [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const &grid() const noexcept { return m_grid; };
+        [[nodiscard]] std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> const &grid() const { return m_grid; };
 
         /**
          * @return BoardCase grid, covering the whole board
          */
-        std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() noexcept { return m_grid; };
+        std::array<BoardCase, BOARD_SIZE_X * BOARD_SIZE_Y> &grid() { return m_grid; };
 
         /**
          * @return Index in grid of left door
@@ -72,7 +72,7 @@ namespace pacman {
          * @param p_position Position index
          * @return Check if indexes p_position are valid indexes
          */
-        static constexpr bool checkGridCoordinates(Position p_position) noexcept {
+        static constexpr bool checkGridCoordinates(Position p_position) {
             return checkGridCoordinates(p_position.x(), p_position.y());
         }
 
@@ -81,7 +81,7 @@ namespace pacman {
          * @param p_y Y index
          * @return Check if indexes p_x, p_y are valid indexes
          */
-        static constexpr bool checkGridCoordinates(int p_x, int p_y) noexcept {
+        static constexpr bool checkGridCoordinates(int p_x, int p_y) {
             return p_x < 0 || p_y < 0 || getGridIndex(p_x, p_y) < BOARD_SIZE_X * BOARD_SIZE_Y;
         }
 
@@ -90,7 +90,7 @@ namespace pacman {
          * @param p_y Y index
          * @return Calculated grid index from (p_x, p_y)
          */
-        static constexpr size_t getGridIndex(int p_x, int p_y) noexcept {
+        static constexpr size_t getGridIndex(int p_x, int p_y) {
             return BOARD_SIZE_X * p_y + p_x;
         }
 
@@ -98,7 +98,7 @@ namespace pacman {
          * @param p_position Position to get the grid index from
          * @return Calculated grid index from position
          */
-        static constexpr size_t getGridIndex(Position p_position) noexcept {
+        static constexpr size_t getGridIndex(Position p_position) {
             return getGridIndex(p_position.x(), p_position.y());
         }
 
@@ -106,7 +106,7 @@ namespace pacman {
          * @param p_position x,y position index
          * @return Get boardcase from grid at position
          */
-        [[nodiscard]] inline BoardCase const &getCase(Position p_position) const noexcept {
+        [[nodiscard]] inline BoardCase const &getCase(Position p_position) const {
             return getCase(p_position.x(), p_position.y());
         }
 
@@ -114,7 +114,7 @@ namespace pacman {
          * @param p_position x,y position index
          * @return Get boardcase from grid at position
          */
-        [[nodiscard]] inline BoardCase &getCase(Position p_position) noexcept {
+        [[nodiscard]] inline BoardCase &getCase(Position p_position) {
             return getCase(p_position.x(), p_position.y());
         }
 
@@ -123,7 +123,7 @@ namespace pacman {
          * @param p_y Y index
          * @return Get boardcase from grid at (p_x, p_y)
          */
-        [[nodiscard]] inline BoardCase const &getCase(int p_x, int p_y) const noexcept {
+        [[nodiscard]] inline BoardCase const &getCase(int p_x, int p_y) const {
             return m_grid[getGridIndex(p_x, p_y)];
         }
 
@@ -132,7 +132,7 @@ namespace pacman {
          * @param p_y Y index
          * @return Get boardcase from grid at (p_x, p_y)
          */
-        inline BoardCase &getCase(int p_x, int p_y) noexcept {
+        inline BoardCase &getCase(int p_x, int p_y) {
             return m_grid[getGridIndex(p_x, p_y)];
         }
 
@@ -141,7 +141,7 @@ namespace pacman {
          * @param p_boardCaseIndex Index of the case in grid
          * @return Found case position is equals to given boardCaseIndex
          */
-        [[nodiscard]] static constexpr bool isOnBoardCase(Position p_position, size_t p_boardCaseIndex) noexcept {
+        [[nodiscard]] static constexpr bool isOnBoardCase(Position p_position, size_t p_boardCaseIndex) {
             auto caseFound = Board::findCase(p_position);
             if (caseFound.x() == -1 || caseFound.y() == -1) return false;
             return getGridIndex(caseFound.x(), caseFound.y()) == p_boardCaseIndex;
@@ -151,7 +151,7 @@ namespace pacman {
          * @param p_position Position
          * @return Checks if position is left door position
          */
-        [[nodiscard]] constexpr bool isOnLeftDoor(Position p_position) const noexcept {
+        [[nodiscard]] constexpr bool isOnLeftDoor(Position p_position) const {
             return isOnBoardCase(p_position, m_leftDoorIndex);
         }
 
@@ -159,7 +159,7 @@ namespace pacman {
          * @param p_position Position
          * @return Checks if position is right door position
          */
-        [[nodiscard]] constexpr bool isOnRightDoor(Position p_position) const noexcept {
+        [[nodiscard]] constexpr bool isOnRightDoor(Position p_position) const {
             return isOnBoardCase(p_position, m_rightDoorIndex);
         }
 
@@ -168,7 +168,7 @@ namespace pacman {
          * @param p_direction Direcetion of the square to get to
          * @return Get the boardcase at a position and given direction to find the next square
          */
-        [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept;
+        [[nodiscard]] std::optional<BoardCase> getBoardCaseAtPixels(Position p_position, Direction p_direction);
 
         /**
          * @param p_position Index of grid (x, y)
@@ -179,12 +179,12 @@ namespace pacman {
         /**
          * @param p_filePath Save board to file
          */
-        void save(const std::string &p_filePath) const noexcept;
+        void save(const std::string &p_filePath) const;
 
         /**
          * Reset board
          */
-        void reset() noexcept;
+        void reset();
 
 
         /**
@@ -193,13 +193,13 @@ namespace pacman {
          * @param p_texture Texture to get sprite from
          * @override
          */
-        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept override;
+        void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) override;
 
         /**
          * @param p_pixelPosition Position
          * @return Given position is a case or not
          */
-        static constexpr bool isCase(Position p_pixelPosition) noexcept {
+        static constexpr bool isCase(Position p_pixelPosition) {
             return isCase(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
@@ -208,7 +208,7 @@ namespace pacman {
          * @param p_pixelY Position y
          * @return Given position is a case or not
          */
-        static constexpr bool isCase(int p_pixelX, int p_pixelY) noexcept {
+        static constexpr bool isCase(int p_pixelX, int p_pixelY) {
             return p_pixelX % BOARD_CASE_SIZE_WIDTH == 0 &&
                    (p_pixelY - BOARD_OFFSET_Y) % BOARD_CASE_SIZE_HEIGHT == 0;
         }
@@ -217,7 +217,7 @@ namespace pacman {
          * @param p_pixelPosition Position
          * @return Find case index in grid of pixel position
          */
-        static constexpr Position findCase(Position p_pixelPosition) noexcept {
+        static constexpr Position findCase(Position p_pixelPosition) {
             return findCase(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
@@ -226,7 +226,7 @@ namespace pacman {
          * @param p_pixelY Pixel position Y
          * @return Find case index in grid of pixel x and y
          */
-        static constexpr Position findCase(int p_pixelX, int p_pixelY) noexcept {
+        static constexpr Position findCase(int p_pixelX, int p_pixelY) {
             p_pixelY -= BOARD_OFFSET_Y;
 
             if (p_pixelX < 0 || p_pixelX > BOARD_SIZE_WIDTH || p_pixelY < 0 ||
@@ -243,7 +243,7 @@ namespace pacman {
          * @param p_pixelPosition Position to check
          * @return Checks if position is a case and if position is in the center of a case
          */
-        static constexpr bool isCaseCenter(Position p_pixelPosition) noexcept {
+        static constexpr bool isCaseCenter(Position p_pixelPosition) {
             return isCaseCenter(p_pixelPosition.x(), p_pixelPosition.y());
         }
 
@@ -252,7 +252,7 @@ namespace pacman {
          * @param p_pixelY Pixel position y
          * @return Checks if (x, y) is a case and if (x, y) is in the center of a case
          */
-        static constexpr bool isCaseCenter(int p_pixelX, int p_pixelY) noexcept {
+        static constexpr bool isCaseCenter(int p_pixelX, int p_pixelY) {
             Position foundCase = findCase(p_pixelX, p_pixelY);
             if (foundCase.x() == -1 || foundCase.y() == -1) return false;
             auto pos = getCenteredPosition(foundCase.x(), foundCase.y());

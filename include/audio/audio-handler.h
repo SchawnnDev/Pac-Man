@@ -86,26 +86,26 @@ namespace pacman {
          * @param p_duration The duration of the audio in milliseconds. Defaults to -1 (play indefinitely).
          * @param p_loops The number of times to loop the audio. Defaults to 0 (play once).
          */
-        void playAudio(Audio p_audio, int p_channel = 0, int p_duration = -1, int p_loops = 0) noexcept;
+        void playAudio(Audio p_audio, int p_channel = 0, int p_duration = -1, int p_loops = 0);
 
         /**
          * @brief Pauses the audio on the specified channel.
          *
          * @param p_channel The channel to pause the audio on. Defaults to 0.
          */
-        void pauseAudio(int p_channel = 0) noexcept;
+        void pauseAudio(int p_channel = 0);
 
         /**
          * @brief Resumes playing the audio on the specified channel.
          *
          * @param p_channel The channel to resume playing the audio on. Defaults to 0.
          */
-        void resumeAudio(int p_channel = 0) noexcept;
+        void resumeAudio(int p_channel = 0);
 
         /**
          * @brief Pauses all audio on all channels.
          */
-        void pauseAll() noexcept;
+        void pauseAll();
 
         /**
          * @brief Returns a reference to the MixChunkPtr associated with the specified audio.
@@ -113,7 +113,7 @@ namespace pacman {
          * @param p_audio The audio to find.
          * @return A reference to the MixChunkPtr associated with the specified audio.
          */
-        MixChunkPtr& find(Audio p_audio) noexcept;
+        MixChunkPtr& find(Audio p_audio);
 
         /**
         * @brief Returns the file path for a given audio effect.
@@ -121,7 +121,7 @@ namespace pacman {
         * @param p_audio The audio effect to get the file path for.
         * @return The file path for the given audio effect.
         */
-        static std::string getFilePath(Audio p_audio) noexcept;
+        static std::string getFilePath(Audio p_audio);
 
         /**
         * @brief Returns the last known audio played on a given channel.
@@ -129,7 +129,7 @@ namespace pacman {
         * @param p_channel The channel to get the last known audio for.
         * @return The last known audio played on the given channel.
         */
-        [[nodiscard]] inline Audio getLastKnownAudioPlayed(int p_channel) const noexcept
+        [[nodiscard]] inline Audio getLastKnownAudioPlayed(int p_channel) const
         {
             return m_lastKnownAudio[p_channel];
         }

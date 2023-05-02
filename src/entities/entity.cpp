@@ -2,7 +2,7 @@
 
 using namespace pacman;
 
-void Entity::move(Direction newDirection) noexcept {
+void Entity::move(Direction newDirection) {
     if(m_freeze || !activated()) return;
     // If entity walks in the same direction, check if
     // Only be able to change position if the entity is one middle of case
@@ -14,7 +14,7 @@ void Entity::move(Direction newDirection) noexcept {
     changeAnimation();
 }
 
-void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
+void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
     if(!activated()) return;
     if (!m_currentAnimation) return;
     auto &spriteAnimation = m_currentAnimation.value();
@@ -25,7 +25,7 @@ void Entity::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexc
     SDL_RenderCopy(p_window_renderer, p_texture, &sprite->rect(), &destination);
 }
 
-bool Entity::canMoveTo(Direction p_direction) const noexcept {
+bool Entity::canMoveTo(Direction p_direction) const {
     auto caseFound = Board::findCase(position());
     if (caseFound.x() == -1 || caseFound.y() == -1) return false;
     auto nextCasePos = caseFound.getPositionAt(p_direction, 1);
@@ -33,29 +33,29 @@ bool Entity::canMoveTo(Direction p_direction) const noexcept {
     return BoardCase::isPracticable(board().getCase(nextCasePos), false);
 }
 
-void Entity::freeze() noexcept {
+void Entity::freeze() {
     m_freeze = true;
     if(m_currentAnimation) {
         m_currentAnimation->freeze() = true;
     }
 }
 
-void Entity::unfreeze() noexcept {
+void Entity::unfreeze() {
     m_freeze = false;
     if(m_currentAnimation) {
         m_currentAnimation->freeze() = false;
     }
 }
 
-void Entity::freezeMovement() noexcept {
+void Entity::freezeMovement() {
     m_freeze = true;
 }
 
-void Entity::unfreezeMovement() noexcept {
+void Entity::unfreezeMovement() {
     m_freeze = false;
 }
 
-bool Entity::isGhost() const noexcept {
+bool Entity::isGhost() const {
     const auto type = entityType();
     return type == EntityType::Blinky
            || type == EntityType::Clyde
@@ -63,7 +63,7 @@ bool Entity::isGhost() const noexcept {
            || type == EntityType::Inky;
 }
 
-bool Entity::checkCollision(Position p_topLeft, Position p_bottomRight) const noexcept
+bool Entity::checkCollision(Position p_topLeft, Position p_bottomRight) const
 {
     int m_x1 = m_position.x();
     int m_y1 = m_position.y();
@@ -72,7 +72,7 @@ bool Entity::checkCollision(Position p_topLeft, Position p_bottomRight) const no
     return (m_x1 < p_bottomRight.x()) && (m_x2 > p_topLeft.x()) && (m_y1 < p_bottomRight.y()) && (m_y2 > p_topLeft.y());
 }
 
-bool Entity::checkCollision(const Entity &p_with) const noexcept
+bool Entity::checkCollision(const Entity &p_with) const
 {
     if(!activated() || !p_with.activated()) return false;
     Position first{};

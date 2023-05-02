@@ -8,7 +8,7 @@
 
 using namespace pacman;
 
-Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources) noexcept
+Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentPlayer, BoardResources p_boardResources)
         : m_filePath{p_filePath.value_or(std::string{})}
         , m_currentPlayer{p_currentPlayer}
         , m_boardResources{std::move(p_boardResources)}
@@ -69,7 +69,7 @@ Board::Board(const std::optional<std::string> &p_filePath, PlayerPtr& p_currentP
               << " case(s)!" << std::endl;
 }
 
-void Board::save(const std::string &p_filePath) const noexcept {
+void Board::save(const std::string &p_filePath) const {
     std::cout << "Saving board to " << p_filePath.c_str() << "." << std::endl;
     pugi::xml_document doc;
     auto boardNode = doc.append_child("board");
@@ -90,7 +90,7 @@ void Board::save(const std::string &p_filePath) const noexcept {
 
 bool first = true;
 
-void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept {
+void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) {
     if(!activated()) return;
 
     if(m_currentAnimation) {
@@ -111,7 +111,7 @@ void Board::draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexce
     if (first) first = false;
 }
 
-void Board::reset() noexcept {
+void Board::reset() {
     m_currentAnimation = m_boardResources.boardAnimation;
     for (BoardCase& boardCase: m_grid) {
         if(boardCase.currentAnimation()) {
@@ -121,7 +121,7 @@ void Board::reset() noexcept {
     }
 }
 
-std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direction p_direction) noexcept {
+std::optional<BoardCase> Board::getBoardCaseAtPixels(Position p_position, Direction p_direction) {
     auto caseFound = Board::findCase(p_position);
     if (caseFound.x() == -1 || caseFound.y() == -1) return std::nullopt;
     auto nextCasePos = caseFound.getPositionAt(p_direction, 1);

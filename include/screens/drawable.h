@@ -32,7 +32,7 @@ namespace pacman {
          * @param p_window_renderer Window renderer
          * @param p_texture Texture to get sprite from
          */
-        virtual void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) noexcept = 0;
+        virtual void draw(SDL_Renderer *p_window_renderer, SDL_Texture *p_texture) = 0;
 
     };
 
