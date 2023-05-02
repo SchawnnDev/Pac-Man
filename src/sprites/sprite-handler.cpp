@@ -67,31 +67,32 @@ void SpriteHandler::initAnimations()
 
     // Pacman
     m_spriteAnimations["pacman-down"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_down_little_open", "pacman_down_big_open"),
+            getSprites({"full_pacman", "pacman_down_little_open", "pacman_down_big_open"}),
             false, 2};
     m_spriteAnimations["pacman-up"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_up_little_open", "pacman_up_big_open"), false, 2};
+            getSprites({"full_pacman", "pacman_up_little_open", "pacman_up_big_open"}), false, 2};
     m_spriteAnimations["pacman-left"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_left_little_open", "pacman_left_big_open"), false, 2};
+            getSprites({"full_pacman", "pacman_left_little_open", "pacman_left_big_open"}), false, 2};
     m_spriteAnimations["pacman-right"] = SpriteAnimation{
-            getSprites("full_pacman", "pacman_right_little_open", "pacman_right_big_open"), false, 2};
+            getSprites({"full_pacman", "pacman_right_little_open", "pacman_right_big_open"}), false, 2};
     m_spriteAnimations["pacman-dying"] = SpriteAnimation{
-            getSprites("pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
-                       "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
-                       "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
-                       "pacman_dying_10", "nothing", "nothing"), true, 6};
-    m_spriteAnimations["ghost-frightened"] = SpriteAnimation{getSprites("ghost_frightened_1", "ghost_frightened_2"), false, 3};
-    m_spriteAnimations["ghost-frightened-end"] = SpriteAnimation{getSprites("ghost_frightened_end_1", "ghost_frightened_end_2"), false, GHOST_FRIGHTENED_FLASH_DURATION};
-    m_spriteAnimations["ghost-eyes-right"] = SpriteAnimation{getSprites("ghost_eyes_right"), false, 0, true, true};
-    m_spriteAnimations["ghost-eyes-left"] = SpriteAnimation{getSprites("ghost_eyes_left"), false, 0, true, true};
-    m_spriteAnimations["ghost-eyes-up"] = SpriteAnimation{getSprites("ghost_eyes_up"), false, 0, true, true};
-    m_spriteAnimations["ghost-eyes-down"] = SpriteAnimation{getSprites("ghost_eyes_down"), false, 0, true, true};
+            getSprites({"pacman_dying_1", "pacman_dying_2", "pacman_dying_3",
+                        "pacman_dying_4", "pacman_dying_5", "pacman_dying_6",
+                        "pacman_dying_7", "pacman_dying_8", "pacman_dying_9",
+                        "pacman_dying_10", "nothing", "nothing"}), true, 6};
+    m_spriteAnimations["ghost-frightened"] = SpriteAnimation{getSprites({"ghost_frightened_1", "ghost_frightened_2"}), false, 3};
+    m_spriteAnimations["ghost-frightened-end"] = SpriteAnimation{getSprites(
+            {"ghost_frightened_end_1", "ghost_frightened_end_2"}), false, GHOST_FRIGHTENED_FLASH_DURATION};
+    m_spriteAnimations["ghost-eyes-right"] = SpriteAnimation{getSprites({"ghost_eyes_right"}), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-left"] = SpriteAnimation{getSprites({"ghost_eyes_left"}), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-up"] = SpriteAnimation{getSprites({"ghost_eyes_up"}), false, 0, true, true};
+    m_spriteAnimations["ghost-eyes-down"] = SpriteAnimation{getSprites({"ghost_eyes_down"}), false, 0, true, true};
 
     // Board
-    m_spriteAnimations["board"] = SpriteAnimation{getSprites("board_empty"), false, 0, true, true};
+    m_spriteAnimations["board"] = SpriteAnimation{getSprites({"board_empty"}), false, 0, true, true};
     m_spriteAnimations["board-level-end"] = SpriteAnimation{
-            getSprites("board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white",
-                       "board_empty", "board_white"), true, 15, true};
+            getSprites({"board_empty", "board_white", "board_empty", "board_white", "board_empty", "board_white",
+                        "board_empty", "board_white"}), true, 15, true};
 
     // Ghosts
     initGhostAnimations("blinky");
@@ -100,7 +101,7 @@ void SpriteHandler::initAnimations()
     initGhostAnimations("pinky");
 
     // Board
-    m_spriteAnimations["bonus"] = SpriteAnimation{getSprites("bonus", "nothing"), false, 15};
+    m_spriteAnimations["bonus"] = SpriteAnimation{getSprites({"bonus", "nothing"}), false, 15};
 
     std::cout << "Successfully created " << m_spriteAnimations.size()
               << " sprite animations!" << std::endl;
@@ -223,8 +224,8 @@ void SpriteHandler::initStructs()
 
 void SpriteHandler::initGhostAnimations(const std::string& name)
 {
-    m_spriteAnimations[name + "-down"] = SpriteAnimation{getSprites(name + "_down_1", name + "_down_2"), false, 3};
-    m_spriteAnimations[name + "-up"] = SpriteAnimation{getSprites(name + "_up_1", name + "_up_2"), false, 3};
-    m_spriteAnimations[name + "-left"] = SpriteAnimation{getSprites(name + "_left_1", name + "_left_2"), false, 3};
-    m_spriteAnimations[name + "-right"] = SpriteAnimation{getSprites(name + "_right_1", name + "_right_2"), false, 3};
+    m_spriteAnimations[name + "-down"] = SpriteAnimation{getSprites({name + "_down_1", name + "_down_2"}), false, 3};
+    m_spriteAnimations[name + "-up"] = SpriteAnimation{getSprites({name + "_up_1", name + "_up_2"}), false, 3};
+    m_spriteAnimations[name + "-left"] = SpriteAnimation{getSprites({name + "_left_1", name + "_left_2"}), false, 3};
+    m_spriteAnimations[name + "-right"] = SpriteAnimation{getSprites({name + "_right_1", name + "_right_2"}), false, 3};
 }

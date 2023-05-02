@@ -148,14 +148,12 @@ namespace pacman {
         * @param p_sprites Sprite names.
         * @return A vector of Sprite objects.
         */
-        template<typename... Args>
-        requires (... && std::convertible_to<Args, std::string_view>)
         [[nodiscard]]
-        std::vector<Sprite> getSprites(Args... p_sprites) const {
-            std::array<std::string_view, sizeof...(p_sprites)> sprite_names = {{p_sprites...}};
+        std::vector<Sprite> getSprites(std::initializer_list<std::string_view> p_sprites) const {
+//            std::array<std::string_view, sizeof...(p_sprites)> sprite_names = {{p_sprites...}};
 
             auto result = std::vector<Sprite>();
-            std::transform(std::cbegin(sprite_names), std::cend(sprite_names),
+            std::transform(std::cbegin(p_sprites), std::cend(p_sprites),
                            std::back_inserter(result), // Write results to vector
                            [this](std::string_view p_spriteName) {
                                auto sprite = getSprite(p_spriteName);
