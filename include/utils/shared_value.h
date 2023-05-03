@@ -36,10 +36,10 @@ namespace pacman {
         [[nodiscard]] inline T &operator*()
         { return value(); }
 
-        explicit operator T() const
+        operator T() const
         { return value(); }
 
-        explicit operator T &()
+        operator T &()
         { return value(); }
 
         inline shared_value<T> &operator=(T newValue)
@@ -51,7 +51,7 @@ namespace pacman {
         [[nodiscard]] inline T operator+(T v) const
         { return value() + v; }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator+=(T newValue)
+        inline T operator+=(T newValue)
         {
             value() += newValue;
             return value();
@@ -60,45 +60,45 @@ namespace pacman {
         [[nodiscard]] inline T operator-(T v) const
         { return value() - v; }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator-=(T newValue)
+        inline T operator-=(T newValue)
         {
             value() -= newValue;
             return value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator++()
+        inline T operator++()
         {
             value() += 1;
             return value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, T &> operator--()
+        inline T operator--()
         {
             value() -= 1;
             return value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<(const T &rhs) const {
+        inline bool operator<(const T &rhs) const {
             return value() < rhs;
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>(const T &rhs) const {
+        inline bool operator>(const T &rhs) const {
             return rhs < value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator<=(const T &rhs) const {
+        inline bool operator<=(const T &rhs) const {
             return rhs >= value();
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator>=(const T &rhs) const {
+        inline bool operator>=(const T &rhs) const {
             return value() >= rhs;
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator==(const T &rhs) const {
+        inline bool operator==(const T &rhs) const {
             return value() == rhs;
         }
 
-        inline std::enable_if_t<std::is_scalar_v<T>, bool> operator!=(const T &rhs) const {
+        inline bool operator!=(const T &rhs) const {
             return rhs != value();
         }
 
